@@ -24,18 +24,12 @@ Make sure you have permission to access this repository
 - `CustomerinvokeService` is initiated should be from `App.ts`
 
 ```javascript
-import { CustomerinvokeService } from 'customer-invoke-component';
+import { CustomerinvokeService } from "customer-invoke-component";
 
 CustomerInvokeService.instance().initClients({
-  contactBaseUrl: 'url'
+  contactBaseUrl: "url"
 });
 ```
-
-### Assets And Multiple Languages
-
-- All icons, images and texts are provided by default. You can use your custom by passing them as a props into each component
-
-- In order to do multiple languages, you need to configurate `i18n` for [react-native-theme-component](https://github.com/101digital/react-native-theme-component.git). And then, you have to copy and paste all fields and values in [texts](customer-invoke-data.json) into your app locale file. You can also change text value, but DON'T change the key.
 
 ### CustomerInvokeComponent
 
@@ -57,9 +51,9 @@ const HelpScreen = () => {
         onBack={() => {}}
         onCompleted={applicationDetails => {}}
         initStep={{
-          id: 'main-details',
-          title: 'We want to know you more',
-          subTitle: 'Enter main details.',
+          id: "main-details",
+          title: "We want to know you more",
+          subTitle: "Enter main details.",
           progress: 5 / 12
         }}
       />
