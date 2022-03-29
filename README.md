@@ -31,6 +31,12 @@ CustomerInvokeService.instance().initClients({
 });
 ```
 
+### Assets And Multiple Languages
+
+- All icons, images and texts are provided by default. You can use your custom by passing them as a props into each component
+
+- In order to do multiple languages, you need to configurate `i18n` for [react-native-theme-component](https://github.com/101digital/react-native-theme-component.git). And then, you have to copy and paste all fields and values in [texts](customer-invoke-data.json) into your app locale file. You can also change text value, but DON'T change the key.
+
 ### CustomerInvokeComponent
 
 Open a web-view to cutomer can add help details

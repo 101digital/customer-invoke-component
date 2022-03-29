@@ -1,22 +1,29 @@
-import { Formik } from 'formik';
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { StyleProp, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Button, InputField, ThemeContext } from 'react-native-theme-component';
-import { ArrowDownIcon } from '../../assets/icons';
-import { OnboardingContext } from '../../context/onboarding-context';
-import HeaderComponent, { HeaderComponentProps } from '../header-component';
-import KeyboardSpace from '../sub-components/keyboard-space';
-import { RadioData } from '../sub-components/radio-group';
+import { Formik } from "formik";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import {
+  StyleProp,
+  Text,
+  TextStyle,
+  TouchableOpacity,
+  View,
+  ViewStyle
+} from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Button, InputField, ThemeContext } from "react-native-theme-component";
+import { ArrowDownIcon } from "../../assets/icons";
+import { OnboardingContext } from "../../context/onboarding-context";
+import HeaderComponent, { HeaderComponentProps } from "../header-component";
+import KeyboardSpace from "../sub-components/keyboard-space";
+import { RadioData } from "../sub-components/radio-group";
 import SelectAccountPurposeModal, {
-  SelectAccountPurposeModalStyles,
-} from './components/select-account-purpose';
-import SelectMonthlyTransactionModal from './components/select-monthly-transaction';
+  SelectAccountPurposeModalStyles
+} from "./components/select-account-purpose";
+import SelectMonthlyTransactionModal from "./components/select-monthly-transaction";
 import SelectSourceOfFundModal, {
-  SelectSourceOfFundModalStyles,
-} from './components/select-source-fund-modal';
-import { AccountDetailsData, AccountDetailsSchema } from './model';
-import useMergeStyles from './styles';
+  SelectSourceOfFundModalStyles
+} from "./components/select-source-fund-modal";
+import { AccountDetailsData, AccountDetailsSchema } from "./model";
+import useMergeStyles from "./styles";
 
 export type AccountDetailsComponentProps = {
   initValue?: AccountDetailsData;
@@ -36,20 +43,29 @@ export type AccountDetailsComponentStyles = {
   monthlyTransactionModalStyles?: SelectSourceOfFundModalStyles;
 };
 
-const AccountDetailsComponent = ({ style, initValue, header }: AccountDetailsComponentProps) => {
+const AccountDetailsComponent = ({
+  style,
+  initValue,
+  header
+}: AccountDetailsComponentProps) => {
   const styles: AccountDetailsComponentStyles = useMergeStyles(style);
   const formikRef: any = useRef(null);
-  const { colors } = useContext(ThemeContext);
+  const { colors, i18n } = useContext(ThemeContext);
   const [openAccountPurposeModal, setOpenAccountPurposeModal] = useState(false);
-  const [openMonthlyTransactionModal, setOpenMonthlyTransactionModal] = useState(false);
+  const [
+    openMonthlyTransactionModal,
+    setOpenMonthlyTransactionModal
+  ] = useState(false);
   const [openSourceFundModal, setOpenSourceFundModal] = useState(false);
-  const [monthlyIncome, setMonthlyIncome] = useState<RadioData | undefined>(undefined);
+  const [monthlyIncome, setMonthlyIncome] = useState<RadioData | undefined>(
+    undefined
+  );
 
   const {
     updateAccountDetails,
     isCreatingApplication,
     isUpdatedAccountDetails,
-    createApplication,
+    createApplication
   } = useContext(OnboardingContext);
 
   useEffect(() => {
@@ -61,30 +77,30 @@ const AccountDetailsComponent = ({ style, initValue, header }: AccountDetailsCom
 
   const getMonthlyIncome = () => {
     switch (monthlyIncome?.id) {
-      case '1':
+      case "1":
         return {
           max: 50000,
-          min: undefined,
+          min: undefined
         };
-      case '2':
+      case "2":
         return {
           max: 100000,
-          min: 50001,
+          min: 50001
         };
-      case '3':
+      case "3":
         return {
           max: 250000,
-          min: 100001,
+          min: 100001
         };
-      case '4':
+      case "4":
         return {
           max: 500000,
-          min: 250001,
+          min: 250001
         };
-      case '5':
+      case "5":
         return {
           max: undefined,
-          min: 500000,
+          min: 500000
         };
       default:
         break;
@@ -119,7 +135,10 @@ const AccountDetailsComponent = ({ style, initValue, header }: AccountDetailsCom
                 <TouchableOpacity onPress={() => {}}>
                   <HeaderComponent {...header} />
                 </TouchableOpacity>
-                <Text style={styles.labelTextStyle}>{'Source of funds'}</Text>
+                <Text style={styles.labelTextStyle}>
+                  {i18n?.t("account-details-component.lbl_source_of_funds") ??
+                    "Source of funds"}
+                </Text>
                 <TouchableOpacity
                   activeOpacity={0.8}
                   onPress={() => {
@@ -127,8 +146,12 @@ const AccountDetailsComponent = ({ style, initValue, header }: AccountDetailsCom
                   }}
                 >
                   <InputField
-                    name={'sourceOfFund'}
-                    placeholder="Select source of funds"
+                    name={"sourceOfFund"}
+                    placeholder={
+                      i18n?.t(
+                        "account-details-component.plh_source_of_funds"
+                      ) ?? "Select source of funds"
+                    }
                     pointerEvents="none"
                     editable={false}
                     suffixIcon={
@@ -138,7 +161,10 @@ const AccountDetailsComponent = ({ style, initValue, header }: AccountDetailsCom
                     }
                   />
                 </TouchableOpacity>
-                <Text style={styles.labelTextStyle}>{'Account purpose'}</Text>
+                <Text style={styles.labelTextStyle}>
+                  {i18n?.t("account-details-component.lbl_account_purpose") ??
+                    "Account purpose"}
+                </Text>
                 <TouchableOpacity
                   activeOpacity={0.8}
                   onPress={() => {
@@ -146,8 +172,12 @@ const AccountDetailsComponent = ({ style, initValue, header }: AccountDetailsCom
                   }}
                 >
                   <InputField
-                    name={'accountPurpose'}
-                    placeholder="Select account purpose"
+                    name={"accountPurpose"}
+                    placeholder={
+                      i18n?.t(
+                        "account-details-component.plh_account_purpose"
+                      ) ?? "Select account purpose"
+                    }
                     pointerEvents="none"
                     editable={false}
                     suffixIcon={
@@ -157,7 +187,10 @@ const AccountDetailsComponent = ({ style, initValue, header }: AccountDetailsCom
                     }
                   />
                 </TouchableOpacity>
-                <Text style={styles.labelTextStyle}>{'Estimated monthly transaction'}</Text>
+                <Text style={styles.labelTextStyle}>
+                  {i18n?.t("account-details-component.lbl_transaction") ??
+                    "Estimated monthly transaction"}
+                </Text>
                 <TouchableOpacity
                   activeOpacity={0.8}
                   onPress={() => {
@@ -165,8 +198,11 @@ const AccountDetailsComponent = ({ style, initValue, header }: AccountDetailsCom
                   }}
                 >
                   <InputField
-                    name={'monthlyIncome'}
-                    placeholder="Select estimated monthly transaction"
+                    name={"monthlyIncome"}
+                    placeholder={
+                      i18n?.t("account-details-component.plh_transaction") ??
+                      "Select estimated monthly transaction"
+                    }
                     pointerEvents="none"
                     editable={false}
                     suffixIcon={
@@ -180,7 +216,10 @@ const AccountDetailsComponent = ({ style, initValue, header }: AccountDetailsCom
               <KeyboardSpace style={styles.footerContainerStyle}>
                 <Button
                   onPress={submitForm}
-                  label="Continue"
+                  label={
+                    i18n?.t("account-details-component.lbl_continue") ??
+                    "Continue"
+                  }
                   isLoading={isCreatingApplication}
                   disabled={!isValid}
                   disableColor={colors.secondaryButtonColor}
@@ -192,9 +231,9 @@ const AccountDetailsComponent = ({ style, initValue, header }: AccountDetailsCom
       </Formik>
       <SelectAccountPurposeModal
         initValue={formikRef?.current?.values.purpose}
-        onValueChanged={(value) => {
+        onValueChanged={value => {
           setOpenAccountPurposeModal(false);
-          formikRef?.current.setFieldValue('accountPurpose', value.label);
+          formikRef?.current.setFieldValue("accountPurpose", value.label);
         }}
         isVisible={openAccountPurposeModal}
         onClose={() => setOpenAccountPurposeModal(false)}
@@ -202,10 +241,10 @@ const AccountDetailsComponent = ({ style, initValue, header }: AccountDetailsCom
       />
       <SelectMonthlyTransactionModal
         initValue={formikRef?.current?.values.estMonthlyTransaction}
-        onValueChanged={(value) => {
+        onValueChanged={value => {
           setMonthlyIncome(value);
           setOpenMonthlyTransactionModal(false);
-          formikRef?.current.setFieldValue('monthlyIncome', value.label);
+          formikRef?.current.setFieldValue("monthlyIncome", value.label);
         }}
         isVisible={openMonthlyTransactionModal}
         onClose={() => setOpenMonthlyTransactionModal(false)}
@@ -213,9 +252,9 @@ const AccountDetailsComponent = ({ style, initValue, header }: AccountDetailsCom
       />
       <SelectSourceOfFundModal
         initValue={formikRef?.current?.values.sourceFund}
-        onValueChanged={(value) => {
+        onValueChanged={value => {
           setOpenSourceFundModal(false);
-          formikRef?.current.setFieldValue('sourceOfFund', value.label);
+          formikRef?.current.setFieldValue("sourceOfFund", value.label);
         }}
         isVisible={openSourceFundModal}
         onClose={() => setOpenSourceFundModal(false)}

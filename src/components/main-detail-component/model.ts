@@ -1,4 +1,4 @@
-import * as Yup from 'yup';
+import * as Yup from "yup";
 
 export class MainDetailsData {
   constructor(
@@ -21,24 +21,38 @@ export class MainDetailsData {
     email?: string
   ): MainDetailsData {
     return new MainDetailsData(
-      firstName ?? '',
-      midName ?? '',
-      lastName ?? '',
-      dateOfBirth ?? '',
-      civil ?? '',
-      gender ?? '',
-      email ?? ''
+      firstName ?? "",
+      midName ?? "",
+      lastName ?? "",
+      dateOfBirth ?? "",
+      civil ?? "",
+      gender ?? "",
+      email ?? ""
     );
   }
 }
 
 export const MainDetailsSchema = () =>
   Yup.object().shape({
-    firstName: Yup.string().trim().required('Enter first name'),
-    middleName: Yup.string().trim().required('Enter middle name'),
-    lastName: Yup.string().trim().required('Enter middle name'),
-    dateOfBirth: Yup.string().trim().required('Select date of birth'),
-    maritalStatus: Yup.string().trim().required('Select civil status'),
-    gender: Yup.string().trim().required('Select gender'),
-    email: Yup.string().trim().email('Invalid email address'),
+    firstName: Yup.string()
+      .trim()
+      .required("Enter first name"),
+    middleName: Yup.string()
+      .trim()
+      .required("Enter middle name"),
+    lastName: Yup.string()
+      .trim()
+      .required("Enter last name"),
+    dateOfBirth: Yup.string()
+      .trim()
+      .required("Select date of birth"),
+    maritalStatus: Yup.string()
+      .trim()
+      .required("Select civil status"),
+    gender: Yup.string()
+      .trim()
+      .required("Select gender"),
+    email: Yup.string()
+      .trim()
+      .email("Invalid email address")
   });

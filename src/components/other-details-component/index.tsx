@@ -1,5 +1,5 @@
-import { Formik } from 'formik';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import { Formik } from "formik";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
   StyleProp,
   StyleSheet,
@@ -7,26 +7,28 @@ import {
   TextStyle,
   TouchableOpacity,
   View,
-  ViewStyle,
-} from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Button, InputField, ThemeContext } from 'react-native-theme-component';
-import { ArrowDownIcon } from '../../assets/icons';
-import { OnboardingContext } from '../../context/onboarding-context';
-import HeaderComponent, { HeaderComponentProps } from '../header-component';
-import KeyboardSpace from '../sub-components/keyboard-space';
-import SelectCityModal, { SelectCityModalStyles } from '../sub-components/select-city-modal';
+  ViewStyle
+} from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Button, InputField, ThemeContext } from "react-native-theme-component";
+import { ArrowDownIcon } from "../../assets/icons";
+import { OnboardingContext } from "../../context/onboarding-context";
+import HeaderComponent, { HeaderComponentProps } from "../header-component";
+import KeyboardSpace from "../sub-components/keyboard-space";
+import SelectCityModal, {
+  SelectCityModalStyles
+} from "../sub-components/select-city-modal";
 import SelectEmploymentStatusModal, {
-  SelectEmploymentStatusModalStyles,
-} from './components/select-employment-status-modal';
+  SelectEmploymentStatusModalStyles
+} from "./components/select-employment-status-modal";
 import SelectNatureWorkModal, {
-  SelectNatureWorkModalStyles,
-} from './components/select-nature-work-modal';
+  SelectNatureWorkModalStyles
+} from "./components/select-nature-work-modal";
 import SelectOccupationModal, {
-  SelectOccupationModalStyles,
-} from './components/select-occupation-modal';
-import { OtherDetailsData, OtherDetailsSchema } from './model';
-import useMergeStyles from './styles';
+  SelectOccupationModalStyles
+} from "./components/select-occupation-modal";
+import { OtherDetailsData, OtherDetailsSchema } from "./model";
+import useMergeStyles from "./styles";
 
 export type OtherDetailsComponentProps = {
   initValue?: OtherDetailsData;
@@ -52,16 +54,20 @@ const OtherDetailsComponent = ({
   style,
   header,
   initValue,
-  onContinue,
+  onContinue
 }: OtherDetailsComponentProps) => {
   const styles: OtherDetailsComponentStyles = useMergeStyles(style);
   const formikRef: any = useRef(null);
-  const { colors } = useContext(ThemeContext);
-  const [openEmploymentStatusModal, setOpenEmploymentStatusModal] = useState(false);
+  const { colors, i18n } = useContext(ThemeContext);
+  const [openEmploymentStatusModal, setOpenEmploymentStatusModal] = useState(
+    false
+  );
   const [openCityModal, setOpenCityModal] = useState(false);
   const [openOccupationModal, setOpenOccupationModal] = useState(false);
   const [openNatureWorkModal, setOpenNatureWorkModal] = useState(false);
-  const { updateOtherDetails, isUpdatedOtherDetails } = useContext(OnboardingContext);
+  const { updateOtherDetails, isUpdatedOtherDetails } = useContext(
+    OnboardingContext
+  );
 
   useEffect(() => {
     if (isUpdatedOtherDetails) {
@@ -97,7 +103,10 @@ const OtherDetailsComponent = ({
                 <TouchableOpacity onPress={() => {}}>
                   <HeaderComponent {...header} />
                 </TouchableOpacity>
-                <Text style={styles.labelTextStyle}>{'Employment status'}</Text>
+                <Text style={styles.labelTextStyle}>
+                  {i18n?.t("other-details-component.lbl_employment_status") ??
+                    "Employment status"}
+                </Text>
                 <TouchableOpacity
                   activeOpacity={0.8}
                   onPress={() => {
@@ -105,8 +114,12 @@ const OtherDetailsComponent = ({
                   }}
                 >
                   <InputField
-                    name={'status'}
-                    placeholder="Select employment status"
+                    name={"status"}
+                    placeholder={
+                      i18n?.t(
+                        "other-details-component.plh_employment_status"
+                      ) ?? "Select employment status"
+                    }
                     pointerEvents="none"
                     editable={false}
                     suffixIcon={
@@ -116,7 +129,10 @@ const OtherDetailsComponent = ({
                     }
                   />
                 </TouchableOpacity>
-                <Text style={styles.labelTextStyle}>{'Occupation'}</Text>
+                <Text style={styles.labelTextStyle}>
+                  {i18n?.t("other-details-component.lbl_occupation") ??
+                    "Occupation"}
+                </Text>
                 <TouchableOpacity
                   activeOpacity={0.8}
                   onPress={() => {
@@ -124,8 +140,11 @@ const OtherDetailsComponent = ({
                   }}
                 >
                   <InputField
-                    name={'occupation'}
-                    placeholder="Select occupation"
+                    name={"occupation"}
+                    placeholder={
+                      i18n?.t("other-details-component.plh_occupation") ??
+                      "Select occupation"
+                    }
                     pointerEvents="none"
                     editable={false}
                     suffixIcon={
@@ -135,7 +154,10 @@ const OtherDetailsComponent = ({
                     }
                   />
                 </TouchableOpacity>
-                <Text style={styles.labelTextStyle}>{'Nature of Work / Business'}</Text>
+                <Text style={styles.labelTextStyle}>
+                  {i18n?.t("other-details-component.lbl_work") ??
+                    "Nature of Work / Business"}
+                </Text>
                 <TouchableOpacity
                   activeOpacity={0.8}
                   onPress={() => {
@@ -143,8 +165,11 @@ const OtherDetailsComponent = ({
                   }}
                 >
                   <InputField
-                    name={'companyType'}
-                    placeholder="Select nature of work / business"
+                    name={"companyType"}
+                    placeholder={
+                      i18n?.t("other-details-component.plh_work") ??
+                      "Select nature of work / business"
+                    }
                     pointerEvents="none"
                     editable={false}
                     suffixIcon={
@@ -154,15 +179,23 @@ const OtherDetailsComponent = ({
                     }
                   />
                 </TouchableOpacity>
-                <Text style={styles.labelTextStyle}>{'Name of Employer / Business'}</Text>
+                <Text style={styles.labelTextStyle}>
+                  {i18n?.t("other-details-component.lbl_employer") ??
+                    "Name of Employer / Business"}
+                </Text>
                 <InputField
-                  name={'companyName'}
-                  placeholder="Enter business address"
+                  name={"companyName"}
+                  placeholder={
+                    i18n?.t("other-details-component.plh_employer") ??
+                    "Enter business address"
+                  }
                   maxLength={100}
                 />
                 <View style={innerStyles.rowItems}>
                   <View style={innerStyles.cityContainer}>
-                    <Text style={styles.labelTextStyle}>{'City'}</Text>
+                    <Text style={styles.labelTextStyle}>
+                      {i18n?.t("other-details-component.lbl_city") ?? "City"}
+                    </Text>
                     <TouchableOpacity
                       activeOpacity={0.8}
                       onPress={() => {
@@ -170,8 +203,11 @@ const OtherDetailsComponent = ({
                       }}
                     >
                       <InputField
-                        name={'city'}
-                        placeholder="Select city"
+                        name={"city"}
+                        placeholder={
+                          i18n?.t("other-details-component.plh_city") ??
+                          "Select city"
+                        }
                         pointerEvents="none"
                         editable={false}
                         suffixIcon={
@@ -183,15 +219,28 @@ const OtherDetailsComponent = ({
                     </TouchableOpacity>
                   </View>
                   <View style={innerStyles.zipcodeContainer}>
-                    <Text style={styles.labelTextStyle}>{'ZIP Code'}</Text>
-                    <InputField name={'postcode'} placeholder="ZIP Code" maxLength={10} />
+                    <Text style={styles.labelTextStyle}>
+                      {i18n?.t("other-details-component.lbl_zip_code") ??
+                        "ZIP Code"}
+                    </Text>
+                    <InputField
+                      name={"postcode"}
+                      placeholder={
+                        i18n?.t("other-details-component.plh_zip_code") ??
+                        "ZIP Code"
+                      }
+                      maxLength={10}
+                    />
                   </View>
                 </View>
               </KeyboardAwareScrollView>
               <KeyboardSpace style={styles.footerContainerStyle}>
                 <Button
                   onPress={submitForm}
-                  label="Continue"
+                  label={
+                    i18n?.t("other-details-component.lbl_continue") ??
+                    "Continue"
+                  }
                   disabled={!isValid}
                   disableColor={colors.secondaryButtonColor}
                 />
@@ -202,9 +251,9 @@ const OtherDetailsComponent = ({
       </Formik>
       <SelectEmploymentStatusModal
         initValue={formikRef?.current?.values.status}
-        onValueChanged={(value) => {
+        onValueChanged={value => {
           setOpenEmploymentStatusModal(false);
-          formikRef?.current.setFieldValue('status', value.label);
+          formikRef?.current.setFieldValue("status", value.label);
         }}
         isVisible={openEmploymentStatusModal}
         onClose={() => setOpenEmploymentStatusModal(false)}
@@ -213,18 +262,18 @@ const OtherDetailsComponent = ({
       <SelectCityModal
         header={{
           data: {
-            id: 'selection-city',
-            title: 'City',
-            subTitle: 'Select your city',
-            progress: 0,
-          },
+            id: "selection-city",
+            title: "City",
+            subTitle: "Select your city",
+            progress: 0
+          }
         }}
         initValue={formikRef?.current?.values.city}
         isVisible={openCityModal}
         onClose={() => setOpenCityModal(false)}
-        onSelected={(value) => {
+        onSelected={value => {
           setOpenCityModal(false);
-          formikRef?.current?.setFieldValue('city', value.name);
+          formikRef?.current?.setFieldValue("city", value.name);
         }}
         style={styles.cityModalStyles}
       />
@@ -232,9 +281,9 @@ const OtherDetailsComponent = ({
         initValue={formikRef?.current?.values.occupation}
         isVisible={openOccupationModal}
         onClose={() => setOpenOccupationModal(false)}
-        onSelected={(value) => {
+        onSelected={value => {
           setOpenOccupationModal(false);
-          formikRef?.current?.setFieldValue('occupation', value.name);
+          formikRef?.current?.setFieldValue("occupation", value.name);
         }}
         style={styles.occupationModalStyles}
       />
@@ -242,9 +291,9 @@ const OtherDetailsComponent = ({
         initValue={formikRef?.current?.values.work}
         isVisible={openNatureWorkModal}
         onClose={() => setOpenNatureWorkModal(false)}
-        onSelected={(value) => {
+        onSelected={value => {
           setOpenNatureWorkModal(false);
-          formikRef?.current?.setFieldValue('companyType', value.name);
+          formikRef?.current?.setFieldValue("companyType", value.name);
         }}
         style={styles.natureWorkModalStyles}
       />
@@ -253,15 +302,15 @@ const OtherDetailsComponent = ({
 };
 const innerStyles = StyleSheet.create({
   rowItems: {
-    flexDirection: 'row',
+    flexDirection: "row"
   },
   cityContainer: {
     flex: 2,
-    marginRight: 10,
+    marginRight: 10
   },
   zipcodeContainer: {
-    flex: 1,
-  },
+    flex: 1
+  }
 });
 
 export default OtherDetailsComponent;
