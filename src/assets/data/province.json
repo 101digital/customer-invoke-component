@@ -1,0 +1,87 @@
+[
+  {
+    "id": 1,
+    "name": "Ilocos Norte",
+    "isFeatured": false
+  },
+  {
+    "id": 2,
+    "name": "Ilocos Sur",
+    "isFeatured": false
+  },
+  {
+    "id": 3,
+    "name": "La Union",
+    "isFeatured": false
+  },
+  {
+    "id": 4,
+    "name": "Pangasinan",
+    "isFeatured": false
+  },
+  {
+    "id": 5,
+    "name": "Batanes",
+    "isFeatured": false
+  },
+  {
+    "id": 6,
+    "name": "Cagayan",
+    "isFeatured": false
+  },
+  {
+    "id": 7,
+    "name": "Isabela",
+    "isFeatured": false
+  },
+  {
+    "id": 8,
+    "name": "Nueva Vizcaya",
+    "isFeatured": false
+  },
+  {
+    "id": 9,
+    "name": "Quirino",
+    "isFeatured": false
+  },
+  {
+    "id": 10,
+    "name": "Aurora",
+    "isFeatured": false
+  },
+  {
+    "id": 11,
+    "name": "Bataan",
+    "isFeatured": false
+  },
+  {
+    "id": 12,
+    "name": "Bulacan",
+    "isFeatured": false
+  },
+  {
+    "id": 13,
+    "name": "Pampanga",
+    "isFeatured": false
+  },
+  {
+    "id": 14,
+    "name": "Tarlac",
+    "isFeatured": false
+  },
+  {
+    "id": 15,
+    "name": "Zambales",
+    "isFeatured": false
+  },
+  {
+    "id": 16,
+    "name": "Nueva Ecija",
+    "isFeatured": false
+  },
+  {
+    "id": 17,
+    "name": "Cavite",
+    "isFeatured": false
+  }
+]

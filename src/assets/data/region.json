@@ -1,0 +1,87 @@
+[
+  {
+    "id": 1,
+    "name": "National Capital Region (NCR)",
+    "isFeatured": false
+  },
+  {
+    "id": 2,
+    "name": "CAR",
+    "isFeatured": false
+  },
+  {
+    "id": 3,
+    "name": "Region I",
+    "isFeatured": false
+  },
+  {
+    "id": 4,
+    "name": "Region II",
+    "isFeatured": false
+  },
+  {
+    "id": 5,
+    "name": "Region III",
+    "isFeatured": false
+  },
+  {
+    "id": 6,
+    "name": "Region IV-A",
+    "isFeatured": false
+  },
+  {
+    "id": 7,
+    "name": "Mimaropa",
+    "isFeatured": false
+  },
+  {
+    "id": 8,
+    "name": "Region V",
+    "isFeatured": false
+  },
+  {
+    "id": 9,
+    "name": "Region VI",
+    "isFeatured": false
+  },
+  {
+    "id": 10,
+    "name": "Region VII",
+    "isFeatured": false
+  },
+  {
+    "id": 11,
+    "name": "Region VIII",
+    "isFeatured": false
+  },
+  {
+    "id": 12,
+    "name": "Region IX",
+    "isFeatured": false
+  },
+  {
+    "id": 13,
+    "name": "Region X",
+    "isFeatured": false
+  },
+  {
+    "id": 14,
+    "name": "Region XI",
+    "isFeatured": false
+  },
+  {
+    "id": 15,
+    "name": "Region XII",
+    "isFeatured": false
+  },
+  {
+    "id": 16,
+    "name": "Region XIII",
+    "isFeatured": false
+  },
+  {
+    "id": 17,
+    "name": "BARMM",
+    "isFeatured": false
+  }
+]

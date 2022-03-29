@@ -1,0 +1,97 @@
+[
+  {
+    "id": 1,
+    "name": "Alaminos",
+    "isFeatured": false
+  },
+  {
+    "id": 2,
+    "name": "Angeles City",
+    "isFeatured": false
+  },
+  {
+    "id": 3,
+    "name": "Antipolo",
+    "isFeatured": false
+  },
+  {
+    "id": 4,
+    "name": "Bacolod",
+    "isFeatured": false
+  },
+  {
+    "id": 5,
+    "name": "Bacoor",
+    "isFeatured": false
+  },
+  {
+    "id": 6,
+    "name": "Bago",
+    "isFeatured": false
+  },
+  {
+    "id": 7,
+    "name": "Cabadbaran",
+    "isFeatured": false
+  },
+  {
+    "id": 8,
+    "name": "Cabanatuan",
+    "isFeatured": false
+  },
+  {
+    "id": 9,
+    "name": "Cavite City",
+    "isFeatured": false
+  },
+  {
+    "id": 10,
+    "name": "Danao",
+    "isFeatured": false
+  },
+  {
+    "id": 11,
+    "name": "Dapitan",
+    "isFeatured": false
+  },
+  {
+    "id": 12,
+    "name": "Gapan",
+    "isFeatured": false
+  },
+  {
+    "id": 13,
+    "name": "General Trias",
+    "isFeatured": false
+  },
+  {
+    "id": 14,
+    "name": "Koronadal",
+    "isFeatured": false
+  },
+  {
+    "id": 15,
+    "name": "La Carlota",
+    "isFeatured": false
+  },
+  {
+    "id": 16,
+    "name": "Maasin",
+    "isFeatured": false
+  },
+  {
+    "id": 17,
+    "name": "Victorias",
+    "isFeatured": false
+  },
+  {
+    "id": 18,
+    "name": "Vigan",
+    "isFeatured": false
+  },
+  {
+    "id": 19,
+    "name": "Zamboanga City",
+    "isFeatured": false
+  }
+]

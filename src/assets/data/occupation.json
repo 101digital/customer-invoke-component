@@ -1,0 +1,87 @@
+[
+  {
+    "id": 1,
+    "name": "2nd Assistant Engineer",
+    "isFeatured": false
+  },
+  {
+    "id": 2,
+    "name": "2nd Engineer",
+    "isFeatured": false
+  },
+  {
+    "id": 3,
+    "name": "2nd Steward",
+    "isFeatured": false
+  },
+  {
+    "id": 4,
+    "name": "3rd Engineer",
+    "isFeatured": false
+  },
+  {
+    "id": 5,
+    "name": "3rd Officer",
+    "isFeatured": false
+  },
+  {
+    "id": 6,
+    "name": "Able Seaman",
+    "isFeatured": false
+  },
+  {
+    "id": 7,
+    "name": "Account Executive",
+    "isFeatured": false
+  },
+  {
+    "id": 8,
+    "name": "Account Manager",
+    "isFeatured": false
+  },
+  {
+    "id": 9,
+    "name": "Financial Managers",
+    "isFeatured": false
+  },
+  {
+    "id": 10,
+    "name": "Industrial Production Managers",
+    "isFeatured": false
+  },
+  {
+    "id": 11,
+    "name": "Purchasing Managers",
+    "isFeatured": false
+  },
+  {
+    "id": 12,
+    "name": "Transportation, Storage, and Distribution Managers",
+    "isFeatured": false
+  },
+  {
+    "id": 13,
+    "name": "Compensation and Benefits Managers",
+    "isFeatured": false
+  },
+  {
+    "id": 14,
+    "name": "Human Resources Managers",
+    "isFeatured": false
+  },
+  {
+    "id": 15,
+    "name": "Training and Development Managers",
+    "isFeatured": false
+  },
+  {
+    "id": 16,
+    "name": "Farmers, Ranchers, and Other Agricultural Managers",
+    "isFeatured": false
+  },
+  {
+    "id": 17,
+    "name": "Construction Managers",
+    "isFeatured": false
+  }
+]

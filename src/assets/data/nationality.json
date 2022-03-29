@@ -1,0 +1,197 @@
+[
+  {
+    "id": 1,
+    "name": "Filipino",
+    "isFeatured": true
+  },
+  {
+    "id": 2,
+    "name": "Afghan",
+    "isFeatured": false
+  },
+  {
+    "id": 3,
+    "name": "Albanian",
+    "isFeatured": false
+  },
+  {
+    "id": 4,
+    "name": "Algerian",
+    "isFeatured": false
+  },
+  {
+    "id": 5,
+    "name": "Andorran",
+    "isFeatured": false
+  },
+  {
+    "id": 6,
+    "name": "Angolan",
+    "isFeatured": false
+  },
+  {
+    "id": 7,
+    "name": "Anguillan",
+    "isFeatured": false
+  },
+  {
+    "id": 8,
+    "name": "Bangladeshi",
+    "isFeatured": false
+  },
+  {
+    "id": 9,
+    "name": "Belgian",
+    "isFeatured": false
+  },
+  {
+    "id": 10,
+    "name": "Brazilian",
+    "isFeatured": false
+  },
+  {
+    "id": 11,
+    "name": "Cambodian",
+    "isFeatured": false
+  },
+  {
+    "id": 12,
+    "name": "Cameroonian",
+    "isFeatured": false
+  },
+  {
+    "id": 13,
+    "name": "Canadian",
+    "isFeatured": false
+  },
+  {
+    "id": 14,
+    "name": "Chinese",
+    "isFeatured": false
+  },
+  {
+    "id": 15,
+    "name": "Colombian",
+    "isFeatured": false
+  },
+  {
+    "id": 16,
+    "name": "Dominican",
+    "isFeatured": false
+  },
+  {
+    "id": 17,
+    "name": "Ecuadorian",
+    "isFeatured": false
+  },
+  {
+    "id": 18,
+    "name": "Egyptian",
+    "isFeatured": false
+  },
+  {
+    "id": 19,
+    "name": "Salvadorian",
+    "isFeatured": false
+  },
+  {
+    "id": 20,
+    "name": "French",
+    "isFeatured": false
+  },
+  {
+    "id": 21,
+    "name": "German",
+    "isFeatured": false
+  },
+  {
+    "id": 22,
+    "name": "Ghanaian",
+    "isFeatured": false
+  },
+  {
+    "id": 23,
+    "name": "Greek",
+    "isFeatured": false
+  },
+  {
+    "id": 24,
+    "name": "Indian",
+    "isFeatured": false
+  },
+  {
+    "id": 25,
+    "name": "Indonesian",
+    "isFeatured": false
+  },
+  {
+    "id": 26,
+    "name": "Japanese",
+    "isFeatured": false
+  },
+  {
+    "id": 27,
+    "name": "Jordanian",
+    "isFeatured": false
+  },
+  {
+    "id": 28,
+    "name": "Lao",
+    "isFeatured": false
+  },
+  {
+    "id": 29,
+    "name": "Latvian",
+    "isFeatured": false
+  },
+  {
+    "id": 30,
+    "name": "Malaysian",
+    "isFeatured": false
+  },
+  {
+    "id": 31,
+    "name": "Mexican",
+    "isFeatured": false
+  },
+  {
+    "id": 32,
+    "name": "Nepalese",
+    "isFeatured": false
+  },
+  {
+    "id": 33,
+    "name": "New Zealand",
+    "isFeatured": false
+  },
+  {
+    "id": 34,
+    "name": "Singaporean",
+    "isFeatured": false
+  },
+  {
+    "id": 35,
+    "name": "Korean",
+    "isFeatured": false
+  },
+  {
+    "id": 36,
+    "name": "Spanish",
+    "isFeatured": false
+  },
+  {
+    "id": 37,
+    "name": "Sri Lankan",
+    "isFeatured": false
+  },
+  {
+    "id": 38,
+    "name": "Thai",
+    "isFeatured": false
+  },
+  {
+    "id": 39,
+    "name": "Vietnamese",
+    "isFeatured": false
+  }
+]
