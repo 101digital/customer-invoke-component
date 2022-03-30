@@ -1,3 +1,5 @@
-export { OnboardingService } from './src/service/onboarding-service';
-export { default as OnboardingComponent } from './src/index.tsx';
-export * from './src/types';
+export { CustomerInvokeService } from "./src/service/onboarding-service";
+export { CustomerInvokeContext } from "./src/context/onboarding-context";
+export { default as CustomerInvokeProvider } from "./src/context/onboarding-provider";
+export * from "./src/types";
+export { default as CustomerInvokeComponent } from "./src/index.tsx";

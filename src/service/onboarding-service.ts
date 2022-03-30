@@ -2,31 +2,31 @@ import {
   AddressParams,
   CreateApplicationParams,
   MainDetailParam,
-  NationalityParam,
-} from '../types';
+  NationalityParam
+} from "../types";
 
 type OnboaringClient = {
   membershipClient: any;
   accountOriginationClient: any;
 };
 
-export class OnboardingService {
-  private static _instance: OnboardingService = new OnboardingService();
+export class CustomerInvokeService {
+  private static _instance: CustomerInvokeService = new CustomerInvokeService();
 
   private _membershipClient?: any;
   private _accountOriginationClient?: any;
 
   constructor() {
-    if (OnboardingService._instance) {
+    if (CustomerInvokeService._instance) {
       throw new Error(
-        'Error: Instantiation failed: Use OnboardingService.getInstance() instead of new.'
+        "Error: Instantiation failed: Use CustomerInvokeService.getInstance() instead of new."
       );
     }
-    OnboardingService._instance = this;
+    CustomerInvokeService._instance = this;
   }
 
-  public static instance(): OnboardingService {
-    return OnboardingService._instance;
+  public static instance(): CustomerInvokeService {
+    return CustomerInvokeService._instance;
   }
 
   public initClients = (clients: OnboaringClient) => {
@@ -36,28 +36,37 @@ export class OnboardingService {
 
   getProfile = async () => {
     if (this._membershipClient) {
-      const response = await this._membershipClient.get('users/me');
+      const response = await this._membershipClient.get("users/me");
       return response.data;
     } else {
-      throw new Error('Onboaring Client is not registered');
+      throw new Error("Onboaring Client is not registered");
     }
   };
 
   updateMainDetails = async (userId: string, details: MainDetailParam) => {
     if (this._membershipClient) {
-      const response = await this._membershipClient.patch(`users/${userId}`, details);
+      const response = await this._membershipClient.patch(
+        `users/${userId}`,
+        details
+      );
       return response.data;
     } else {
-      throw new Error('Onboaring Client is not registered');
+      throw new Error("Onboaring Client is not registered");
     }
   };
 
-  updateNationalityDetails = async (userId: string, details: NationalityParam) => {
+  updateNationalityDetails = async (
+    userId: string,
+    details: NationalityParam
+  ) => {
     if (this._membershipClient) {
-      const response = await this._membershipClient.patch(`users/${userId}`, details);
+      const response = await this._membershipClient.patch(
+        `users/${userId}`,
+        details
+      );
       return response.data;
     } else {
-      throw new Error('Onboaring Client is not registered');
+      throw new Error("Onboaring Client is not registered");
     }
   };
 
@@ -69,24 +78,31 @@ export class OnboardingService {
     if (this._membershipClient) {
       const response = await this._membershipClient.patch(`users/${userId}`, {
         isPresentAsPermAddress,
-        addresses,
+        addresses
       });
       return response.data;
     } else {
-      throw new Error('Onboaring Client is not registered');
+      throw new Error("Onboaring Client is not registered");
     }
   };
 
   createApplication = async (params: CreateApplicationParams) => {
     if (this._membershipClient) {
-      const response = await this._accountOriginationClient.post('applications', params);
+      const response = await this._accountOriginationClient.post(
+        "applications",
+        params
+      );
       return response.data;
     } else {
-      throw new Error('Onboaring Client is not registered');
+      throw new Error("Onboaring Client is not registered");
     }
   };
 
-  getOnfidoSdkToken = async (applicationId: string, firstName: string, lastName: string) => {
+  getOnfidoSdkToken = async (
+    applicationId: string,
+    firstName: string,
+    lastName: string
+  ) => {
     if (this._membershipClient) {
       const response = await this._accountOriginationClient.post(
         `/applications/${applicationId}/kyc/requests`,
@@ -94,7 +110,7 @@ export class OnboardingService {
       );
       return response.data;
     } else {
-      throw new Error('Onboaring Client is not registered');
+      throw new Error("Onboaring Client is not registered");
     }
   };
 
@@ -102,11 +118,11 @@ export class OnboardingService {
     if (this._membershipClient) {
       const response = await this._accountOriginationClient.put(
         `/applications/${applicationId}/kyc/requests/${requestId}`,
-        { reportNames: ['document'] }
+        { reportNames: ["document"] }
       );
       return response.data;
     } else {
-      throw new Error('Onboaring Client is not registered');
+      throw new Error("Onboaring Client is not registered");
     }
   };
 }

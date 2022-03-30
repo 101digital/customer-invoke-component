@@ -30,7 +30,7 @@ import SelectRegionModal, {
 import { AddressDetailsData, AddressDetailsSchema } from "./model";
 import useMergeStyles from "./styles";
 import { SelectCivilModalStyles } from "../main-detail-component/components/select-civil-modal";
-import { OnboardingContext } from "../../context/onboarding-context";
+import { CustomerInvokeContext } from "../../context/onboarding-context";
 
 export type AddressDetailsComponentProps = {
   initValue?: AddressDetailsData[];
@@ -87,7 +87,7 @@ const AddressDetailsComponent = ({
     updateAddressDetails,
     isUpdatingAddressDetails,
     isUpdatedAddressDetails
-  } = useContext(OnboardingContext);
+  } = useContext(CustomerInvokeContext);
 
   useEffect(() => {
     if (isUpdatedAddressDetails) {

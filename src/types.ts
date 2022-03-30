@@ -1,10 +1,10 @@
-import { AddressDetailsData } from './components/address-detail-component/model';
-import { NationalityData } from './components/nationality-component/model';
-import { MainDetailsData } from './components/main-detail-component/model';
-import { OtherDetailsData } from './components/other-details-component/model';
-import { AccountDetailsData } from './components/account-details-component/model';
+import { AddressDetailsData } from "./components/address-detail-component/model";
+import { NationalityData } from "./components/nationality-component/model";
+import { MainDetailsData } from "./components/main-detail-component/model";
+import { OtherDetailsData } from "./components/other-details-component/model";
+import { AccountDetailsData } from "./components/account-details-component/model";
 
-export interface InitOnboardingData {
+export interface InitCustomerInvokeData {
   firstName?: string;
   lastName?: string;
 }
@@ -130,7 +130,7 @@ export type StepData = {
   progress: number;
 };
 
-export type OnboardingData = {
+export type CustomerInvokeData = {
   mainDetails?: MainDetailsData;
   nationalityDetails?: NationalityData;
   addresses?: AddressDetailsData[];

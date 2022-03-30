@@ -1,18 +1,18 @@
-import moment from 'moment';
-import { AccountDetailsData } from './../components/account-details-component/model';
-import { OtherDetailsData } from './../components/other-details-component/model';
-import React, { useCallback, useMemo, useState } from 'react';
-import { AddressDetailsData } from '../components/address-detail-component/model';
-import { MainDetailsData } from '../components/main-detail-component/model';
-import { NationalityData } from '../components/nationality-component/model';
-import { OnboardingService } from '../service/onboarding-service';
-import { OnboardingData, Profile, ApplicationDetails } from '../types';
+import moment from "moment";
+import { AccountDetailsData } from "./../components/account-details-component/model";
+import { OtherDetailsData } from "./../components/other-details-component/model";
+import React, { useCallback, useMemo, useState } from "react";
+import { AddressDetailsData } from "../components/address-detail-component/model";
+import { MainDetailsData } from "../components/main-detail-component/model";
+import { NationalityData } from "../components/nationality-component/model";
+import { CustomerInvokeService } from "../service/onboarding-service";
+import { CustomerInvokeData, Profile, ApplicationDetails } from "../types";
 
-const onboardingService = OnboardingService.instance();
+const onboardingService = CustomerInvokeService.instance();
 
-export interface OnboardingContextData {
-  data: OnboardingData;
-  setOnboardingData: (data: OnboardingData) => void;
+export interface CustomerInvokeContextData {
+  data: CustomerInvokeData;
+  setCustomerInvokeData: (data: CustomerInvokeData) => void;
   isLoadingProfile: boolean;
   profile?: Profile;
   errorLoadProfile?: Error;
@@ -28,7 +28,10 @@ export interface OnboardingContextData {
   errorUpdateNationality?: Error;
   isUpdatingAddressDetails: boolean;
   isUpdatedAddressDetails: boolean;
-  updateAddressDetails: (isPresentAsPermAddress: boolean, addresses: AddressDetailsData[]) => void;
+  updateAddressDetails: (
+    isPresentAsPermAddress: boolean,
+    addresses: AddressDetailsData[]
+  ) => void;
   errorUpdateAddressDetails?: Error;
   clearErrors: () => void;
   updateOtherDetails: (params: OtherDetailsData) => void;
@@ -43,9 +46,9 @@ export interface OnboardingContextData {
   applicationDetails?: ApplicationDetails;
 }
 
-export const onboardingDefaultValue: OnboardingContextData = {
+export const onboardingDefaultValue: CustomerInvokeContextData = {
   data: {},
-  setOnboardingData: () => null,
+  setCustomerInvokeData: () => null,
   isLoadingProfile: false,
   isUpdatingAddressDetails: false,
   isUpdatingMainDetails: false,
@@ -66,46 +69,52 @@ export const onboardingDefaultValue: OnboardingContextData = {
   isCreatingApplication: false,
   isCreatedApplication: false,
   isUpdatedAccountDetails: false,
-  isUpdatedOtherDetails: false,
+  isUpdatedOtherDetails: false
 };
 
-export const OnboardingContext = React.createContext<OnboardingContextData>(onboardingDefaultValue);
+export const CustomerInvokeContext = React.createContext<
+  CustomerInvokeContextData
+>(onboardingDefaultValue);
 
-export function useOnboardingContextValue(): OnboardingContextData {
-  const [_data, setData] = useState<OnboardingData>({});
+export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
+  const [_data, setData] = useState<CustomerInvokeData>({});
 
   const [_profile, setProfile] = useState<Profile | undefined>(undefined);
   const [_isLoadingProfile, setLoadingProfile] = useState(false);
-  const [_errorLoadProfile, setErrorLoadProfile] = useState<Error | undefined>(undefined);
+  const [_errorLoadProfile, setErrorLoadProfile] = useState<Error | undefined>(
+    undefined
+  );
 
   const [_isUpdatingMainDetails, setUpdatingMainDetails] = useState(false);
   const [_isUpdatedMainDetails, setUpdatedMainDetails] = useState(false);
-  const [_errorUpdateMainDetails, setErrorUpdateMainDetails] = useState<Error | undefined>(
-    undefined
-  );
+  const [_errorUpdateMainDetails, setErrorUpdateMainDetails] = useState<
+    Error | undefined
+  >(undefined);
 
   const [_isUpdatingNationality, setUpdatingNationality] = useState(false);
   const [_isUpdatedNationality, setUpdatedNationality] = useState(false);
-  const [_errorUpdateNationality, setErrorUpdateNationality] = useState<Error | undefined>(
-    undefined
-  );
+  const [_errorUpdateNationality, setErrorUpdateNationality] = useState<
+    Error | undefined
+  >(undefined);
 
-  const [_isUpdatingAddressDetails, setUpdatingAddressDetails] = useState(false);
-  const [_isUpdatedAddressDetails, setUpdatedAddressDetails] = useState(false);
-  const [_errorUpdateAddressDetails, setErrorUpdateAddressDetails] = useState<Error | undefined>(
-    undefined
+  const [_isUpdatingAddressDetails, setUpdatingAddressDetails] = useState(
+    false
   );
+  const [_isUpdatedAddressDetails, setUpdatedAddressDetails] = useState(false);
+  const [_errorUpdateAddressDetails, setErrorUpdateAddressDetails] = useState<
+    Error | undefined
+  >(undefined);
 
   const [_isCreatingApplication, setCreatingApplication] = useState(false);
   const [_isCreatedApplication, setCreatedApplication] = useState(false);
-  const [_errorCreateApplication, setErrorCreateApplication] = useState<Error | undefined>(
-    undefined
-  );
+  const [_errorCreateApplication, setErrorCreateApplication] = useState<
+    Error | undefined
+  >(undefined);
   const [_isUpdatedOtherDetails, setUpdatedOtherDetails] = useState(false);
   const [_isUpdatedAccountDetails, setUpdatedAccountDetails] = useState(false);
-  const [_applicationDetails, setApplicationDetails] = useState<ApplicationDetails | undefined>(
-    undefined
-  );
+  const [_applicationDetails, setApplicationDetails] = useState<
+    ApplicationDetails | undefined
+  >(undefined);
 
   const getUserProfile = useCallback(async () => {
     try {
@@ -137,7 +146,7 @@ export function useOnboardingContextValue(): OnboardingContextData {
     _errorUpdateMainDetails,
     _errorUpdateNationality,
     _errorUpdateAddressDetails,
-    _errorCreateApplication,
+    _errorCreateApplication
   ]);
 
   const updateMainDetails = useCallback(
@@ -146,20 +155,22 @@ export function useOnboardingContextValue(): OnboardingContextData {
         setUpdatingMainDetails(true);
         await onboardingService.updateMainDetails(_profile?.userId!, {
           ...params,
-          dateOfBirth: moment(params.dateOfBirth, 'DD / MM / YYYY').format('YYYY-MM-DD'),
+          dateOfBirth: moment(params.dateOfBirth, "DD / MM / YYYY").format(
+            "YYYY-MM-DD"
+          ),
           contacts: params.email
             ? [
                 {
-                  contactType: 'EMAIL',
+                  contactType: "EMAIL",
                   contactValue: params.email,
-                  isPrimary: true,
-                },
+                  isPrimary: true
+                }
               ]
-            : [],
+            : []
         });
         setData({
           ..._data,
-          mainDetails: params,
+          mainDetails: params
         });
         setUpdatedMainDetails(true);
         setTimeout(() => {
@@ -180,11 +191,11 @@ export function useOnboardingContextValue(): OnboardingContextData {
         setUpdatingNationality(true);
         await onboardingService.updateNationalityDetails(_profile?.userId!, {
           ...params,
-          isCitizen: params.isCitizen === 'yes',
+          isCitizen: params.isCitizen === "yes"
         });
         setData({
           ..._data,
-          nationalityDetails: params,
+          nationalityDetails: params
         });
         setUpdatedNationality(true);
         setTimeout(() => {
@@ -200,23 +211,26 @@ export function useOnboardingContextValue(): OnboardingContextData {
   );
 
   const updateAddressDetails = useCallback(
-    async (isPresentAsPermAddress: boolean, addresses: AddressDetailsData[]) => {
+    async (
+      isPresentAsPermAddress: boolean,
+      addresses: AddressDetailsData[]
+    ) => {
       try {
         setUpdatingAddressDetails(true);
         await onboardingService.updateAddressDetails(
           _profile?.userId!,
           isPresentAsPermAddress,
-          addresses.map((address) => ({
+          addresses.map(address => ({
             ...address,
-            addressType: address.addressType === 1 ? 'Resident' : 'Permanent',
-            buildingNumber: '-',
-            apartmentName: '-',
-            county: '-',
+            addressType: address.addressType === 1 ? "Resident" : "Permanent",
+            buildingNumber: "-",
+            apartmentName: "-",
+            county: "-"
           }))
         );
         setData({
           ..._data,
-          addresses,
+          addresses
         });
         setUpdatedAddressDetails(true);
         setTimeout(() => {
@@ -235,15 +249,15 @@ export function useOnboardingContextValue(): OnboardingContextData {
     setProfile(profile);
   }, []);
 
-  const setOnboardingData = useCallback((data: OnboardingData) => {
-    setOnboardingData(data);
+  const setCustomerInvokeData = useCallback((data: CustomerInvokeData) => {
+    setCustomerInvokeData(data);
   }, []);
 
   const updateAccountDetails = useCallback(
     (params: AccountDetailsData) => {
       setData({
         ..._data,
-        accountDetails: params,
+        accountDetails: params
       });
       setUpdatedAccountDetails(true);
       setTimeout(() => {
@@ -257,7 +271,7 @@ export function useOnboardingContextValue(): OnboardingContextData {
     (params: OtherDetailsData) => {
       setData({
         ..._data,
-        otherDetails: params,
+        otherDetails: params
       });
       setUpdatedOtherDetails(true);
       setTimeout(() => {
@@ -282,65 +296,68 @@ export function useOnboardingContextValue(): OnboardingContextData {
           !_data.accountDetails ||
           !_data.otherDetails
         ) {
-          setErrorCreateApplication(new Error('Missing parameters'));
+          setErrorCreateApplication(new Error("Missing parameters"));
           return;
         }
         setCreatingApplication(true);
         const { data } = await onboardingService.createApplication({
-          submitType: 'Submit',
+          submitType: "Submit",
           applicantDetails: {
-            firstName: _data.mainDetails.firstName ?? '',
-            lastName: _data.mainDetails.lastName ?? '',
-            middleName: _data.mainDetails.middleName ?? '',
+            firstName: _data.mainDetails.firstName ?? "",
+            lastName: _data.mainDetails.lastName ?? "",
+            middleName: _data.mainDetails.middleName ?? "",
             dateOfBirth:
-              moment(_data.mainDetails?.dateOfBirth, 'DD / MM / YYYY').format('YYYY-MM-DD') ?? '',
-            maritalStatus: _data.mainDetails.maritalStatus ?? '',
-            gender: _data.mainDetails.gender ?? '',
+              moment(_data.mainDetails?.dateOfBirth, "DD / MM / YYYY").format(
+                "YYYY-MM-DD"
+              ) ?? "",
+            maritalStatus: _data.mainDetails.maritalStatus ?? "",
+            gender: _data.mainDetails.gender ?? "",
             contactDetails: _data.mainDetails.email
               ? [
                   {
-                    contactType: 'Email',
-                    contactValue: _data.mainDetails?.email!,
-                  },
+                    contactType: "Email",
+                    contactValue: _data.mainDetails?.email!
+                  }
                 ]
               : [],
             placeOfBirth: _data.nationalityDetails.placeOfBirth,
             nationality: _data.nationalityDetails.nationality,
-            citizenFlag: _data.nationalityDetails?.isCitizen === 'yes',
+            citizenFlag: _data.nationalityDetails?.isCitizen === "yes",
             presentAsPermAddressFlag: _data.addresses?.length === 1,
             addresses:
-              _data.addresses?.map((address) => ({
+              _data.addresses?.map(address => ({
                 ...address,
-                addressType: address.addressType === 1 ? 'Resident' : 'Permanent',
-                buildingNumber: '-',
-                apartmentName: '-',
-                county: '-',
-              })) ?? [],
+                addressType:
+                  address.addressType === 1 ? "Resident" : "Permanent",
+                buildingNumber: "-",
+                apartmentName: "-",
+                county: "-"
+              })) ?? []
           },
           employmentDetails: {
-            status: _data.otherDetails.status ?? '',
-            companyName: _data.otherDetails.companyName ?? '',
-            companyType: _data.otherDetails.companyType ?? '',
+            status: _data.otherDetails.status ?? "",
+            companyName: _data.otherDetails.companyName ?? "",
+            companyType: _data.otherDetails.companyType ?? "",
             addresses: [{ ..._data.otherDetails }],
-            designation: _data.otherDetails.occupation,
+            designation: _data.otherDetails.occupation
           },
           credit: {
             applicant: {
               individual: {
                 accountPurpose: _data.accountDetails.accountPurpose,
                 sourceOfFund: _data.accountDetails.sourceOfFund,
-                currency: 'PHP',
+                currency: "PHP",
                 maxMonthlyIncome: maxIncome,
-                minMonthlyIncome: minIncome,
-              },
-            },
-          },
+                minMonthlyIncome: minIncome
+              }
+            }
+          }
         });
         setApplicationDetails({
           applicationId: data.applicationId,
           firstName: data.applicantDetails.firstName,
           lastName: data.applicantDetails.lastName,
-          middleName: data.applicantDetails.middleName,
+          middleName: data.applicantDetails.middleName
         });
         setCreatedApplication(true);
         setTimeout(() => {
@@ -375,7 +392,7 @@ export function useOnboardingContextValue(): OnboardingContextData {
       isUpdatedAddressDetails: _isUpdatedAddressDetails,
       isUpdatedMainDetails: _isUpdatedMainDetails,
       isUpdatedNationality: _isUpdatedNationality,
-      setOnboardingData,
+      setCustomerInvokeData,
       data: _data,
       updateAccountDetails,
       updateOtherDetails,
@@ -386,7 +403,7 @@ export function useOnboardingContextValue(): OnboardingContextData {
       errorCreateApplication: _errorCreateApplication,
       isUpdatedAccountDetails: _isUpdatedAccountDetails,
       isUpdatedOtherDetails: _isUpdatedOtherDetails,
-      applicationDetails: _applicationDetails,
+      applicationDetails: _applicationDetails
     }),
     [
       _applicationDetails,
@@ -407,7 +424,7 @@ export function useOnboardingContextValue(): OnboardingContextData {
       _isUpdatingNationality,
       _errorUpdateNationality,
       _isUpdatingAddressDetails,
-      _errorUpdateAddressDetails,
+      _errorUpdateAddressDetails
     ]
   );
 }

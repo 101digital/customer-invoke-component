@@ -1,36 +1,44 @@
-import React, { ReactNode, useContext, useEffect, useState } from 'react';
-import { SafeAreaView, StyleProp, TouchableOpacity, View, ViewStyle } from 'react-native';
-import { ApplicationDetails, InitOnboardingData, StepData } from './types';
-import useMergeStyles from './styles';
-import MainDetailComponent, { MainDetailComponentStyles } from './components/main-detail-component';
+import React, { ReactNode, useContext, useEffect, useState } from "react";
+import {
+  SafeAreaView,
+  StyleProp,
+  TouchableOpacity,
+  View,
+  ViewStyle
+} from "react-native";
+import { ApplicationDetails, InitCustomerInvokeData, StepData } from "./types";
+import useMergeStyles from "./styles";
+import MainDetailComponent, {
+  MainDetailComponentStyles
+} from "./components/main-detail-component";
 import NationalityComponent, {
-  NationalityComponentStyles,
-} from './components/nationality-component';
-import { BackIcon } from './assets/icons';
+  NationalityComponentStyles
+} from "./components/nationality-component";
+import { BackIcon } from "./assets/icons";
 import AddressDetailsComponent, {
-  AddressDetailsComponentStyles,
-} from './components/address-detail-component';
+  AddressDetailsComponentStyles
+} from "./components/address-detail-component";
 import OtherDetailsComponent, {
-  OtherDetailsComponentStyles,
-} from './components/other-details-component';
+  OtherDetailsComponentStyles
+} from "./components/other-details-component";
 import AccountDetailsComponent, {
-  AccountDetailsComponentStyles,
-} from './components/account-details-component';
-import { HeaderComponentStyles } from './components/header-component';
-import { OnboardingContext } from './context/onboarding-context';
-import { showMessage } from 'react-native-flash-message';
+  AccountDetailsComponentStyles
+} from "./components/account-details-component";
+import { HeaderComponentStyles } from "./components/header-component";
+import { CustomerInvokeContext } from "./context/onboarding-context";
+import { showMessage } from "react-native-flash-message";
 
-export type OnboardingComponentProps = {
+export type CustomerInvokeComponentProps = {
   onCompleted: (data: ApplicationDetails) => void;
-  initData?: InitOnboardingData;
+  initData?: InitCustomerInvokeData;
   onBack: () => void;
   initStep: StepData;
   steps?: StepData[];
-  style?: OnboardingComponentStyles;
+  style?: CustomerInvokeComponentStyles;
   backIcon?: ReactNode;
 };
 
-export type OnboardingComponentStyles = {
+export type CustomerInvokeComponentStyles = {
   containerStyle?: StyleProp<ViewStyle>;
   progressBarStyle?: StyleProp<ViewStyle>;
   activeBarStyle?: StyleProp<ViewStyle>;
@@ -43,43 +51,51 @@ export type OnboardingComponentStyles = {
   accountDetailsComponentStyles?: AccountDetailsComponentStyles;
 };
 
-export const defaultOnboardingSteps: StepData[] = [
+export const defaultCustomerInvokeSteps: StepData[] = [
   {
-    id: 'main-details',
-    title: 'We want to know you more',
-    subTitle: 'Enter main details.',
-    progress: 5 / 12,
+    id: "main-details",
+    title: "We want to know you more",
+    subTitle: "Enter main details.",
+    progress: 5 / 12
   },
   {
-    id: 'nationality-details',
-    title: 'Are you a local?',
-    subTitle: 'Select your nationality.',
-    progress: 6 / 12,
+    id: "nationality-details",
+    title: "Are you a local?",
+    subTitle: "Select your nationality.",
+    progress: 6 / 12
   },
   {
-    id: 'address-details',
-    title: 'Where do you live?',
-    subTitle: 'Enter address details.',
-    progress: 7 / 12,
+    id: "address-details",
+    title: "Where do you live?",
+    subTitle: "Enter address details.",
+    progress: 7 / 12
   },
   {
-    id: 'other-details',
-    title: 'What do you do for a living?',
-    subTitle: 'Enter other details.',
-    progress: 8 / 12,
+    id: "other-details",
+    title: "What do you do for a living?",
+    subTitle: "Enter other details.",
+    progress: 8 / 12
   },
   {
-    id: 'account-details',
-    title: 'Account details',
-    subTitle: 'Select where you get your funds.',
-    progress: 9 / 12,
-  },
+    id: "account-details",
+    title: "Account details",
+    subTitle: "Select where you get your funds.",
+    progress: 9 / 12
+  }
 ];
 
-const OnboardingComponent = (props: OnboardingComponentProps) => {
-  const { onCompleted, steps, style, initStep, backIcon, onBack, initData } = props;
-  const _steps = steps ?? defaultOnboardingSteps;
-  const styles: OnboardingComponentStyles = useMergeStyles(style);
+const CustomerInvokeComponent = (props: CustomerInvokeComponentProps) => {
+  const {
+    onCompleted,
+    steps,
+    style,
+    initStep,
+    backIcon,
+    onBack,
+    initData
+  } = props;
+  const _steps = steps ?? defaultCustomerInvokeSteps;
+  const styles: CustomerInvokeComponentStyles = useMergeStyles(style);
   const [step, setStep] = useState<StepData>(initStep);
   const {
     data,
@@ -90,35 +106,35 @@ const OnboardingComponent = (props: OnboardingComponentProps) => {
     errorUpdateAddressDetails,
     errorUpdateNationality,
     errorCreateApplication,
-    applicationDetails,
-  } = useContext(OnboardingContext);
+    applicationDetails
+  } = useContext(CustomerInvokeContext);
 
   useEffect(() => {
     if (errorUpdateMainDetails) {
       showMessage({
-        message: 'Errror while updating main details. Please try again',
-        backgroundColor: '#ff0000',
+        message: "Errror while updating main details. Please try again",
+        backgroundColor: "#ff0000"
       });
       clearErrors();
     }
     if (errorUpdateAddressDetails) {
       showMessage({
-        message: 'Errror while updating addresses details. Please try again',
-        backgroundColor: '#ff0000',
+        message: "Errror while updating addresses details. Please try again",
+        backgroundColor: "#ff0000"
       });
       clearErrors();
     }
     if (errorUpdateNationality) {
       showMessage({
-        message: 'Errror while updating nationality details. Please try again',
-        backgroundColor: '#ff0000',
+        message: "Errror while updating nationality details. Please try again",
+        backgroundColor: "#ff0000"
       });
       clearErrors();
     }
     if (errorCreateApplication) {
       showMessage({
-        message: 'Errror while creating application details. Please try again',
-        backgroundColor: '#ff0000',
+        message: "Errror while creating application details. Please try again",
+        backgroundColor: "#ff0000"
       });
       clearErrors();
     }
@@ -126,7 +142,7 @@ const OnboardingComponent = (props: OnboardingComponentProps) => {
     errorUpdateMainDetails,
     errorUpdateAddressDetails,
     errorUpdateNationality,
-    errorCreateApplication,
+    errorCreateApplication
   ]);
 
   useEffect(() => {
@@ -136,7 +152,7 @@ const OnboardingComponent = (props: OnboardingComponentProps) => {
   }, [isCreatedApplication]);
 
   const _handleBack = () => {
-    const _index = _steps.findIndex((s) => s.id === step.id);
+    const _index = _steps.findIndex(s => s.id === step.id);
     if (_index === -1) {
       return;
     }
@@ -158,7 +174,12 @@ const OnboardingComponent = (props: OnboardingComponentProps) => {
     <View style={styles.containerStyle}>
       <SafeAreaView>
         <View style={styles.progressBarStyle}>
-          <View style={[styles.activeBarStyle, { width: `${step.progress * 100}%` }]} />
+          <View
+            style={[
+              styles.activeBarStyle,
+              { width: `${step.progress * 100}%` }
+            ]}
+          />
         </View>
       </SafeAreaView>
       <TouchableOpacity
@@ -168,14 +189,14 @@ const OnboardingComponent = (props: OnboardingComponentProps) => {
       >
         {backIcon ?? <BackIcon width={17} height={12} />}
       </TouchableOpacity>
-      {step.id === 'main-details' && (
+      {step.id === "main-details" && (
         <MainDetailComponent
           firstName={initData?.firstName}
           lastName={initData?.lastName}
           initData={data?.mainDetails}
           header={{
             style: styles?.headerComponentStyles,
-            data: step,
+            data: step
           }}
           onContinue={() => {
             setStep(_steps[1]);
@@ -183,12 +204,12 @@ const OnboardingComponent = (props: OnboardingComponentProps) => {
           style={styles?.mainDetailsComponentStyles}
         />
       )}
-      {step.id === 'nationality-details' && (
+      {step.id === "nationality-details" && (
         <NationalityComponent
           initData={data?.nationalityDetails}
           header={{
             style: styles?.headerComponentStyles,
-            data: step,
+            data: step
           }}
           onContinue={() => {
             setStep(_steps[2]);
@@ -196,12 +217,12 @@ const OnboardingComponent = (props: OnboardingComponentProps) => {
           style={styles.nationalityComponentStyles}
         />
       )}
-      {step.id === 'address-details' && (
+      {step.id === "address-details" && (
         <AddressDetailsComponent
           initValue={data?.addresses}
           header={{
             style: styles?.headerComponentStyles,
-            data: step,
+            data: step
           }}
           onContinue={() => {
             setStep(_steps[3]);
@@ -209,12 +230,12 @@ const OnboardingComponent = (props: OnboardingComponentProps) => {
           style={styles.addressDetailsComponentStyles}
         />
       )}
-      {step.id === 'other-details' && (
+      {step.id === "other-details" && (
         <OtherDetailsComponent
           initValue={data?.otherDetails}
           header={{
             style: styles?.headerComponentStyles,
-            data: step,
+            data: step
           }}
           onContinue={() => {
             setStep(_steps[4]);
@@ -222,12 +243,12 @@ const OnboardingComponent = (props: OnboardingComponentProps) => {
           style={styles.otherDetailsComponentStyles}
         />
       )}
-      {step.id === 'account-details' && (
+      {step.id === "account-details" && (
         <AccountDetailsComponent
           initValue={data?.accountDetails}
           header={{
             style: styles?.headerComponentStyles,
-            data: step,
+            data: step
           }}
           style={styles.accountDetailsComponentStyles}
         />
@@ -236,4 +257,4 @@ const OnboardingComponent = (props: OnboardingComponentProps) => {
   );
 };
 
-export default OnboardingComponent;
+export default CustomerInvokeComponent;

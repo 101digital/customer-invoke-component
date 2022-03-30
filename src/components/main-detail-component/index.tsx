@@ -23,7 +23,7 @@ import SelectCivilModal, {
   SelectCivilModalStyles
 } from "./components/select-civil-modal";
 import KeyboardSpace from "../sub-components/keyboard-space";
-import { OnboardingContext } from "../../context/onboarding-context";
+import { CustomerInvokeContext } from "../../context/onboarding-context";
 
 export type MainDetailComponentProps = {
   initData?: MainDetailsData;
@@ -64,7 +64,7 @@ const MainDetailComponent = ({
     updateMainDetails,
     isUpdatingMainDetails,
     isUpdatedMainDetails
-  } = useContext(OnboardingContext);
+  } = useContext(CustomerInvokeContext);
 
   const formikRef: any = useRef(null);
 

@@ -11,7 +11,7 @@ import {
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Button, InputField, ThemeContext } from "react-native-theme-component";
 import { ArrowDownIcon } from "../../assets/icons";
-import { OnboardingContext } from "../../context/onboarding-context";
+import { CustomerInvokeContext } from "../../context/onboarding-context";
 import HeaderComponent, { HeaderComponentProps } from "../header-component";
 import KeyboardSpace from "../sub-components/keyboard-space";
 import { RadioData } from "../sub-components/radio-group";
@@ -66,7 +66,7 @@ const AccountDetailsComponent = ({
     isCreatingApplication,
     isUpdatedAccountDetails,
     createApplication
-  } = useContext(OnboardingContext);
+  } = useContext(CustomerInvokeContext);
 
   useEffect(() => {
     if (isUpdatedAccountDetails) {

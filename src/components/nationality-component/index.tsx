@@ -11,7 +11,7 @@ import {
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Button, InputField, ThemeContext } from "react-native-theme-component";
 import { ArrowDownIcon } from "../../assets/icons";
-import { OnboardingContext } from "../../context/onboarding-context";
+import { CustomerInvokeContext } from "../../context/onboarding-context";
 import HeaderComponent, { HeaderComponentProps } from "../header-component";
 import AlertModal, { AlertModalStyles } from "../sub-components/alert-modal";
 import KeyboardSpace from "../sub-components/keyboard-space";
@@ -60,7 +60,7 @@ const NationalityComponent = ({
     updateNationality,
     isUpdatedNationality,
     isUpdatingNationality
-  } = useContext(OnboardingContext);
+  } = useContext(CustomerInvokeContext);
 
   useEffect(() => {
     if (isUpdatedNationality) {

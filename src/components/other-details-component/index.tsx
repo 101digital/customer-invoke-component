@@ -12,7 +12,7 @@ import {
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Button, InputField, ThemeContext } from "react-native-theme-component";
 import { ArrowDownIcon } from "../../assets/icons";
-import { OnboardingContext } from "../../context/onboarding-context";
+import { CustomerInvokeContext } from "../../context/onboarding-context";
 import HeaderComponent, { HeaderComponentProps } from "../header-component";
 import KeyboardSpace from "../sub-components/keyboard-space";
 import SelectCityModal, {
@@ -66,7 +66,7 @@ const OtherDetailsComponent = ({
   const [openOccupationModal, setOpenOccupationModal] = useState(false);
   const [openNatureWorkModal, setOpenNatureWorkModal] = useState(false);
   const { updateOtherDetails, isUpdatedOtherDetails } = useContext(
-    OnboardingContext
+    CustomerInvokeContext
   );
 
   useEffect(() => {
