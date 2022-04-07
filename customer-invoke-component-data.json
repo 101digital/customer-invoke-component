@@ -1,0 +1,172 @@
+{
+  "id": "customer-invoke-component",
+  "name": "Customer Invoke Component",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/101digital/customer-invoke-component.git"
+  },
+  "config": {
+    "env": {
+      "development": {
+        "customerInvokeBaseUrl": "https://api-ud-ow-dev.101digital.io/membership-service/1.0.14"
+      },
+      "staging": {
+        "customerInvokeBaseUrl": "https://api-ud-ow-dev.101digital.io/membership-service/1.0.14"
+      },
+      "production": {
+        "customerInvokeBaseUrl": "https://api-ud-ow-dev.101digital.io/membership-service/1.0.14"
+      }
+    }
+  },
+  "dependencies": [],
+  "templates": [
+    {
+      "id": "customer-invoke-template",
+      "templateName": "Customer invoke",
+      "componentName": "CustomerInvokeComponent",
+      "imports": [
+        "import { CustomerInvokeComponent,defaultCustomerInvokeSteps } from 'customer-invoke-component';",
+        "import { AuthContext } from 'react-native-auth-component';"
+      ],
+      "headers": ["  const { profile } = useContext(AuthContext);"],
+      "renders": [
+        "      <CustomerInvokeComponent",
+        "        initData={{",
+        "          firstName: `${profile?.firstName ?? ''}`,",
+        "          lastName: `${profile?.lastName ?? ''}`,",
+        "        }}",
+        "        onBack={() => navigation.goBack()}",
+        "        onCompleted={(applicationDetails) => {",
+        "          console.log('applicationDetails', applicationDetails);",
+        "        }}",
+        "        initStep={defaultCustomerInvokeSteps[0]}",
+        "      />"
+      ]
+    },
+    {
+      "id": "customer-invoke-template-ud",
+      "templateName": "Customer Invoke Template for UD",
+      "componentName": "CustomerInvokeComponent",
+      "imports": [
+        "import { CustomerInvokeComponent,defaultCustomerInvokeSteps } from 'customer-invoke-component';",
+        "import { AuthContext } from 'react-native-auth-component';"
+      ],
+      "headers": ["  const { profile } = useContext(AuthContext);"],
+      "renders": [
+        "      <CustomerInvokeComponent",
+        "        initData={{",
+        "          firstName: `${profile?.firstName ?? ''}`,",
+        "          lastName: `${profile?.lastName ?? ''}`,",
+        "        }}",
+        "        onBack={() => navigation.goBack()}",
+        "        onCompleted={(applicationDetails) => {",
+        "          console.log('applicationDetails', applicationDetails);",
+        "        }}",
+        "        initStep={defaultCustomerInvokeSteps[0]}",
+        "      />"
+      ]
+    },
+    {
+      "id": "customer-invoke-template-101Pay",
+      "templateName": "Customer Invoke Template for 101Pay",
+      "componentName": "CustomerInvokeComponent",
+      "imports": [
+        "import { CustomerInvokeComponent,defaultCustomerInvokeSteps } from 'customer-invoke-component';",
+        "import { AuthContext } from 'react-native-auth-component';"
+      ],
+      "headers": ["  const { profile } = useContext(AuthContext);"],
+      "renders": [
+        "      <CustomerInvokeComponent",
+        "        initData={{",
+        "          firstName: `${profile?.firstName ?? ''} ?? ''}`,",
+        "          lastName: `${profile?.lastName ?? ''}`,",
+        "        }}",
+        "        onBack={() => navigation.goBack()}",
+        "        onCompleted={(applicationDetails) => {",
+        "          console.log('applicationDetails', applicationDetails);",
+        "        }}",
+        "        initStep={defaultCustomerInvokeSteps[0]}",
+        "      />"
+      ]
+    }
+  ],
+  "texts": {
+    "customer_invoke_component": {
+      "lbl_first_name": "First name",
+      "plh_first_name": "Enter first name",
+      "lbl_middle_name": "Middle name",
+      "plh_middle_name": "Enter middle name",
+      "lbl_last_name": "Last name",
+      "plh_last__name": "Enter last name",
+      "lbl_dob": "Date of Birth",
+      "plh_dob": "MM / DD / YYYY",
+      "lbl_c_status": "Civil status",
+      "plh_c_status": "Select civil status",
+      "lbl_gender": "Gender",
+      "plh_gender": "Select gender",
+      "lbl_email_address": "Email addres",
+      "lbl_optional": "(Optional)",
+      "lbl_continue": "Continue",
+      "lbl_picker_title": "Date of Birth",
+      "lbl_picker_confirm": "Select"
+    },
+    "address-detail": {
+      "lbl_country": "Country",
+      "plh_country": "Country",
+      "lbl_country": "Region",
+      "plh_country": "Region",
+      "lbl_province": "Province",
+      "plh_province": "Province",
+      "lbl_city": "City / Municipality",
+      "plh_city": "City / Municipality",
+      "lbl_zipcode": "ZIP Code",
+      "plh_zipcode": "ZIP Code",
+      "lbl_barangay": "Barangay",
+      "plh_barangay": "Barangay",
+      "lbl_street": "Street name",
+      "plh_street": "Street name",
+      "lbl_optional": "(Optional)",
+      "lbl_subdiv": "Subdivision / Village / Building name",
+      "plh_subdiv": "Subdivision / Village / Building name",
+      "lbl_house": "House / Lot / Room number",
+      "plh_house": "House / Lot / Room number",
+      "lbl_continue": "Continue",
+      "lbl_payment_address": "Use this address as my permanent address"
+    },
+    "nationality-component": {
+      "lbl_birth_place": "Place of birth",
+      "plh_birth_place": "Enter place of birth",
+      "lbl_nationality": "Nationality",
+      "plh_nationality": "Select nationality",
+      "lbl_citizen": "Are you a U.S citizen?",
+      "lbl_citizen_description": "We ask you to comply with the Foreign Account Tax Compliance Act (FATCA)",
+      "lbl_continue": "Continue",
+      "lbl_error_title": "Oops!",
+      "lbl_error_message": "Sorry! UnionDigital is only availale for Filipinos and Non-US citizens. Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    },
+    "other-details-component": {
+      "lbl_employment_status": "Employment status",
+      "plh_employment_status": "Select employment status",
+      "lbl_occupation": "Occupation",
+      "plh_occupation": "Select occupation",
+      "lbl_work": "Nature of Work / Business",
+      "plh_work": "Select nature of work / business",
+      "lbl_employer": "Name of Employer / Business",
+      "plh_employer": "Enter business address",
+      "lbl_city": "City",
+      "plh_city": "Select city",
+      "lbl_zip_code": "ZIP Code",
+      "plh_zip_code": "ZIP Code",
+      "lbl_continue": "Continue"
+    },
+    "account-details-component": {
+      "lbl_source_of_funds": "Source of funds",
+      "plh_source_of_funds": "Select source of funds",
+      "lbl_account_purpose": "Account purpose",
+      "plh_account_purpose": "Select account purpose",
+      "lbl_transaction": "Estimated monthly transaction",
+      "plh_transaction": "Select estimated monthly transaction",
+      "lbl_continue": "Continue"
+    }
+  }
+}
