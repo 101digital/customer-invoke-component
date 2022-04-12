@@ -25,10 +25,19 @@
       "templateName": "Customer invoke",
       "componentName": "CustomerInvokeComponent",
       "imports": [
-        "import { CustomerInvokeComponent,defaultCustomerInvokeSteps } from 'customer-invoke-component';",
+        "import { CustomerInvokeComponent,defaultCustomerInvokeSteps,CustomerInvokeContext } from 'customer-invoke-component';",
         "import { AuthContext } from 'react-native-auth-component';"
       ],
       "headers": ["  const { profile } = useContext(AuthContext);"],
+      "headers": [
+        "  const { profile } = useContext(AuthContext);",
+        "  const {getUserProfile} = useContext(CustomerInvokeContext); ",
+
+        "",
+        "  useEffect(() => {",
+        "    getUserProfile()",
+        "  }, []);"
+      ],
       "renders": [
         "      <CustomerInvokeComponent",
         "        initData={{",
@@ -51,7 +60,15 @@
         "import { CustomerInvokeComponent,defaultCustomerInvokeSteps } from 'customer-invoke-component';",
         "import { AuthContext } from 'react-native-auth-component';"
       ],
-      "headers": ["  const { profile } = useContext(AuthContext);"],
+      "headers": [
+        "  const { profile } = useContext(AuthContext);",
+        "  const {getUserProfile} = useContext(CustomerInvokeContext); ",
+
+        "",
+        "  useEffect(() => {",
+        "    getUserProfile()",
+        "  }, []);"
+      ],
       "renders": [
         "      <CustomerInvokeComponent",
         "        initData={{",
@@ -74,7 +91,15 @@
         "import { CustomerInvokeComponent,defaultCustomerInvokeSteps } from 'customer-invoke-component';",
         "import { AuthContext } from 'react-native-auth-component';"
       ],
-      "headers": ["  const { profile } = useContext(AuthContext);"],
+      "headers": [
+        "  const { profile } = useContext(AuthContext);",
+        "  const {getUserProfile} = useContext(CustomerInvokeContext); ",
+
+        "",
+        "  useEffect(() => {",
+        "    getUserProfile()",
+        "  }, []);"
+      ],
       "renders": [
         "      <CustomerInvokeComponent",
         "        initData={{",

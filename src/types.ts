@@ -206,7 +206,7 @@ export interface CreditIndividual {
 export interface CreateApplicationParams {
   submitType: string;
   applicantDetails: ApplicationDetailsParams;
-  employmentDetails: EmploymentDetails;
+  employmentDetails: EmploymentDetails[];
   credit: Credit;
 }
 

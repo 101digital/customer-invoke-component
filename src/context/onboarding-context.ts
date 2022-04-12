@@ -334,13 +334,15 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
                 county: "-"
               })) ?? []
           },
-          employmentDetails: {
-            status: _data.otherDetails.status ?? "",
-            companyName: _data.otherDetails.companyName ?? "",
-            companyType: _data.otherDetails.companyType ?? "",
-            addresses: [{ ..._data.otherDetails }],
-            designation: _data.otherDetails.occupation
-          },
+          employmentDetails: [
+            {
+              status: _data.otherDetails.status ?? "",
+              companyName: _data.otherDetails.companyName ?? "",
+              companyType: _data.otherDetails.companyType ?? "",
+              addresses: [{ ..._data.otherDetails }],
+              designation: _data.otherDetails.occupation
+            }
+          ],
           credit: {
             applicant: {
               individual: {
