@@ -55,4 +55,5 @@ export const MainDetailsSchema = () =>
     email: Yup.string()
       .trim()
       .email("Invalid email address")
+      .required("Enter email address")
   });

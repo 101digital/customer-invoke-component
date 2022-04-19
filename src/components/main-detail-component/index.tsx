@@ -9,7 +9,12 @@ import {
   ViewStyle
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { Button, InputField, ThemeContext } from "react-native-theme-component";
+import {
+  Button,
+  InputField,
+  ThemeContext,
+  ErrorModal
+} from "react-native-theme-component";
 import HeaderComponent, { HeaderComponentProps } from "../header-component";
 import { MainDetailsData, MainDetailsSchema } from "./model";
 import DatePicker from "react-native-date-picker";
@@ -60,6 +65,8 @@ const MainDetailComponent = ({
   const [openDatePicker, setOpenDatePicker] = useState(false);
   const [openGenderModal, setOpenGenderModal] = useState(false);
   const [openCivilModal, setOpenCivilModal] = useState(false);
+  const [processModelShow, setProcessModelShow] = useState(false);
+
   const {
     updateMainDetails,
     isUpdatingMainDetails,
@@ -67,6 +74,10 @@ const MainDetailComponent = ({
   } = useContext(CustomerInvokeContext);
 
   const formikRef: any = useRef(null);
+
+  useEffect(() => {
+    setProcessModelShow(true);
+  }, []);
 
   useEffect(() => {
     if (isUpdatedMainDetails) {
@@ -94,9 +105,9 @@ const MainDetailComponent = ({
       <Formik
         innerRef={formikRef}
         enableReinitialize={true}
-        initialValues={
-          initData ?? MainDetailsData.empty(firstName, undefined, lastName)
-        }
+        // initialValues={
+        //   initData ?? MainDetailsData.empty(firstName, undefined, lastName)
+        // }
         validationSchema={MainDetailsSchema()}
         onSubmit={updateMainDetails}
       >
@@ -233,11 +244,6 @@ const MainDetailComponent = ({
               <Text style={styles.labelTextStyle}>
                 {i18n?.t("customer_invoke_component.lbl_email_address") ??
                   "Email addres"}
-                s{" "}
-                <Text style={styles.optionalTextStyle}>
-                  {i18n?.t("customer_invoke_component.lbl_optional") ??
-                    "(Optional)"}
-                </Text>
               </Text>
               <InputField
                 autoCapitalize="none"
@@ -301,6 +307,58 @@ const MainDetailComponent = ({
         isVisible={openCivilModal}
         onClose={() => setOpenCivilModal(false)}
         style={styles.selectCivilModalStyle}
+      />
+      <ErrorModal
+        error={{
+          title:
+            i18n?.t("customer_invoke_component.lbl_continue_process") ??
+            "Continue where you left off",
+          message:
+            i18n?.t("customer_invoke_component.msg_continue_process") ??
+            "We conveniently save your information should you need more time to complete your UD Pitaka account opening. Simply re-login to your account to continue your application."
+        }}
+        isShowModel={processModelShow}
+        isFullWidth={true}
+        isShowClose={false}
+        onClose={() => setProcessModelShow(false)}
+        leftIcon={<InfoIcon width={60} height={60} />}
+        style={{
+          alertStyle: {
+            headerStyle: {
+              marginTop: 5,
+              flexDirection: "column",
+              alignItems: "center",
+              alignSelf: "center",
+              justifyContent: "center"
+            },
+            leftIconStyle: { marginLeft: -20 },
+            titleTextStyle: {
+              fontSize: 16,
+              // flex: 1,
+              paddingVertical: 15,
+              color: "#5E0CBC",
+              paddingLeft: 0,
+              textAlign: "center",
+              marginLeft: 20,
+              fontWeight: "700"
+            },
+            bodyStyle: {
+              width: 300,
+              alignItems: "center",
+              alignSelf: "center"
+            },
+            messageTextStyle: {
+              fontSize: 14,
+              color: "#1D1C1D",
+              textAlign: "center"
+            },
+            modalStyle: { width: "95%", alignSelf: "center" },
+            containerStyle: { paddingVertical: 10 },
+            footerStyle: {
+              marginVertical: 30
+            }
+          }
+        }}
       />
     </>
   );
