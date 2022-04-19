@@ -1,11 +1,11 @@
-import { ClearIcon, SearchIcon } from '../../../assets/icons';
-import { Formik } from 'formik';
-import { debounce, isEmpty } from 'lodash';
-import React, { useCallback } from 'react';
-import { StyleProp, TouchableOpacity, View, ViewStyle } from 'react-native';
-import { InputField } from 'react-native-theme-component';
-import { SearchData } from './model';
-import useMergeStyles from './styles';
+import { ClearIcon, SearchIcon } from "../../../assets/icons";
+import { Formik } from "formik";
+import { debounce, isEmpty } from "lodash";
+import React, { useCallback } from "react";
+import { StyleProp, TouchableOpacity, View, ViewStyle } from "react-native";
+import { InputField } from "react-native-theme-component";
+import { SearchData } from "./model";
+import useMergeStyles from "./styles";
 
 export type SearchFieldProps = {
   onSearch: (key: string) => void;
@@ -23,7 +23,7 @@ const SearchField = ({ style, onSearch, placeholder }: SearchFieldProps) => {
   const styles: SearchFieldStyles = useMergeStyles(style);
 
   const _onSearch = useCallback(
-    debounce(function (k) {
+    debounce(function(k) {
       onSearch(k);
     }, 300),
     []
@@ -31,16 +31,21 @@ const SearchField = ({ style, onSearch, placeholder }: SearchFieldProps) => {
 
   return (
     <View style={styles.containerStyle}>
-      <Formik enableReinitialize={true} initialValues={SearchData.empty()} onSubmit={(_) => {}}>
+      <Formik
+        enableReinitialize={true}
+        initialValues={SearchData.empty()}
+        onSubmit={_ => {}}
+      >
         {({ setFieldValue, values }) => (
           <InputField
             style={{
               contentContainerStyle: {
                 height: 42,
-              },
+                backgroundColor: "#fff"
+              }
             }}
-            onChangeText={(text) => {
-              setFieldValue('key', text);
+            onChangeText={text => {
+              setFieldValue("key", text);
               _onSearch(text);
             }}
             autoCapitalize="none"
@@ -58,8 +63,8 @@ const SearchField = ({ style, onSearch, placeholder }: SearchFieldProps) => {
               ) : (
                 <TouchableOpacity
                   onPress={() => {
-                    setFieldValue('key', '');
-                    _onSearch('');
+                    setFieldValue("key", "");
+                    _onSearch("");
                   }}
                   activeOpacity={0.8}
                   style={styles.suffixContainerStyle}

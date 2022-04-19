@@ -123,6 +123,14 @@ const NationalityComponent = ({
                     "Enter place of birth"
                   }
                   maxLength={100}
+                  style={{
+                    contentContainerStyle: {
+                      borderWidth: 1,
+                      borderRadius: 5,
+                      borderBottomWidth: 1,
+                      backgroundColor: "#fff"
+                    }
+                  }}
                 />
                 <Text style={styles.labelTextStyle}>
                   {i18n?.t("nationality-component.lbl_nationality") ??
@@ -147,6 +155,14 @@ const NationalityComponent = ({
                         <ArrowDownIcon width={24} height={24} />
                       </View>
                     }
+                    style={{
+                      contentContainerStyle: {
+                        borderWidth: 1,
+                        borderRadius: 5,
+                        borderBottomWidth: 1,
+                        backgroundColor: "#fff"
+                      }
+                    }}
                   />
                 </TouchableOpacity>
                 <Text style={styles.citizenHeaderTextStyle}>

@@ -127,6 +127,14 @@ const OtherDetailsComponent = ({
                         <ArrowDownIcon width={24} height={24} />
                       </View>
                     }
+                    style={{
+                      contentContainerStyle: {
+                        borderWidth: 1,
+                        borderRadius: 5,
+                        borderBottomWidth: 1,
+                        backgroundColor: "#fff"
+                      }
+                    }}
                   />
                 </TouchableOpacity>
                 <Text style={styles.labelTextStyle}>
@@ -152,6 +160,14 @@ const OtherDetailsComponent = ({
                         <ArrowDownIcon width={24} height={24} />
                       </View>
                     }
+                    style={{
+                      contentContainerStyle: {
+                        borderWidth: 1,
+                        borderRadius: 5,
+                        borderBottomWidth: 1,
+                        backgroundColor: "#fff"
+                      }
+                    }}
                   />
                 </TouchableOpacity>
                 <Text style={styles.labelTextStyle}>
@@ -177,6 +193,14 @@ const OtherDetailsComponent = ({
                         <ArrowDownIcon width={24} height={24} />
                       </View>
                     }
+                    style={{
+                      contentContainerStyle: {
+                        borderWidth: 1,
+                        borderRadius: 5,
+                        borderBottomWidth: 1,
+                        backgroundColor: "#fff"
+                      }
+                    }}
                   />
                 </TouchableOpacity>
                 <Text style={styles.labelTextStyle}>
@@ -190,6 +214,14 @@ const OtherDetailsComponent = ({
                     "Enter business address"
                   }
                   maxLength={100}
+                  style={{
+                    contentContainerStyle: {
+                      borderWidth: 1,
+                      borderRadius: 5,
+                      borderBottomWidth: 1,
+                      backgroundColor: "#fff"
+                    }
+                  }}
                 />
                 <View style={innerStyles.rowItems}>
                   <View style={innerStyles.cityContainer}>
@@ -215,6 +247,14 @@ const OtherDetailsComponent = ({
                             <ArrowDownIcon width={24} height={24} />
                           </View>
                         }
+                        style={{
+                          contentContainerStyle: {
+                            borderWidth: 1,
+                            borderRadius: 5,
+                            borderBottomWidth: 1,
+                            backgroundColor: "#fff"
+                          }
+                        }}
                       />
                     </TouchableOpacity>
                   </View>
@@ -230,6 +270,14 @@ const OtherDetailsComponent = ({
                         "ZIP Code"
                       }
                       maxLength={10}
+                      style={{
+                        contentContainerStyle: {
+                          borderWidth: 1,
+                          borderRadius: 5,
+                          borderBottomWidth: 1,
+                          backgroundColor: "#fff"
+                        }
+                      }}
                     />
                   </View>
                 </View>

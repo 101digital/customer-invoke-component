@@ -159,6 +159,14 @@ const AccountDetailsComponent = ({
                         <ArrowDownIcon width={24} height={24} />
                       </View>
                     }
+                    style={{
+                      contentContainerStyle: {
+                        borderWidth: 1,
+                        borderRadius: 5,
+                        borderBottomWidth: 1,
+                        backgroundColor: "#fff"
+                      }
+                    }}
                   />
                 </TouchableOpacity>
                 <Text style={styles.labelTextStyle}>
@@ -185,6 +193,14 @@ const AccountDetailsComponent = ({
                         <ArrowDownIcon width={24} height={24} />
                       </View>
                     }
+                    style={{
+                      contentContainerStyle: {
+                        borderWidth: 1,
+                        borderRadius: 5,
+                        borderBottomWidth: 1,
+                        backgroundColor: "#fff"
+                      }
+                    }}
                   />
                 </TouchableOpacity>
                 <Text style={styles.labelTextStyle}>
@@ -210,6 +226,14 @@ const AccountDetailsComponent = ({
                         <ArrowDownIcon width={24} height={24} />
                       </View>
                     }
+                    style={{
+                      contentContainerStyle: {
+                        borderWidth: 1,
+                        borderRadius: 5,
+                        borderBottomWidth: 1,
+                        backgroundColor: "#fff"
+                      }
+                    }}
                   />
                 </TouchableOpacity>
               </KeyboardAwareScrollView>

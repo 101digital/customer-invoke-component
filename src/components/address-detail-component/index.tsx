@@ -177,6 +177,14 @@ const AddressDetailsComponent = ({
                                     <ArrowDownIcon width={24} height={24} />
                                   </View>
                                 }
+                                style={{
+                                  contentContainerStyle: {
+                                    borderWidth: 1,
+                                    borderRadius: 5,
+                                    borderBottomWidth: 1,
+                                    backgroundColor: "#fff"
+                                  }
+                                }}
                               />
                             </TouchableOpacity>
                             <Text style={styles.labelTextStyle}>
@@ -202,6 +210,14 @@ const AddressDetailsComponent = ({
                                     <ArrowDownIcon width={24} height={24} />
                                   </View>
                                 }
+                                style={{
+                                  contentContainerStyle: {
+                                    borderWidth: 1,
+                                    borderRadius: 5,
+                                    borderBottomWidth: 1,
+                                    backgroundColor: "#fff"
+                                  }
+                                }}
                               />
                             </TouchableOpacity>
                             <Text style={styles.labelTextStyle}>
@@ -227,6 +243,14 @@ const AddressDetailsComponent = ({
                                     <ArrowDownIcon width={24} height={24} />
                                   </View>
                                 }
+                                style={{
+                                  contentContainerStyle: {
+                                    borderWidth: 1,
+                                    borderRadius: 5,
+                                    borderBottomWidth: 1,
+                                    backgroundColor: "#fff"
+                                  }
+                                }}
                               />
                             </TouchableOpacity>
                             <View style={innerStyles.rowItems}>
@@ -254,6 +278,14 @@ const AddressDetailsComponent = ({
                                         <ArrowDownIcon width={24} height={24} />
                                       </View>
                                     }
+                                    style={{
+                                      contentContainerStyle: {
+                                        borderWidth: 1,
+                                        borderRadius: 5,
+                                        borderBottomWidth: 1,
+                                        backgroundColor: "#fff"
+                                      }
+                                    }}
                                   />
                                 </TouchableOpacity>
                               </View>
@@ -269,6 +301,14 @@ const AddressDetailsComponent = ({
                                     "ZIP Code"
                                   }
                                   maxLength={10}
+                                  style={{
+                                    contentContainerStyle: {
+                                      borderWidth: 1,
+                                      borderRadius: 5,
+                                      borderBottomWidth: 1,
+                                      backgroundColor: "#fff"
+                                    }
+                                  }}
                                 />
                               </View>
                             </View>
@@ -295,6 +335,14 @@ const AddressDetailsComponent = ({
                                     <ArrowDownIcon width={24} height={24} />
                                   </View>
                                 }
+                                style={{
+                                  contentContainerStyle: {
+                                    borderWidth: 1,
+                                    borderRadius: 5,
+                                    borderBottomWidth: 1,
+                                    backgroundColor: "#fff"
+                                  }
+                                }}
                               />
                             </TouchableOpacity>
                             <Text style={styles.labelTextStyle}>
@@ -312,6 +360,14 @@ const AddressDetailsComponent = ({
                                 "Street name"
                               }
                               maxLength={100}
+                              style={{
+                                contentContainerStyle: {
+                                  borderWidth: 1,
+                                  borderRadius: 5,
+                                  borderBottomWidth: 1,
+                                  backgroundColor: "#fff"
+                                }
+                              }}
                             />
                             <Text style={styles.labelTextStyle}>
                               {i18n?.t("address-detail.lbl_subdiv") ??
@@ -328,6 +384,14 @@ const AddressDetailsComponent = ({
                                 "Subdivision / Village / Building name"
                               }
                               maxLength={100}
+                              style={{
+                                contentContainerStyle: {
+                                  borderWidth: 1,
+                                  borderRadius: 5,
+                                  borderBottomWidth: 1,
+                                  backgroundColor: "#fff"
+                                }
+                              }}
                             />
                             <Text style={styles.labelTextStyle}>
                               {i18n?.t("address-detail.lbl_house") ??
@@ -344,6 +408,14 @@ const AddressDetailsComponent = ({
                                 "House / Lot / Room number"
                               }
                               maxLength={100}
+                              style={{
+                                contentContainerStyle: {
+                                  borderWidth: 1,
+                                  borderRadius: 5,
+                                  borderBottomWidth: 1,
+                                  backgroundColor: "#fff"
+                                }
+                              }}
                             />
                             {index === 0 && (
                               <TouchableOpacity

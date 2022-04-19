@@ -34,7 +34,7 @@ const useMergeStyles = (
     },
     container1: {
       flex: 1,
-      backgroundColor: "#fff"
+      backgroundColor: "#F1F6FC"
     },
     contentBox: {
       flex: 1,

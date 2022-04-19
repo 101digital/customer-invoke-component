@@ -28,7 +28,7 @@ import AccountDetailsComponent, {
 import { HeaderComponentStyles } from "./components/header-component";
 import { CustomerInvokeContext } from "./context/onboarding-context";
 import { showMessage } from "react-native-flash-message";
-import { Button } from "react-native-theme-component";
+import { Button, ThemeContext } from "react-native-theme-component";
 
 export type CustomerInvokeComponentProps = {
   onCompleted: (data: ApplicationDetails) => void;
@@ -115,6 +115,7 @@ const CustomerInvokeComponent = (props: CustomerInvokeComponentProps) => {
     isInValidateUser
   } = useContext(CustomerInvokeContext);
 
+  const { i18n } = useContext(ThemeContext);
   useEffect(() => {
     if (errorAddMainDetails) {
       showMessage({
@@ -186,10 +187,13 @@ const CustomerInvokeComponent = (props: CustomerInvokeComponentProps) => {
       <SafeAreaView style={styles.container}>
         <View style={styles.contentBox}>
           <InfoIcon width={60} height={60} color={"#E06D6D"} />
-          <Text style={styles.messageTitle}>Account already exists</Text>
+          <Text style={styles.messageTitle}>
+            {i18n?.t("customer_invoke_component.lbl_account_exists") ??
+              "Account already exists"}
+          </Text>
           <Text style={styles.messageDescription}>
-            Looks like the personal information you entered has a linked
-            UnionDigital Bank Account already. Please login to your account.
+            {i18n?.t("customer_invoke_component.msg_account_exists") ??
+              "Looks like the personal information you entered has a linked UnionDigital Bank Account already. Please login to your account."}
           </Text>
         </View>
         <Button

@@ -150,6 +150,14 @@ const MainDetailComponent = ({
                   "Enter first name"
                 }
                 maxLength={100}
+                style={{
+                  contentContainerStyle: {
+                    borderWidth: 1,
+                    borderRadius: 5,
+                    borderBottomWidth: 1,
+                    backgroundColor: "#fff"
+                  }
+                }}
               />
               <Text style={styles.labelTextStyle}>
                 {i18n?.t("customer_invoke_component.lbl_middle_name") ??
@@ -162,6 +170,14 @@ const MainDetailComponent = ({
                   "Enter middle name"
                 }
                 maxLength={100}
+                style={{
+                  contentContainerStyle: {
+                    borderWidth: 1,
+                    borderRadius: 5,
+                    borderBottomWidth: 1,
+                    backgroundColor: "#fff"
+                  }
+                }}
               />
               <Text style={styles.labelTextStyle}>
                 {i18n?.t("customer_invoke_component.lbl_last_name") ??
@@ -174,6 +190,14 @@ const MainDetailComponent = ({
                   "Enter last name"
                 }
                 maxLength={100}
+                style={{
+                  contentContainerStyle: {
+                    borderWidth: 1,
+                    borderRadius: 5,
+                    borderBottomWidth: 1,
+                    backgroundColor: "#fff"
+                  }
+                }}
               />
               <Text style={styles.labelTextStyle}>
                 {i18n?.t("customer_invoke_component.lbl_dob") ??
@@ -196,6 +220,14 @@ const MainDetailComponent = ({
                       <CalendarIcon width={24} height={24} />
                     </View>
                   }
+                  style={{
+                    contentContainerStyle: {
+                      borderWidth: 1,
+                      borderRadius: 5,
+                      borderBottomWidth: 1,
+                      backgroundColor: "#fff"
+                    }
+                  }}
                 />
               </TouchableOpacity>
               <Text style={styles.labelTextStyle}>
@@ -219,6 +251,14 @@ const MainDetailComponent = ({
                       <ArrowDownIcon width={24} height={24} />
                     </View>
                   }
+                  style={{
+                    contentContainerStyle: {
+                      borderWidth: 1,
+                      borderRadius: 5,
+                      borderBottomWidth: 1,
+                      backgroundColor: "#fff"
+                    }
+                  }}
                 />
               </TouchableOpacity>
               <Text style={styles.labelTextStyle}>
@@ -241,6 +281,14 @@ const MainDetailComponent = ({
                       <ArrowDownIcon width={24} height={24} />
                     </View>
                   }
+                  style={{
+                    contentContainerStyle: {
+                      borderWidth: 1,
+                      borderRadius: 5,
+                      borderBottomWidth: 1,
+                      backgroundColor: "#fff"
+                    }
+                  }}
                 />
               </TouchableOpacity>
               <Text style={styles.labelTextStyle}>
@@ -251,6 +299,14 @@ const MainDetailComponent = ({
                 autoCapitalize="none"
                 name="email"
                 placeholder="your@email.com"
+                style={{
+                  contentContainerStyle: {
+                    borderWidth: 1,
+                    borderRadius: 5,
+                    borderBottomWidth: 1,
+                    backgroundColor: "#fff"
+                  }
+                }}
               />
             </KeyboardAwareScrollView>
             <KeyboardSpace style={styles.footerContainerStyle}>
