@@ -19,7 +19,7 @@ import HeaderComponent, { HeaderComponentProps } from "../header-component";
 import { MainDetailsData, MainDetailsSchema } from "./model";
 import DatePicker from "react-native-date-picker";
 import useMergeStyles from "./styles";
-import { ArrowDownIcon, CalendarIcon } from "../../assets/icons";
+import { ArrowDownIcon, CalendarIcon, InfoIcon } from "../../assets/icons";
 import moment from "moment";
 import SelectGenderModal, {
   SelectGenderModalStyles
