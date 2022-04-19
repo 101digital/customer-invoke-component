@@ -315,7 +315,7 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
             contactDetails: _data.mainDetails.email
               ? [
                   {
-                    contactType: "Email",
+                    contactType: "EMAIL",
                     contactValue: _data.mainDetails?.email!
                   }
                 ]
