@@ -133,7 +133,9 @@
       "lbl_optional": "(Optional)",
       "lbl_continue": "Continue",
       "lbl_picker_title": "Date of Birth",
-      "lbl_picker_confirm": "Select"
+      "lbl_picker_confirm": "Select",
+      "lbl_continue_process": "Continue where you left off",
+      "msg_continue_process": "We conveniently save your information should you need more time to complete your UD Pitaka account opening. Simply re-login to your account to continue your application."
     },
     "address-detail": {
       "lbl_country": "Country",
