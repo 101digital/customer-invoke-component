@@ -68,7 +68,7 @@ const MainDetailComponent = ({
   const [processModelShow, setProcessModelShow] = useState(false);
 
   const {
-    updateMainDetails,
+    addMainDetails,
     isUpdatingMainDetails,
     isUpdatedMainDetails
   } = useContext(CustomerInvokeContext);
@@ -76,8 +76,10 @@ const MainDetailComponent = ({
   const formikRef: any = useRef(null);
 
   useEffect(() => {
-    setProcessModelShow(true);
-  }, []);
+    if (!initData) {
+      setProcessModelShow(true);
+    }
+  }, [initData]);
 
   useEffect(() => {
     if (isUpdatedMainDetails) {
@@ -105,11 +107,11 @@ const MainDetailComponent = ({
       <Formik
         innerRef={formikRef}
         enableReinitialize={true}
-        // initialValues={
-        //   initData ?? MainDetailsData.empty(firstName, undefined, lastName)
-        // }
+        initialValues={
+          initData ?? MainDetailsData.empty(undefined, undefined, undefined)
+        }
         validationSchema={MainDetailsSchema()}
-        onSubmit={updateMainDetails}
+        onSubmit={addMainDetails}
       >
         {({ isValid, submitForm, setFieldValue }) => (
           <View style={styles.containerStyle}>

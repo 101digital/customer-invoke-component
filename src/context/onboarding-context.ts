@@ -20,8 +20,9 @@ export interface CustomerInvokeContextData {
   setUserProfile: (profile: Profile) => void;
   isUpdatingMainDetails: boolean;
   isUpdatedMainDetails: boolean;
-  updateMainDetails: (params: MainDetailsData) => void;
-  errorUpdateMainDetails?: Error;
+  addMainDetails: (params: MainDetailsData) => void;
+  errorAddMainDetails?: Error;
+  isInValidateUser?: boolean;
   isUpdatingNationality: boolean;
   isUpdatedNationality: boolean;
   updateNationality: (params: NationalityData) => void;
@@ -53,7 +54,7 @@ export const onboardingDefaultValue: CustomerInvokeContextData = {
   isUpdatingAddressDetails: false,
   isUpdatingMainDetails: false,
   isUpdatingNationality: false,
-  updateMainDetails: () => null,
+  addMainDetails: () => null,
   updateNationality: () => null,
   getUserProfile: () => null,
   updateAddressDetails: () => null,
@@ -87,7 +88,8 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
 
   const [_isUpdatingMainDetails, setUpdatingMainDetails] = useState(false);
   const [_isUpdatedMainDetails, setUpdatedMainDetails] = useState(false);
-  const [_errorUpdateMainDetails, setErrorUpdateMainDetails] = useState<
+  const [_validateUser, setValidateUser] = useState(false);
+  const [_errorAddMainDetails, setErrorAddMainDetails] = useState<
     Error | undefined
   >(undefined);
 
@@ -132,8 +134,11 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     if (_errorLoadProfile) {
       setErrorLoadProfile(undefined);
     }
-    if (_errorUpdateMainDetails) {
-      setErrorUpdateMainDetails(undefined);
+    if (_errorAddMainDetails) {
+      setErrorAddMainDetails(undefined);
+    }
+    if (_validateUser) {
+      setValidateUser(false);
     }
     if (_errorUpdateAddressDetails) {
       setErrorUpdateAddressDetails(undefined);
@@ -143,17 +148,18 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     }
   }, [
     _errorLoadProfile,
-    _errorUpdateMainDetails,
+    _errorAddMainDetails,
+    _validateUser,
     _errorUpdateNationality,
     _errorUpdateAddressDetails,
     _errorCreateApplication
   ]);
 
-  const updateMainDetails = useCallback(
+  const addMainDetails = useCallback(
     async (params: MainDetailsData) => {
       try {
         setUpdatingMainDetails(true);
-        await onboardingService.updateMainDetails(_profile?.userId!, {
+        const createResponse = await onboardingService.addMainDetails({
           ...params,
           dateOfBirth: moment(params.dateOfBirth, "DD / MM / YYYY").format(
             "YYYY-MM-DD"
@@ -168,18 +174,23 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
               ]
             : []
         });
-        setData({
-          ..._data,
-          mainDetails: params
-        });
-        setUpdatedMainDetails(true);
-        setTimeout(() => {
-          setUpdatedMainDetails(false);
-        }, 50);
-        setUpdatingMainDetails(false);
+        if (createResponse.exist === true) {
+          setValidateUser(true);
+        } else {
+          setValidateUser(false);
+          setData({
+            ..._data,
+            mainDetails: params
+          });
+          setUpdatedMainDetails(true);
+          setTimeout(() => {
+            setUpdatedMainDetails(false);
+          }, 50);
+          setUpdatingMainDetails(false);
+        }
       } catch (error) {
         setUpdatingMainDetails(false);
-        setErrorUpdateMainDetails(error as Error);
+        setErrorAddMainDetails(error as Error);
       }
     },
     [_data, _profile]
@@ -381,9 +392,10 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
       profile: _profile,
       isLoadingProfile: _isLoadingProfile,
       errorLoadProfile: _errorLoadProfile,
-      updateMainDetails,
+      addMainDetails,
       isUpdatingMainDetails: _isUpdatingMainDetails,
-      errorUpdateMainDetails: _errorUpdateMainDetails,
+      errorAddMainDetails: _errorAddMainDetails,
+      isInValidateUser: _validateUser,
       updateNationality,
       isUpdatingNationality: _isUpdatingNationality,
       errorUpdateNationality: _errorUpdateNationality,
@@ -422,7 +434,8 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
       _isLoadingProfile,
       _errorLoadProfile,
       _isUpdatingMainDetails,
-      _errorUpdateMainDetails,
+      _errorAddMainDetails,
+      _validateUser,
       _isUpdatingNationality,
       _errorUpdateNationality,
       _isUpdatingAddressDetails,

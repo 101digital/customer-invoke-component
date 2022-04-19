@@ -43,10 +43,10 @@ export class CustomerInvokeService {
     }
   };
 
-  updateMainDetails = async (userId: string, details: MainDetailParam) => {
+  addMainDetails = async (details: MainDetailParam) => {
     if (this._membershipClient) {
-      const response = await this._membershipClient.patch(
-        `users/${userId}`,
+      const response = await this._membershipClient.post(
+        `users/validate`,
         details
       );
       return response.data;

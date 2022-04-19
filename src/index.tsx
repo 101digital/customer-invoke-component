@@ -4,7 +4,8 @@ import {
   StyleProp,
   TouchableOpacity,
   View,
-  ViewStyle
+  ViewStyle,
+  Text
 } from "react-native";
 import { ApplicationDetails, InitCustomerInvokeData, StepData } from "./types";
 import useMergeStyles from "./styles";
@@ -14,7 +15,7 @@ import MainDetailComponent, {
 import NationalityComponent, {
   NationalityComponentStyles
 } from "./components/nationality-component";
-import { BackIcon } from "./assets/icons";
+import { BackIcon, InfoIcon } from "./assets/icons";
 import AddressDetailsComponent, {
   AddressDetailsComponentStyles
 } from "./components/address-detail-component";
@@ -27,11 +28,13 @@ import AccountDetailsComponent, {
 import { HeaderComponentStyles } from "./components/header-component";
 import { CustomerInvokeContext } from "./context/onboarding-context";
 import { showMessage } from "react-native-flash-message";
+import { Button } from "react-native-theme-component";
 
 export type CustomerInvokeComponentProps = {
   onCompleted: (data: ApplicationDetails) => void;
   initData?: InitCustomerInvokeData;
   onBack: () => void;
+  onLogin?: () => void;
   initStep: StepData;
   steps?: StepData[];
   style?: CustomerInvokeComponentStyles;
@@ -92,25 +95,28 @@ const CustomerInvokeComponent = (props: CustomerInvokeComponentProps) => {
     initStep,
     backIcon,
     onBack,
+    onLogin,
     initData
   } = props;
   const _steps = steps ?? defaultCustomerInvokeSteps;
   const styles: CustomerInvokeComponentStyles = useMergeStyles(style);
   const [step, setStep] = useState<StepData>(initStep);
+  const [showErrorModel, setShowErrorModel] = useState<boolean>(false);
   const {
     data,
     clearData,
     clearErrors,
     isCreatedApplication,
-    errorUpdateMainDetails,
+    errorAddMainDetails,
     errorUpdateAddressDetails,
     errorUpdateNationality,
     errorCreateApplication,
-    applicationDetails
+    applicationDetails,
+    isInValidateUser
   } = useContext(CustomerInvokeContext);
 
   useEffect(() => {
-    if (errorUpdateMainDetails) {
+    if (errorAddMainDetails) {
       showMessage({
         message: "Errror while updating main details. Please try again",
         backgroundColor: "#ff0000"
@@ -138,11 +144,16 @@ const CustomerInvokeComponent = (props: CustomerInvokeComponentProps) => {
       });
       clearErrors();
     }
+    if (isInValidateUser) {
+      setShowErrorModel(true);
+      clearErrors();
+    }
   }, [
-    errorUpdateMainDetails,
+    errorAddMainDetails,
     errorUpdateAddressDetails,
     errorUpdateNationality,
-    errorCreateApplication
+    errorCreateApplication,
+    isInValidateUser
   ]);
 
   useEffect(() => {
@@ -170,91 +181,122 @@ const CustomerInvokeComponent = (props: CustomerInvokeComponentProps) => {
     };
   }, []);
 
-  return (
-    <View style={styles.containerStyle}>
-      <SafeAreaView>
-        <View style={styles.progressBarStyle}>
-          <View
-            style={[
-              styles.activeBarStyle,
-              { width: `${step.progress * 100}%` }
-            ]}
-          />
+  if (showErrorModel) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.contentBox}>
+          <InfoIcon width={60} height={60} color={"#E06D6D"} />
+          <Text style={styles.messageTitle}>Account already exists</Text>
+          <Text style={styles.messageDescription}>
+            Looks like the personal information you entered has a linked
+            UnionDigital Bank Account already. Please login to your account.
+          </Text>
+        </View>
+        <Button
+          onPress={() => {
+            onLogin();
+            setShowErrorModel(false);
+            // navigation.navigate(Route.USER_NAME_REGISTER_SCREEN, {});
+          }}
+          label="Proceed to login"
+          style={{
+            primaryContainerStyle: {
+              marginHorizontal: 24,
+              marginBottom: Platform.OS === "android" ? 24 : 0
+            }
+          }}
+        />
+      </SafeAreaView>
+    );
+  } else {
+    return (
+      <SafeAreaView style={styles.container1}>
+        <View style={styles.containerStyle}>
+          <SafeAreaView>
+            <View style={styles.progressBarStyle}>
+              <View
+                style={[
+                  styles.activeBarStyle,
+                  { width: `${step.progress * 100}%` }
+                ]}
+              />
+            </View>
+          </SafeAreaView>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={_handleBack}
+            style={styles.backButtonContainerStyle}
+          >
+            {backIcon ?? <BackIcon width={17} height={12} />}
+          </TouchableOpacity>
+          {step.id === "main-details" && (
+            <MainDetailComponent
+              firstName={initData?.firstName}
+              lastName={initData?.lastName}
+              initData={data?.mainDetails}
+              header={{
+                style: styles?.headerComponentStyles,
+                data: step
+              }}
+              onContinue={() => {
+                setStep(_steps[1]);
+              }}
+              style={styles?.mainDetailsComponentStyles}
+            />
+          )}
+          {step.id === "nationality-details" && (
+            <NationalityComponent
+              initData={data?.nationalityDetails}
+              header={{
+                style: styles?.headerComponentStyles,
+                data: step
+              }}
+              onContinue={() => {
+                setStep(_steps[2]);
+              }}
+              style={styles.nationalityComponentStyles}
+            />
+          )}
+          {step.id === "address-details" && (
+            <AddressDetailsComponent
+              initValue={data?.addresses}
+              header={{
+                style: styles?.headerComponentStyles,
+                data: step
+              }}
+              onContinue={() => {
+                setStep(_steps[3]);
+              }}
+              style={styles.addressDetailsComponentStyles}
+            />
+          )}
+          {step.id === "other-details" && (
+            <OtherDetailsComponent
+              initValue={data?.otherDetails}
+              header={{
+                style: styles?.headerComponentStyles,
+                data: step
+              }}
+              onContinue={() => {
+                setStep(_steps[4]);
+              }}
+              style={styles.otherDetailsComponentStyles}
+            />
+          )}
+          {step.id === "account-details" && (
+            <AccountDetailsComponent
+              initValue={data?.accountDetails}
+              header={{
+                style: styles?.headerComponentStyles,
+                data: step
+              }}
+              style={styles.accountDetailsComponentStyles}
+            />
+          )}
         </View>
       </SafeAreaView>
-      <TouchableOpacity
-        activeOpacity={0.8}
-        onPress={_handleBack}
-        style={styles.backButtonContainerStyle}
-      >
-        {backIcon ?? <BackIcon width={17} height={12} />}
-      </TouchableOpacity>
-      {step.id === "main-details" && (
-        <MainDetailComponent
-          firstName={initData?.firstName}
-          lastName={initData?.lastName}
-          initData={data?.mainDetails}
-          header={{
-            style: styles?.headerComponentStyles,
-            data: step
-          }}
-          onContinue={() => {
-            setStep(_steps[1]);
-          }}
-          style={styles?.mainDetailsComponentStyles}
-        />
-      )}
-      {step.id === "nationality-details" && (
-        <NationalityComponent
-          initData={data?.nationalityDetails}
-          header={{
-            style: styles?.headerComponentStyles,
-            data: step
-          }}
-          onContinue={() => {
-            setStep(_steps[2]);
-          }}
-          style={styles.nationalityComponentStyles}
-        />
-      )}
-      {step.id === "address-details" && (
-        <AddressDetailsComponent
-          initValue={data?.addresses}
-          header={{
-            style: styles?.headerComponentStyles,
-            data: step
-          }}
-          onContinue={() => {
-            setStep(_steps[3]);
-          }}
-          style={styles.addressDetailsComponentStyles}
-        />
-      )}
-      {step.id === "other-details" && (
-        <OtherDetailsComponent
-          initValue={data?.otherDetails}
-          header={{
-            style: styles?.headerComponentStyles,
-            data: step
-          }}
-          onContinue={() => {
-            setStep(_steps[4]);
-          }}
-          style={styles.otherDetailsComponentStyles}
-        />
-      )}
-      {step.id === "account-details" && (
-        <AccountDetailsComponent
-          initValue={data?.accountDetails}
-          header={{
-            style: styles?.headerComponentStyles,
-            data: step
-          }}
-          style={styles.accountDetailsComponentStyles}
-        />
-      )}
-    </View>
-  );
+    );
+  }
 };
 
 export default CustomerInvokeComponent;
