@@ -7,6 +7,7 @@ import { AccountDetailsData } from "./components/account-details-component/model
 export interface InitCustomerInvokeData {
   firstName?: string;
   lastName?: string;
+  defaultStep?: string;
 }
 
 export interface CountryInformation {
@@ -164,6 +165,15 @@ export interface AddressParams {
   postcode: string;
 }
 
+export interface EmploymentDetailParams {
+  status: string;
+  designation: string;
+  companyType: string;
+  companyName: string;
+  tradingSince: string;
+  addresses: { addressType: string; city: string; postcode: string }[];
+}
+
 export interface ApplicationDetailsParams {
   firstName: string;
   lastName: string;
@@ -177,6 +187,10 @@ export interface ApplicationDetailsParams {
   presentAsPermAddressFlag: boolean;
   contactDetails: { contactType: string; contactValue: string }[];
   addresses: AddressParams[];
+  listCustomFields: {
+    customKey: string;
+    customValue: string;
+  }[];
 }
 
 export interface EmploymentDetails {
@@ -208,6 +222,28 @@ export interface CreateApplicationParams {
   applicantDetails: ApplicationDetailsParams;
   employmentDetails: EmploymentDetails[];
   credit: Credit;
+  customFields: {
+    customKey: string;
+    customValue: string;
+  }[];
+}
+
+export interface ValidateMainDetailParam {
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  dateOfBirth: string;
+  maritalStatus: string;
+  gender: string;
+  contacts: {
+    contactType: string;
+    contactValue: string;
+    isPrimary: boolean;
+  }[];
+  listCustomFields: {
+    customKey: string;
+    customValue: string;
+  }[];
 }
 
 export interface MainDetailParam {
@@ -222,12 +258,20 @@ export interface MainDetailParam {
     contactValue: string;
     isPrimary: boolean;
   }[];
+  listCustomFields: {
+    customKey: string;
+    customValue: string;
+  }[];
 }
 
 export interface NationalityParam {
   placeOfBirth: string;
   nationality: string;
   isCitizen: boolean;
+  listCustomFields: {
+    customKey: string;
+    customValue: string;
+  }[];
 }
 
 export interface ApplicationDetails {

@@ -1,8 +1,10 @@
 import {
   AddressParams,
+  EmploymentDetailParams,
   CreateApplicationParams,
   MainDetailParam,
-  NationalityParam
+  NationalityParam,
+  ValidateMainDetailParam
 } from "../types";
 
 type OnboaringClient = {
@@ -43,10 +45,22 @@ export class CustomerInvokeService {
     }
   };
 
-  addMainDetails = async (details: MainDetailParam) => {
+  addMainDetails = async (details: ValidateMainDetailParam) => {
     if (this._membershipClient) {
       const response = await this._membershipClient.post(
         `users/validate`,
+        details
+      );
+      return response.data;
+    } else {
+      throw new Error("Onboaring Client is not registered");
+    }
+  };
+
+  updateMainDetails = async (userId: string, details: MainDetailParam) => {
+    if (this._membershipClient) {
+      const response = await this._membershipClient.patch(
+        `users/${userId}`,
         details
       );
       return response.data;
@@ -78,7 +92,33 @@ export class CustomerInvokeService {
     if (this._membershipClient) {
       const response = await this._membershipClient.patch(`users/${userId}`, {
         isPresentAsPermAddress,
-        addresses
+        addresses,
+        listCustomFields: [
+          {
+            customKey: "SubProcessStep",
+            customValue: "Step3"
+          }
+        ]
+      });
+      return response.data;
+    } else {
+      throw new Error("Onboaring Client is not registered");
+    }
+  };
+
+  updateEmploymentDetails = async (
+    userId: string,
+    employmentDetails: EmploymentDetailParams[]
+  ) => {
+    if (this._membershipClient) {
+      const response = await this._membershipClient.patch(`users/${userId}`, {
+        employmentDetails,
+        listCustomFields: [
+          {
+            customKey: "SubProcessStep",
+            customValue: "Step4"
+          }
+        ]
       });
       return response.data;
     } else {

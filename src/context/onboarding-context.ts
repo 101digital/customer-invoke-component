@@ -18,6 +18,7 @@ export interface CustomerInvokeContextData {
   errorLoadProfile?: Error;
   getUserProfile: () => void;
   setUserProfile: (profile: Profile) => void;
+  updateProfile: (profile: any) => void;
   isUpdatingMainDetails: boolean;
   isUpdatedMainDetails: boolean;
   addMainDetails: (params: MainDetailsData) => void;
@@ -60,6 +61,7 @@ export const onboardingDefaultValue: CustomerInvokeContextData = {
   updateAddressDetails: () => null,
   clearErrors: () => null,
   setUserProfile: () => null,
+  updateProfile: () => null,
   isUpdatedAddressDetails: false,
   isUpdatedMainDetails: false,
   isUpdatedNationality: false,
@@ -159,7 +161,7 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     async (params: MainDetailsData) => {
       try {
         setUpdatingMainDetails(true);
-        const createResponse = await onboardingService.addMainDetails({
+        const validateUserResponse = await onboardingService.addMainDetails({
           ...params,
           dateOfBirth: moment(params.dateOfBirth, "DD / MM / YYYY").format(
             "YYYY-MM-DD"
@@ -174,9 +176,31 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
               ]
             : []
         });
-        if (createResponse.exist === true) {
+        if (validateUserResponse.exist === true) {
           setValidateUser(true);
         } else {
+          await onboardingService.updateMainDetails(_profile?.userId!, {
+            ...params,
+            dateOfBirth: moment(params.dateOfBirth, "DD / MM / YYYY").format(
+              "YYYY-MM-DD"
+            ),
+            listCustomFields: [
+              {
+                customKey: "SubProcessStep",
+                customValue: "Step1"
+              }
+            ],
+            contacts: params.email
+              ? [
+                  {
+                    contactType: "EMAIL",
+                    contactValue: params.email,
+                    isPrimary: true
+                  }
+                ]
+              : []
+          });
+
           setValidateUser(false);
           setData({
             ..._data,
@@ -202,8 +226,15 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
         setUpdatingNationality(true);
         await onboardingService.updateNationalityDetails(_profile?.userId!, {
           ...params,
-          isCitizen: params.isCitizen === "yes"
+          isCitizen: params.isCitizen === "yes",
+          listCustomFields: [
+            {
+              customKey: "SubProcessStep",
+              customValue: "Step2"
+            }
+          ]
         });
+
         setData({
           ..._data,
           nationalityDetails: params
@@ -260,6 +291,149 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     setProfile(profile);
   }, []);
 
+  const updateProfile = useCallback((profile: any) => {
+    if (profile?.middleName) {
+      setData({
+        ..._data,
+        mainDetails: {
+          firstName: profile?.firstName,
+          middleName: profile?.middleName,
+          lastName: profile?.lastName,
+          dateOfBirth:
+            moment(profile?.dateOfBirth, "YYYY-MM-DD").format(
+              "DD / MM / YYYY"
+            ) ?? "",
+          maritalStatus: profile?.maritalStatus,
+          gender: profile?.gender,
+          email: profile?.contacts[0]?.contactValue
+        }
+      });
+    }
+
+    if (profile?.nationality) {
+      setData({
+        ..._data,
+        mainDetails: {
+          firstName: profile?.firstName,
+          middleName: profile?.middleName,
+          lastName: profile?.lastName,
+          dateOfBirth:
+            moment(profile?.dateOfBirth, "YYYY-MM-DD").format(
+              "DD / MM / YYYY"
+            ) ?? "",
+          maritalStatus: profile?.maritalStatus,
+          gender: profile?.gender,
+          email: profile?.contacts[0]?.contactValue
+        },
+        nationalityDetails: {
+          placeOfBirth: profile.placeOfBirth,
+          nationality: profile.nationality,
+          isCitizen: profile.isCitizen === false ? "no" : "yes"
+        }
+      });
+    }
+
+    if (profile?.addresses && profile?.addresses.length > 0) {
+      setData({
+        ..._data,
+        mainDetails: {
+          firstName: profile?.firstName,
+          middleName: profile?.middleName,
+          lastName: profile?.lastName,
+          dateOfBirth:
+            moment(profile?.dateOfBirth, "YYYY-MM-DD").format(
+              "DD / MM / YYYY"
+            ) ?? "",
+          maritalStatus: profile?.maritalStatus,
+          gender: profile?.gender,
+          email: profile?.contacts[0]?.contactValue
+        },
+        nationalityDetails: {
+          placeOfBirth: profile.placeOfBirth,
+          nationality: profile.nationality,
+          isCitizen: profile.isCitizen === false ? "no" : "yes"
+        },
+        addresses: [
+          {
+            addressType: 1, //profile?.addresses[profile?.addresses.length -1].addressType,
+            line1: profile?.addresses[profile?.addresses.length - 1].line1,
+            line2: profile?.addresses[profile?.addresses.length - 1].line2,
+            line3: profile?.addresses[profile?.addresses.length - 1].line3,
+            country: profile?.addresses[profile?.addresses.length - 1].country,
+            postcode:
+              profile?.addresses[profile?.addresses.length - 1].postcode,
+            province:
+              profile?.addresses[profile?.addresses.length - 1].province,
+            region: profile?.addresses[profile?.addresses.length - 1].region,
+            buildingName:
+              profile?.addresses[profile?.addresses.length - 1].buildingName,
+            city: profile?.addresses[profile?.addresses.length - 1].city
+          }
+        ]
+      });
+    }
+
+    if (profile?.employmentDetails && profile?.employmentDetails.length > 0) {
+      setData({
+        ..._data,
+        mainDetails: {
+          firstName: profile?.firstName,
+          middleName: profile?.middleName,
+          lastName: profile?.lastName,
+          dateOfBirth:
+            moment(profile?.dateOfBirth, "YYYY-MM-DD").format(
+              "DD / MM / YYYY"
+            ) ?? "",
+          maritalStatus: profile?.maritalStatus,
+          gender: profile?.gender,
+          email: profile?.contacts[0]?.contactValue
+        },
+        nationalityDetails: {
+          placeOfBirth: profile.placeOfBirth,
+          nationality: profile.nationality,
+          isCitizen: profile.isCitizen === false ? "no" : "yes"
+        },
+        addresses: [
+          {
+            addressType: 1, //profile?.addresses[profile?.addresses.length -1].addressType,
+            line1: profile?.addresses[profile?.addresses.length - 1].line1,
+            line2: profile?.addresses[profile?.addresses.length - 1].line2,
+            line3: profile?.addresses[profile?.addresses.length - 1].line3,
+            country: profile?.addresses[profile?.addresses.length - 1].country,
+            postcode:
+              profile?.addresses[profile?.addresses.length - 1].postcode,
+            province:
+              profile?.addresses[profile?.addresses.length - 1].province,
+            region: profile?.addresses[profile?.addresses.length - 1].region,
+            buildingName:
+              profile?.addresses[profile?.addresses.length - 1].buildingName,
+            city: profile?.addresses[profile?.addresses.length - 1].city
+          }
+        ],
+        otherDetails: {
+          status:
+            profile?.employmentDetails[profile?.employmentDetails.length - 1]
+              .status,
+          occupation:
+            profile?.employmentDetails[profile?.employmentDetails.length - 1]
+              .designation,
+          companyType:
+            profile?.employmentDetails[profile?.employmentDetails.length - 1]
+              .companyType,
+          companyName:
+            profile?.employmentDetails[profile?.employmentDetails.length - 1]
+              .companyName,
+          city:
+            profile?.employmentDetails[profile?.employmentDetails.length - 1]
+              .addresses[0].city,
+          postcode:
+            profile?.employmentDetails[profile?.employmentDetails.length - 1]
+              .addresses[0].postcode
+        }
+      });
+    }
+  }, []);
+
   const setCustomerInvokeData = useCallback((data: CustomerInvokeData) => {
     setCustomerInvokeData(data);
   }, []);
@@ -279,17 +453,46 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
   );
 
   const updateOtherDetails = useCallback(
-    (params: OtherDetailsData) => {
-      setData({
-        ..._data,
-        otherDetails: params
-      });
-      setUpdatedOtherDetails(true);
-      setTimeout(() => {
+    async (params: OtherDetailsData) => {
+      try {
+        setUpdatedOtherDetails(true);
+
+        let employmentDetails = [
+          {
+            status: params?.status,
+            designation: params?.occupation,
+            companyType: params?.companyType,
+            companyName: params?.companyName,
+            addresses: [
+              {
+                addressType: "Residential",
+                city: params?.city,
+                postcode: params?.postcode
+              }
+            ]
+          }
+        ];
+        await onboardingService.updateEmploymentDetails(
+          _profile?.userId!,
+          employmentDetails
+        );
+
+        setData({
+          ..._data,
+          otherDetails: params
+        });
+        setUpdatedOtherDetails(true);
+        setTimeout(() => {
+          setUpdatedOtherDetails(false);
+        }, 50);
+      } catch (error) {
+        console.log("error ", error);
+
         setUpdatedOtherDetails(false);
-      }, 50);
+        // setErrorUpdateAddressDetails(error as Error);
+      }
     },
-    [_data]
+    [_data, _profile]
   );
 
   const clearData = useCallback(() => {
@@ -364,7 +567,13 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
                 minMonthlyIncome: minIncome
               }
             }
-          }
+          },
+          customFields: [
+            {
+              customKey: "SubProcessStep",
+              customValue: "Step1"
+            }
+          ]
         });
         setApplicationDetails({
           applicationId: data.applicationId,
@@ -403,6 +612,7 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
       isUpdatingAddressDetails: _isUpdatingAddressDetails,
       errorUpdateAddressDetails: _errorUpdateAddressDetails,
       setUserProfile,
+      updateProfile,
       isUpdatedAddressDetails: _isUpdatedAddressDetails,
       isUpdatedMainDetails: _isUpdatedMainDetails,
       isUpdatedNationality: _isUpdatedNationality,
