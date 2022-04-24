@@ -623,7 +623,9 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
       setGetApplicationList(true);
       const { data } = await onboardingService.getApplicationList();
       setApplicationListData(data);
-      setGetApplicationList(false);
+      setTimeout(() => {
+        setGetApplicationList(false);
+      }, 50);
     } catch (error) {
       setGetApplicationList(false);
       setErrorGetApplicationList(error as Error);
