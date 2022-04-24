@@ -6,7 +6,12 @@ import { AddressDetailsData } from "../components/address-detail-component/model
 import { MainDetailsData } from "../components/main-detail-component/model";
 import { NationalityData } from "../components/nationality-component/model";
 import { CustomerInvokeService } from "../service/onboarding-service";
-import { CustomerInvokeData, Profile, ApplicationDetails } from "../types";
+import {
+  CustomerInvokeData,
+  Profile,
+  ApplicationDetails,
+  ApplicationListData
+} from "../types";
 
 const onboardingService = CustomerInvokeService.instance();
 
@@ -40,12 +45,16 @@ export interface CustomerInvokeContextData {
   updateAccountDetails: (params: AccountDetailsData) => void;
   clearData: () => void;
   isCreatingApplication: boolean;
+  isGetApplicationList: boolean;
   isCreatedApplication: boolean;
   createApplication: (minIncome?: number, maxIncome?: number) => void;
+  getApplicationList: () => void;
   errorCreateApplication?: Error;
+  errorGetApplicationList?: Error;
   isUpdatedOtherDetails: boolean;
   isUpdatedAccountDetails: boolean;
   applicationDetails?: ApplicationDetails;
+  applicationList?: ApplicationListData;
 }
 
 export const onboardingDefaultValue: CustomerInvokeContextData = {
@@ -69,7 +78,9 @@ export const onboardingDefaultValue: CustomerInvokeContextData = {
   updateAccountDetails: () => null,
   clearData: () => null,
   createApplication: () => null,
+  getApplicationList: () => null,
   isCreatingApplication: false,
+  isGetApplicationList: false,
   isCreatedApplication: false,
   isUpdatedAccountDetails: false,
   isUpdatedOtherDetails: false
@@ -120,6 +131,14 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     ApplicationDetails | undefined
   >(undefined);
 
+  const [_isGetApplicationList, setGetApplicationList] = useState(false);
+  const [_applicationListData, setApplicationListData] = useState<
+    ApplicationListData[] | undefined
+  >(undefined);
+  const [_errorGetApplicationList, setErrorGetApplicationList] = useState<
+    Error | undefined
+  >(undefined);
+
   const getUserProfile = useCallback(async () => {
     try {
       setLoadingProfile(true);
@@ -148,13 +167,17 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     if (_errorCreateApplication) {
       setErrorCreateApplication(undefined);
     }
+    if (_errorGetApplicationList) {
+      setErrorGetApplicationList(undefined);
+    }
   }, [
     _errorLoadProfile,
     _errorAddMainDetails,
     _validateUser,
     _errorUpdateNationality,
     _errorUpdateAddressDetails,
-    _errorCreateApplication
+    _errorCreateApplication,
+    _errorGetApplicationList
   ]);
 
   const addMainDetails = useCallback(
@@ -498,6 +521,7 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
   const clearData = useCallback(() => {
     setData({});
     setApplicationDetails(undefined);
+    setApplicationListData(undefined);
   }, []);
 
   const createApplication = useCallback(
@@ -594,6 +618,18 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     [_data]
   );
 
+  const getApplicationList = useCallback(async () => {
+    try {
+      setGetApplicationList(true);
+      const { data } = await onboardingService.getApplicationList();
+      setApplicationListData(data);
+      setGetApplicationList(false);
+    } catch (error) {
+      setGetApplicationList(false);
+      setErrorGetApplicationList(error as Error);
+    }
+  }, []);
+
   return useMemo(
     () => ({
       getUserProfile,
@@ -613,6 +649,7 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
       errorUpdateAddressDetails: _errorUpdateAddressDetails,
       setUserProfile,
       updateProfile,
+      getApplicationList,
       isUpdatedAddressDetails: _isUpdatedAddressDetails,
       isUpdatedMainDetails: _isUpdatedMainDetails,
       isUpdatedNationality: _isUpdatedNationality,
@@ -624,19 +661,25 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
       createApplication,
       isCreatedApplication: _isCreatedApplication,
       isCreatingApplication: _isCreatingApplication,
+      isGetApplicationList: _isGetApplicationList,
       errorCreateApplication: _errorCreateApplication,
+      errorGetApplicationList: _errorGetApplicationList,
       isUpdatedAccountDetails: _isUpdatedAccountDetails,
       isUpdatedOtherDetails: _isUpdatedOtherDetails,
-      applicationDetails: _applicationDetails
+      applicationDetails: _applicationDetails,
+      applicationList: _applicationListData
     }),
     [
       _applicationDetails,
+      _applicationListData,
       _data,
       _isUpdatedOtherDetails,
       _isUpdatedAccountDetails,
       _isCreatedApplication,
       _isCreatingApplication,
+      _isGetApplicationList,
       _errorCreateApplication,
+      _errorGetApplicationList,
       _isUpdatedNationality,
       _isUpdatedMainDetails,
       _isUpdatedAddressDetails,

@@ -280,3 +280,64 @@ export interface ApplicationDetails {
   lastName: string;
   middleName: string;
 }
+
+export interface ApplicationListData {
+  applicationId: string;
+  userId: string;
+  status: string;
+  createdAt: string;
+  applicantDetails: {
+    firstName: string;
+    lastName: string;
+    middleName: string;
+    gender: string;
+    dateOfBirth: string;
+    placeOfBirth: string;
+    maritalStatus: string;
+    nationality: string;
+    citizenFlag: boolean;
+    presentAsPermAddressFlag: boolean;
+    contactDetails: {
+      id: string;
+      contactType: string;
+      contactValue: string;
+    }[];
+    addresses: AddressParams[];
+  };
+  employmentDetails: {
+    id: string;
+    companyName: string;
+    companyType: string;
+    designation: string;
+    status: string;
+    createdAt: string;
+    contactDetails: [];
+    addresses: {
+      id: string;
+      city: string;
+      postcode: string;
+    }[];
+  }[];
+  guarantors: [];
+  credit: {
+    applicant: {
+      individual: {
+        minMonthlyIncome: number;
+        maxMonthlyIncome: number;
+        sourceOfFund: string;
+        accountPurpose: string;
+        creditCards: {
+          numberOfCC: number;
+        };
+        loans: {
+          numberOfLoans: number;
+        };
+      };
+    };
+  };
+  customFields: {
+    id: string;
+    customKey: string;
+    customValue: string;
+  }[];
+}

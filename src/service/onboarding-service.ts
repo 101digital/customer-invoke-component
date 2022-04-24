@@ -127,11 +127,20 @@ export class CustomerInvokeService {
   };
 
   createApplication = async (params: CreateApplicationParams) => {
-    if (this._membershipClient) {
+    if (this._accountOriginationClient) {
       const response = await this._accountOriginationClient.post(
         "applications",
         params
       );
+      return response.data;
+    } else {
+      throw new Error("Onboaring Client is not registered");
+    }
+  };
+
+  getApplicationList = async () => {
+    if (this._accountOriginationClient) {
+      const response = await this._accountOriginationClient.get("applications");
       return response.data;
     } else {
       throw new Error("Onboaring Client is not registered");
