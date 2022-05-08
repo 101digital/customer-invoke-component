@@ -125,13 +125,13 @@ const MainDetailComponent = ({
               <TouchableOpacity
                 onPress={() => {
                   /// Auto fill sample data
-                  setFieldValue("firstName", "Tuyen");
-                  setFieldValue("middleName", "Van");
-                  setFieldValue("lastName", "Nguyen");
-                  setFieldValue("dateOfBirth", "16 / 02 /1996");
+                  setFieldValue("firstName", "Sharmal");
+                  setFieldValue("middleName", "Peter");
+                  setFieldValue("lastName", "Perera");
+                  setFieldValue("dateOfBirth", "12 / 07 /1991");
                   setFieldValue("gender", "Male");
                   setFieldValue("maritalStatus", "Single");
-                  setFieldValue("email", "tuyen@101digital.io");
+                  setFieldValue("email", "sharmal@101digital.io");
                   setTimeout(() => {
                     formikRef?.current?.validateForm();
                   }, 0);

@@ -287,7 +287,8 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
           isPresentAsPermAddress,
           addresses.map(address => ({
             ...address,
-            addressType: address.addressType === 1 ? "Resident" : "Permanent",
+            addressType:
+              address.addressType === 1 ? "Residential" : "Permanent",
             buildingNumber: "-",
             apartmentName: "-",
             county: "-"
@@ -566,7 +567,7 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
               _data.addresses?.map(address => ({
                 ...address,
                 addressType:
-                  address.addressType === 1 ? "Resident" : "Permanent",
+                  address.addressType === 1 ? "Residential" : "Permanent",
                 buildingNumber: "-",
                 apartmentName: "-",
                 county: "-"
