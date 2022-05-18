@@ -31,7 +31,14 @@ const useMergeStyles = (style?: NationalityComponentStyles): NationalityComponen
       fontFamily: fonts.bold,
       fontSize: 16,
       lineHeight: 24,
-      marginTop: 40,
+      marginTop: 20,
+      // marginBottom: 20,
+    },
+    citizenHeader2TextStyle: {
+      fontFamily: fonts.bold,
+      fontSize: 16,
+      lineHeight: 24,
+      marginTop: 20,
       marginBottom: 20,
     },
     citizenMessageTextStyle: {

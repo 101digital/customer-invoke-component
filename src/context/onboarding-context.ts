@@ -10,7 +10,10 @@ import {
   CustomerInvokeData,
   Profile,
   ApplicationDetails,
-  ApplicationListData
+  ApplicationListData,
+  CountryListData,
+  ProvinceListData,
+  ProvincePagingData
 } from "../types";
 
 const onboardingService = CustomerInvokeService.instance();
@@ -51,10 +54,26 @@ export interface CustomerInvokeContextData {
   getApplicationList: () => void;
   errorCreateApplication?: Error;
   errorGetApplicationList?: Error;
+  isGetCountryList: boolean;
+  getCountryList: () => void;
+  errorGetCountryList?: Error;
   isUpdatedOtherDetails: boolean;
   isUpdatedAccountDetails: boolean;
   applicationDetails?: ApplicationDetails;
   applicationList?: ApplicationListData;
+  countryList?:CountryListData;
+  getProvinceList:(contryId:number,pageNumber:number,searchText?:string,parentLocationId?:string) => void;
+  provinceList?:ProvinceListData;
+  provincePaging?:ProvincePagingData;
+  getRegionList:(contryId:number,pageNumber:number,searchText?:string) => void;
+  regionList?:LocationListData;
+  regionPaging?:LocationPagingData;
+  getMunicipalityList:(contryId:number,pageNumber:number,searchText?:string,parentLocationId?:string) => void;
+  municipalityList?:LocationListData;
+  municipalityPaging?:LocationPagingData;
+  getBarangayList:(contryId:number,pageNumber:number,searchText?:string,parentLocationId?:string) => void;
+  barangayList?:LocationListData;
+  barangayPaging?:LocationPagingData;
 }
 
 export const onboardingDefaultValue: CustomerInvokeContextData = {
@@ -81,9 +100,15 @@ export const onboardingDefaultValue: CustomerInvokeContextData = {
   getApplicationList: () => null,
   isCreatingApplication: false,
   isGetApplicationList: false,
+  getCountryList: () => null,
+  isGetCountryList: false,
   isCreatedApplication: false,
   isUpdatedAccountDetails: false,
-  isUpdatedOtherDetails: false
+  isUpdatedOtherDetails: false,
+  getProvinceList: () => null,
+  getRegionList: () => null,
+  getMunicipalityList: () => null,
+  getBarangayList: () => null,
 };
 
 export const CustomerInvokeContext = React.createContext<
@@ -139,6 +164,62 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     Error | undefined
   >(undefined);
 
+  const [_isGetCountryList, setGetCountryList] = useState(false);
+  const [_CountryListData, setCountryListData] = useState<
+    CountryListData[] | undefined
+  >(undefined);
+  const [_errorGetCountryList, setErrorGetCountryList] = useState<
+    Error | undefined
+  >(undefined);
+
+
+  const [_isGetProvinceList, setGetProvinceList] = useState(false);
+  const [_ProvinceListData, setProvinceListData] = useState<
+    ProvinceListData[] | undefined
+  >(undefined);
+  const [_ProvinceListPagingData, setProvinceListPagingData] = useState<
+    ProvincePagingData | undefined
+  >(undefined);
+  const [_errorGetProvinceList, setErrorGetProvinceList] = useState<
+    Error | undefined
+  >(undefined);
+
+
+
+  const [_isGetRegionList, setGetRegionList] = useState(false);
+  const [_RegionListData, setRegionListData] = useState<
+    LocationListData[] | undefined
+  >(undefined);
+  const [_RegionListPagingData, setRegionListPagingData] = useState<
+    LocationPagingData | undefined
+  >(undefined);
+  const [_errorGetRegionList, setErrorGetRegionList] = useState<
+    Error | undefined
+  >(undefined);
+
+
+  const [_isGetMunicipalityList, setGetMunicipalityList] = useState(false);
+  const [_MunicipalityListData, setMunicipalityListData] = useState<
+    LocationListData[] | undefined
+  >(undefined);
+  const [_MunicipalityListPagingData, setMunicipalityListPagingData] = useState<
+    LocationPagingData | undefined
+  >(undefined);
+  const [_errorGetMunicipalityList, setErrorGetMunicipalityList] = useState<
+    Error | undefined
+  >(undefined);
+
+  const [_isGetBarangayList, setGetBarangayList] = useState(false);
+  const [_BarangayListData, setBarangayListData] = useState<
+    LocationListData[] | undefined
+  >(undefined);
+  const [_BarangayListPagingData, setBarangayListPagingData] = useState<
+    LocationPagingData | undefined
+  >(undefined);
+  const [_errorGetBarangayList, setErrorGetBarangayList] = useState<
+    Error | undefined
+  >(undefined);
+
   const getUserProfile = useCallback(async () => {
     try {
       setLoadingProfile(true);
@@ -170,6 +251,21 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     if (_errorGetApplicationList) {
       setErrorGetApplicationList(undefined);
     }
+    if (_errorGetCountryList) {
+      setErrorGetCountryList(undefined);
+    }
+    if (_errorGetProvinceList) {
+      setErrorGetProvinceList(undefined);
+    }
+    if (_errorGetRegionList) {
+      setErrorGetRegionList(undefined);
+    }
+    if (_errorGetMunicipalityList) {
+      setErrorGetMunicipalityList(undefined);
+    }
+    if (_errorGetBarangayList) {
+      setErrorGetBarangayList(undefined);
+    }
   }, [
     _errorLoadProfile,
     _errorAddMainDetails,
@@ -177,7 +273,12 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     _errorUpdateNationality,
     _errorUpdateAddressDetails,
     _errorCreateApplication,
-    _errorGetApplicationList
+    _errorGetApplicationList,
+    _errorGetCountryList,
+    _errorGetProvinceList,
+    _errorGetRegionList,
+    _errorGetMunicipalityList,
+    _errorGetBarangayList
   ]);
 
   const addMainDetails = useCallback(
@@ -523,6 +624,15 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     setData({});
     setApplicationDetails(undefined);
     setApplicationListData(undefined);
+    setCountryListData(undefined);
+    setProvinceListData(undefined);
+    setProvinceListPagingData(undefined)
+    setRegionListData(undefined);
+    setRegionListPagingData(undefined);
+    setMunicipalityListData(undefined);
+    setMunicipalityListPagingData(undefined);
+    setBarangayListData(undefined);
+    setBarangayListPagingData(undefined);
   }, []);
 
   const createApplication = useCallback(
@@ -633,6 +743,108 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     }
   }, []);
 
+  const getCountryList = useCallback(async () => {
+    try {
+      setGetCountryList(true);
+      const { data } = await onboardingService.getCountryList();
+      setCountryListData(data);
+      setTimeout(() => {
+        setGetCountryList(false);
+      }, 50);
+    } catch (error) {
+      setGetCountryList(false);
+      setErrorGetCountryList(error as Error);
+    }
+  }, []);
+
+  const getProvinceList = useCallback(async (contryId:number,pageNumber:number,searchText?:string,parentLocationId?:string) => {
+    try {
+      setGetProvinceList(true);
+
+      const { data, paging } = await onboardingService.getProvinceList(contryId,pageNumber,searchText,parentLocationId?parentLocationId:null);
+      if (pageNumber === 1) {
+        setProvinceListData(data);
+        setProvinceListPagingData(paging)
+      }else{
+        setProvinceListData([..._ProvinceListData,...data]);
+        setProvinceListPagingData(paging)
+      }
+
+      setTimeout(() => {
+        setGetProvinceList(false);
+      }, 50);
+    } catch (error) {
+      setGetProvinceList(false);
+      setErrorGetProvinceList(error as Error);
+    }
+  }, [setProvinceListData,_ProvinceListData]);
+
+  const getRegionList = useCallback(async (contryId:number,pageNumber:number,searchText?:string) => {
+    try {
+      setGetRegionList(true);
+
+      const { data, paging } = await onboardingService.getRegionList(contryId,pageNumber,searchText);
+      if (pageNumber === 1) {
+        setRegionListData(data);
+        setRegionListPagingData(paging)
+      }else{
+        setRegionListData([..._RegionListData,...data]);
+        setRegionListPagingData(paging)
+      }
+
+      setTimeout(() => {
+        setGetRegionList(false);
+      }, 50);
+    } catch (error) {
+      setGetRegionList(false);
+      setErrorGetRegionList(error as Error);
+    }
+  }, [setRegionListData,_RegionListData]);
+
+  const getMunicipalityList = useCallback(async (contryId:number,pageNumber:number,searchText?:string,parentLocationId?:string) => {
+    try {
+      setGetMunicipalityList(true);
+
+      const { data, paging } = await onboardingService.getMunicipalityList(contryId,pageNumber,searchText,parentLocationId?parentLocationId:null);
+      if (pageNumber === 1) {
+        setMunicipalityListData(data);
+        setMunicipalityListPagingData(paging)
+      }else{
+        setMunicipalityListData([..._MunicipalityListData,...data]);
+        setMunicipalityListPagingData(paging)
+      }
+
+      setTimeout(() => {
+        setGetMunicipalityList(false);
+      }, 50);
+    } catch (error) {
+      setGetMunicipalityList(false);
+      setErrorGetMunicipalityList(error as Error);
+    }
+  }, [setMunicipalityListData,_MunicipalityListData]);
+
+  const getBarangayList = useCallback(async (contryId:number,pageNumber:number,searchText?:string,parentLocationId?:string) => {
+    try {
+      setGetBarangayList(true);
+
+      const { data, paging } = await onboardingService.getBarangayList(contryId,pageNumber,searchText,parentLocationId?parentLocationId:null);
+      if (pageNumber === 1) {
+        setBarangayListData(data);
+        setBarangayListPagingData(paging)
+      }else{
+        setBarangayListData([..._BarangayListData,...data]);
+        setBarangayListPagingData(paging)
+      }
+
+      setTimeout(() => {
+        setGetBarangayList(false);
+      }, 50);
+    } catch (error) {
+      setGetBarangayList(false);
+      setErrorGetBarangayList(error as Error);
+    }
+  }, [setBarangayListData,_BarangayListData]);
+
   return useMemo(
     () => ({
       getUserProfile,
@@ -653,6 +865,7 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
       setUserProfile,
       updateProfile,
       getApplicationList,
+      getCountryList,
       isUpdatedAddressDetails: _isUpdatedAddressDetails,
       isUpdatedMainDetails: _isUpdatedMainDetails,
       isUpdatedNationality: _isUpdatedNationality,
@@ -667,14 +880,39 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
       isGetApplicationList: _isGetApplicationList,
       errorCreateApplication: _errorCreateApplication,
       errorGetApplicationList: _errorGetApplicationList,
+      isGetCountryList: _isGetCountryList,
+      errorGetCountryList: _errorGetCountryList,
       isUpdatedAccountDetails: _isUpdatedAccountDetails,
       isUpdatedOtherDetails: _isUpdatedOtherDetails,
       applicationDetails: _applicationDetails,
-      applicationList: _applicationListData
+      applicationList: _applicationListData,
+      countryList: _CountryListData,
+      getProvinceList,
+      isGetProvinceList:_isGetProvinceList,
+      provinceList: _ProvinceListData,
+      provincePaging: _ProvinceListPagingData,
+      errorGetProvinceList: _errorGetProvinceList,
+      getRegionList,
+      isGetRegionList:_isGetRegionList,
+      regionList: _RegionListData,
+      regionPaging: _RegionListPagingData,
+      errorGetRegionList: _errorGetRegionList,
+      getMunicipalityList,
+      isGetMunicipalityList:_isGetMunicipalityList,
+      municipalityList: _MunicipalityListData,
+      municipalityPaging: _MunicipalityListPagingData,
+      errorGetMunicipalityList: _errorGetMunicipalityList,
+      getBarangayList,
+      isGetBarangayList:_isGetBarangayList,
+      barangayList: _BarangayListData,
+      barangayPaging: _BarangayListPagingData,
+      errorGetBarangayList: _errorGetBarangayList,
+
     }),
     [
       _applicationDetails,
       _applicationListData,
+      _CountryListData,
       _data,
       _isUpdatedOtherDetails,
       _isUpdatedAccountDetails,
@@ -683,6 +921,8 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
       _isGetApplicationList,
       _errorCreateApplication,
       _errorGetApplicationList,
+      _isGetCountryList,
+      _errorGetCountryList,
       _isUpdatedNationality,
       _isUpdatedMainDetails,
       _isUpdatedAddressDetails,
@@ -695,7 +935,23 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
       _isUpdatingNationality,
       _errorUpdateNationality,
       _isUpdatingAddressDetails,
-      _errorUpdateAddressDetails
+      _errorUpdateAddressDetails,
+      _isGetProvinceList,
+      _ProvinceListData,
+      _errorGetProvinceList,
+      _ProvinceListPagingData,
+      _isGetRegionList,
+      _RegionListData,
+      _errorGetRegionList,
+      _RegionListPagingData,
+      _isGetMunicipalityList,
+      _MunicipalityListData,
+      _errorGetMunicipalityList,
+      _MunicipalityListPagingData,
+      _isGetBarangayList,
+      _BarangayListData,
+      _errorGetBarangayList,
+      _BarangayListPagingData
     ]
   );
 }

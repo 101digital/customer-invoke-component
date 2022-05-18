@@ -267,6 +267,7 @@ export interface MainDetailParam {
 export interface NationalityParam {
   placeOfBirth: string;
   nationality: string;
+  countryOfBirth: string;
   isCitizen: boolean;
   listCustomFields: {
     customKey: string;
@@ -340,4 +341,76 @@ export interface ApplicationListData {
     customKey: string;
     customValue: string;
   }[];
+}
+
+export type GroupCountryList = {
+  section: string;
+  items: CountryListData[];
+};
+
+export interface CountryListData {
+      id: number,
+      active: boolean,
+      capitalCity: string,
+      code2: string,
+      code3: string,
+      currencyInfo: {
+        listCurrency: [
+          {
+            code: string,
+            displayFormat: string,
+            displaySpace: number,
+            displaySymbol: string,
+            displaySymbolFirst: boolean,
+            isPrimary: boolean,
+            isoCode: string,
+            name: string,
+            symbol:string,
+          }
+        ]
+      },
+      idd:string,
+      name: string,
+      region: string,
+
+}
+
+
+export type GroupProvinceList = {
+  section: string;
+  items: ProvinceListData[];
+};
+
+export interface ProvinceListData {
+    id: string,
+    parentLocationId: string,
+    countryId:string,
+    locationLevel: number,
+    locationName: string,
+}
+
+export interface ProvincePagingData {
+  pageNumber: number,
+  pageSize: number,
+  totalRecords: number
+}
+
+
+export type GroupLocationList = {
+  section: string;
+  items: LocationListData[];
+};
+
+export interface LocationListData {
+    id: string,
+    parentLocationId: string,
+    countryId:string,
+    locationLevel: number,
+    locationName: string,
+}
+
+export interface LocationPagingData {
+  pageNumber: number,
+  pageSize: number,
+  totalRecords: number
 }

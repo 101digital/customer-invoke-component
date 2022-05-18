@@ -17,7 +17,10 @@ import KeyboardSpace from "../sub-components/keyboard-space";
 import SelectBarangayModal, {
   SelectBarangayModalStyles
 } from "./components/select-barangay-modal";
-import SelectCityModal from "../sub-components/select-city-modal";
+import SelectCityModal, {
+  SelectCityModalStyles
+} from "./components/select-city-modal";
+
 import SelectCountryModal, {
   SelectCountryModalStyles
 } from "./components/select-country-modal";
@@ -29,7 +32,7 @@ import SelectRegionModal, {
 } from "./components/select-region-modal";
 import { AddressDetailsData, AddressDetailsSchema } from "./model";
 import useMergeStyles from "./styles";
-import { SelectCivilModalStyles } from "../main-detail-component/components/select-civil-modal";
+// import { SelectCivilModalStyles } from "../main-detail-component/components/select-civil-modal";
 import { CustomerInvokeContext } from "../../context/onboarding-context";
 
 export type AddressDetailsComponentProps = {
@@ -54,7 +57,7 @@ export type AddressDetailsComponentStyles = {
   countryModalStyles?: SelectCountryModalStyles;
   regionModalStyles?: SelectRegionModalStyles;
   provinceModalStyles?: SelectProvinceModalStyles;
-  cityModalStyles?: SelectCivilModalStyles;
+  cityModalStyles?: SelectCityModalStyles;
   barangayModalStyles?: SelectBarangayModalStyles;
 };
 
@@ -68,6 +71,11 @@ const AddressDetailsComponent = ({
   const { colors, i18n } = useContext(ThemeContext);
   const formikRef: any = useRef(null);
   const [isPresentAsPermanent, setPresentAsPermanent] = useState(true);
+
+  const [regionId, setRegionId] = useState<number | undefined>(undefined);
+  const [provinceId, setProvinceId] = useState<number | undefined>(undefined);
+  const [municipalityId, setMunicipalityId] = useState<number | undefined>(undefined);
+
   const [openCountryModal, setOpenCountryModal] = useState<number | undefined>(
     undefined
   );
@@ -83,11 +91,17 @@ const AddressDetailsComponent = ({
   const [openBarangayModal, setOpenBarangayModal] = useState<
     number | undefined
   >(undefined);
+
+
   const {
     updateAddressDetails,
     isUpdatingAddressDetails,
     isUpdatedAddressDetails
   } = useContext(CustomerInvokeContext);
+
+  useEffect(() => {
+    _setFieldValue(0, "country", 'Philippines');
+  }, []);
 
   useEffect(() => {
     if (isUpdatedAddressDetails) {
@@ -115,6 +129,10 @@ const AddressDetailsComponent = ({
     return formikRef?.current?.values["addresses"][index][name];
   };
 
+
+
+
+
   return (
     <>
       <Formik
@@ -130,6 +148,7 @@ const AddressDetailsComponent = ({
       >
         {({ isValid, submitForm, values }) => {
           values.addresses;
+
           return (
             <View style={styles.containerStyle}>
               <KeyboardAwareScrollView
@@ -160,6 +179,7 @@ const AddressDetailsComponent = ({
                             </Text>
                             <TouchableOpacity
                               activeOpacity={0.8}
+                              disabled={true}
                               onPress={() => {
                                 setOpenCountryModal(index);
                               }}
@@ -182,13 +202,13 @@ const AddressDetailsComponent = ({
                                     borderWidth: 1,
                                     borderRadius: 5,
                                     borderBottomWidth: 1,
-                                    backgroundColor: "#fff"
+                                    backgroundColor: "#EAEAEB"
                                   }
                                 }}
                               />
                             </TouchableOpacity>
                             <Text style={styles.labelTextStyle}>
-                              {i18n?.t("address-detail.lbl_country") ??
+                              {i18n?.t("address-detail.lbl_region") ??
                                 "Region"}
                             </Text>
                             <TouchableOpacity
@@ -200,7 +220,7 @@ const AddressDetailsComponent = ({
                               <InputField
                                 name={_valueName(index, "region")}
                                 placeholder={
-                                  i18n?.t("address-detail.plh_country") ??
+                                  i18n?.t("address-detail.plh_region") ??
                                   "Region"
                                 }
                                 pointerEvents="none"
@@ -226,6 +246,7 @@ const AddressDetailsComponent = ({
                             </Text>
                             <TouchableOpacity
                               activeOpacity={0.8}
+                              disabled={values.addresses[0].region !=='' ? false :true}
                               onPress={() => {
                                 setOpenProvinceModal(index);
                               }}
@@ -248,7 +269,7 @@ const AddressDetailsComponent = ({
                                     borderWidth: 1,
                                     borderRadius: 5,
                                     borderBottomWidth: 1,
-                                    backgroundColor: "#fff"
+                                    backgroundColor: values.addresses[0].region !=='' ? "#fff" : "#EAEAEB"
                                   }
                                 }}
                               />
@@ -261,6 +282,7 @@ const AddressDetailsComponent = ({
                                 </Text>
                                 <TouchableOpacity
                                   activeOpacity={0.8}
+                                  disabled={values.addresses[0].province !=='' ? false :true}
                                   onPress={() => {
                                     setOpenCityModal(index);
                                   }}
@@ -283,7 +305,7 @@ const AddressDetailsComponent = ({
                                         borderWidth: 1,
                                         borderRadius: 5,
                                         borderBottomWidth: 1,
-                                        backgroundColor: "#fff"
+                                        backgroundColor: values.addresses[0].province !=='' ? "#fff" :  "#EAEAEB"
                                       }
                                     }}
                                   />
@@ -321,6 +343,7 @@ const AddressDetailsComponent = ({
                               onPress={() => {
                                 setOpenBarangayModal(index);
                               }}
+                              disabled={values.addresses[0].city !=='' ? false :true}
                             >
                               <InputField
                                 name={_valueName(index, "line3")}
@@ -340,7 +363,7 @@ const AddressDetailsComponent = ({
                                     borderWidth: 1,
                                     borderRadius: 5,
                                     borderBottomWidth: 1,
-                                    backgroundColor: "#fff"
+                                    backgroundColor: values.addresses[0].city !=='' ? "#fff" :  "#EAEAEB"
                                   }
                                 }}
                               />
@@ -487,48 +510,49 @@ const AddressDetailsComponent = ({
         onSelected={value => {
           const _index = openRegionModal;
           setOpenRegionModal(undefined);
-          _setFieldValue(_index!, "region", value.name);
+          setRegionId(value.id)
+          _setFieldValue(_index!, "region", value.locationName);
         }}
         style={styles.regionModalStyles}
       />
+
+
+
       <SelectProvinceModal
         initValue={_getFieldValue(openProvinceModal, "province")}
+        parentLocationId={regionId}
         isVisible={openProvinceModal !== undefined}
         onClose={() => setOpenProvinceModal(undefined)}
         onSelected={value => {
           const _index = openProvinceModal;
           setOpenProvinceModal(undefined);
-          _setFieldValue(_index!, "province", value.name);
+          setProvinceId(value.id)
+          _setFieldValue(_index!, "province", value.locationName);
         }}
         style={styles.provinceModalStyles}
       />
       <SelectCityModal
-        header={{
-          data: {
-            id: "selection-city",
-            title: "City / Municipality",
-            subTitle: "Select your city / municipality.",
-            progress: 0
-          }
-        }}
         initValue={_getFieldValue(openCityModal, "city")}
+        parentLocationId={provinceId}
         isVisible={openCityModal !== undefined}
         onClose={() => setOpenCityModal(undefined)}
         onSelected={value => {
           const _index = openCityModal;
           setOpenCityModal(undefined);
-          _setFieldValue(_index!, "city", value.name);
+          setMunicipalityId(value.id)
+          _setFieldValue(_index!, "city", value.locationName);
         }}
         style={styles.cityModalStyles}
       />
       <SelectBarangayModal
         initValue={_getFieldValue(openBarangayModal, "line3")}
+        parentLocationId={municipalityId}
         isVisible={openBarangayModal !== undefined}
         onClose={() => setOpenBarangayModal(undefined)}
         onSelected={value => {
           const _index = openBarangayModal;
           setOpenBarangayModal(undefined);
-          _setFieldValue(_index!, "line3", value.name);
+          _setFieldValue(_index!, "line3", value.locationName);
         }}
         style={styles.barangayModalStyles}
       />

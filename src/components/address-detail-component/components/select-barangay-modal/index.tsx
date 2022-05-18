@@ -14,18 +14,21 @@ import { BackIcon } from '../../../../assets/icons';
 import HeaderComponent from '../../../header-component';
 import KeyboardSpace from '../../../sub-components/keyboard-space';
 import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
-import { GroupBarangay, Barangay } from '../../../../types';
+import { GroupLocationList, LocationListData } from '../../../../types';
 import { filter, isEmpty, values } from 'lodash';
 import RadioGroupComponent from '../../../sub-components/radio-group';
 import SearchField from '../../../sub-components/search-field';
-const barangayData = require('../../../../assets/data/barangay.json');
+const nationalityData = require('../../../../assets/data/nationality.json');
+import { CustomerInvokeContext } from "../../../../context/onboarding-context";
+
 
 export type SelectBarangayModalProps = {
   initValue?: string | number;
+  parentLocationId?: string | number;
   isVisible: boolean;
   backIcon?: ReactNode;
   onClose: () => void;
-  onSelected: (value: Barangay) => void;
+  onSelected: (value: LocationListData) => void;
   style?: SelectBarangayModalStyles;
 };
 
@@ -33,15 +36,16 @@ export type SelectBarangayModalStyles = {
   containerStyle?: StyleProp<ViewStyle>;
   backButtonContainerStyle?: StyleProp<ViewStyle>;
   contentContainerStyle?: StyleProp<ViewStyle>;
-  barangayListStyle?: StyleProp<ViewStyle>;
+  nationalityListStyle?: StyleProp<ViewStyle>;
   sectionTextStyle?: StyleProp<TextStyle>;
-  barangayTextStyle?: StyleProp<TextStyle>;
+  nationalityTextStyle?: StyleProp<TextStyle>;
   footerContainerStyle?: StyleProp<ViewStyle>;
   emptyResultTextStyle?: StyleProp<TextStyle>;
 };
 
 const SelectBarangayModal = ({
   initValue,
+  parentLocationId,
   style,
   isVisible,
   onClose,
@@ -49,36 +53,54 @@ const SelectBarangayModal = ({
   onSelected,
 }: SelectBarangayModalProps) => {
   const styles: SelectBarangayModalStyles = useMergeStyles(style);
-  const barangays: Barangay[] = JSON.parse(JSON.stringify(barangayData));
-  const [groupBarangays, setGroupBarangays] = useState<GroupBarangay[]>([]);
-  const [selectedBarangay, setSelectedBarangay] = useState<Barangay | undefined>(undefined);
+
+  const [groupNationalities, setGroupNationalities] = useState<GroupLocationList[]>([]);
+  const [selectedBarangay, setSelectedBarangay] = useState<LocationListData | undefined>();
+  const [searchText, setSearchText] = useState<string>('');
   const { colors } = useContext(ThemeContext);
+  const {
+    barangayList,
+    getBarangayList,
+    barangayPaging
+  } = useContext(CustomerInvokeContext);
+  // const nationalities: Barangay[] = barangayList;
+  // const groupedTransactions = groupTransactions(wallet.walletId);
 
   useEffect(() => {
-    if (initValue) {
-      setSelectedBarangay(barangays.find((b) => b.id === initValue || b.name === initValue));
+    if (parentLocationId) {
+      getBarangayList(179,1,null,parentLocationId)
+
+    }
+  }, [isVisible]);
+
+  useEffect(() => {
+    if (barangayList) {
+      setSelectedBarangay(barangayList.find((n) => n.id === initValue || n.locationName === initValue));
     }
   }, [initValue, isVisible]);
 
   useEffect(() => {
-    setGroupBarangays(_handleSearch());
-    return () => {
-      setGroupBarangays(_handleSearch());
-    };
-  }, [isVisible]);
+    if (barangayList) {
+      setGroupNationalities(_handleSearch());
+      return () => {
+        setGroupNationalities(_handleSearch());
+      };
+    }
+
+  }, [isVisible,barangayList]);
 
   const _handleSearch = (key?: string) => {
-    let _barangays = isEmpty(key)
-      ? barangays
-      : filter(barangays, (n) => n.name.toLowerCase().includes(key!.toLowerCase()));
-    const _groups: GroupBarangay[] = values(
-      _barangays
-        .map((n) => ({ ...n, section: n.isFeatured ? 'Featured' : n.name }))
+    let _nationalities = isEmpty(key)
+      ? barangayList
+      : filter(barangayList, (n) => n.locationName.toLowerCase().includes(key!.toLowerCase()));
+    const _groups: GroupLocationList[] = values(
+      _nationalities
+        .map((n) => ({ ...n, section: n.isFeatured ? 'Featured' : n.locationName }))
         .sort((a: Barangay, b: Barangay) => {
-          return a.name.localeCompare(b.name, 'es', { sensitivity: 'base' });
+          return a.locationName.localeCompare(b.locationName, 'es', { sensitivity: 'base' });
         })
         .reduce((r: any, n: Barangay) => {
-          let section = n.isFeatured ? 'Featured' : n.name[0].toUpperCase();
+          let section = n.isFeatured ? 'Featured' : n.locationName[0].toUpperCase();
           if (!r[section]) {
             r[section] = { section, items: [n] };
           } else {
@@ -97,6 +119,7 @@ const SelectBarangayModal = ({
     }
     return _groups;
   };
+
 
   return (
     <BottomSheet
@@ -132,24 +155,31 @@ const SelectBarangayModal = ({
         />
         <SearchField
           onSearch={(key: string) => {
-            setGroupBarangays(_handleSearch(key));
+            if (parentLocationId) {
+              getBarangayList(179,1,key,parentLocationId)
+            }else{
+              getBarangayList(179,1,key)
+            }
+
+            setSearchText(key)
+            // setGroupNationalities(_handleSearch(key));
           }}
-          placeholder={'Search barangay'}
+          placeholder={'Search nationality'}
         />
-        {isEmpty(groupBarangays) ? (
+        {isEmpty(groupNationalities) ? (
           <Text style={styles.emptyResultTextStyle}>{'No results found.'}</Text>
         ) : (
           <KeyboardAwareFlatList
             keyExtractor={(item) => item.section}
-            data={groupBarangays}
+            data={groupNationalities}
             keyboardShouldPersistTaps="handled"
-            style={styles.barangayListStyle}
+            style={styles.nationalityListStyle}
             showsVerticalScrollIndicator={false}
             keyboardOpeningTime={Number.MAX_SAFE_INTEGER}
             renderItem={({ item }) => {
               const radioValue =
                 selectedBarangay !== undefined
-                  ? { id: selectedBarangay.id, label: selectedBarangay.name }
+                  ? { id: selectedBarangay.id, label: selectedBarangay.locationName }
                   : undefined;
               return (
                 <View>
@@ -157,20 +187,37 @@ const SelectBarangayModal = ({
                   <RadioGroupComponent
                     value={radioValue}
                     variant="inner"
-                    data={item.items.map((n: Barangay) => ({ id: n.id, label: n.name }))}
+                    data={item.items.map((n: LocationListData) => ({
+                      id: n.id,
+                      label: n.locationName,
+                    }))}
                     onChangeValue={(value) => {
-                      setSelectedBarangay(barangays.find((n) => n.id === value.id));
+                      setSelectedBarangay(barangayList.find((n) => n.id === value.id));
                     }}
                     style={{
                       containerStyle: {
                         marginVertical: 0,
                       },
-                      titleTextStyle: styles.barangayTextStyle,
+                      titleTextStyle: styles.nationalityTextStyle,
                     }}
                   />
                 </View>
               );
             }}
+            onEndReached={()=>{
+
+              let number = 1
+              if (barangayPaging  && barangayPaging.pageNumber) {
+                number = barangayPaging.pageNumber+1
+              }
+              if (parentLocationId) {
+                getBarangayList(179,number,searchText,parentLocationId)
+              }else{
+                getBarangayList(179,number,searchText)
+              }
+
+            }}
+            onEndReachedThreshold={0.5}
           />
         )}
         <KeyboardSpace style={styles.footerContainerStyle}>

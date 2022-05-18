@@ -2,19 +2,21 @@ import * as Yup from 'yup';
 
 export class NationalityData {
   constructor(
-    readonly placeOfBirth: string,
+    readonly countryOfBirth: string,
     readonly nationality: string,
+    readonly placeOfBirth: string,
     readonly isCitizen?: string
   ) {}
 
-  static empty(placeOfBirth?: string, nationality?: string): NationalityData {
-    return new NationalityData(placeOfBirth ?? '', nationality ?? '');
+  static empty(countryOfBirth?: string, nationality?: string,placeOfBirth?:string): NationalityData {
+    return new NationalityData(countryOfBirth ?? '', nationality ?? '', placeOfBirth ?? '');
   }
 }
 
 export const NationalityDataSchema = () =>
   Yup.object().shape({
-    placeOfBirth: Yup.string().trim().required('Enter place of birth'),
+    countryOfBirth: Yup.string().trim().required('Enter place of birth'),
     nationality: Yup.string().trim().required('Select nationality'),
+    placeOfBirth: Yup.string().trim().required('Select province'),
     isCitizen: Yup.string().required(),
   });

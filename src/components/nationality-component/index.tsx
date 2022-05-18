@@ -19,6 +19,12 @@ import RadioGroupComponent from "../sub-components/radio-group";
 import SelectNationalityModal, {
   SelectNationalityModalStyles
 } from "./components/select-nationality-modal";
+import SelectCountryModal, {
+  SelectCountryModalStyles
+} from "./components/select-country-modal";
+import SelectProvinceModal, {
+  SelectProvinceModalStyles
+} from "./components/select-province-modal";
 import { NationalityData, NationalityDataSchema } from "./model";
 import useMergeStyles from "./styles";
 
@@ -38,6 +44,8 @@ export type NationalityComponentStyles = {
   citizenMessageTextStyle?: StyleProp<TextStyle>;
   footerContainerStyle?: StyleProp<ViewStyle>;
   nationalityModalStyles?: SelectNationalityModalStyles;
+  countryModalStyles?: SelectCountryModalStyles;
+  provinceModalStyles?: SelectProvinceModalStyles;
   restrictAlertModalStyles?: AlertModalStyles;
 };
 
@@ -50,6 +58,9 @@ const NationalityComponent = ({
   const styles: NationalityComponentStyles = useMergeStyles(style);
   const { colors, i18n } = useContext(ThemeContext);
   const [openNationalityModal, setOpenNationalityModal] = useState(false);
+  const [openCountryModal, setOpenCountryModal] = useState(false);
+  const [openProvinceModal, setOpenProvinceModal] = useState(false);
+
   const [isShowLimitModal, setShowLimitModal] = useState(false);
   const _citizenOptions = [
     { id: "no", label: "No. I’m not a U.S citizen" },
@@ -59,8 +70,18 @@ const NationalityComponent = ({
   const {
     updateNationality,
     isUpdatedNationality,
-    isUpdatingNationality
+    isUpdatingNationality,
+    // getCountryList,
+    countryList,
+    getProvinceList,
+    provinceList
   } = useContext(CustomerInvokeContext);
+
+  useEffect(() => {
+    formikRef?.current?.setFieldValue("nationality", 'Filipino');
+    formikRef?.current?.setFieldValue("countryOfBirth", 'Philippines');
+
+  }, []);
 
   useEffect(() => {
     if (isUpdatedNationality) {
@@ -73,6 +94,9 @@ const NationalityComponent = ({
       formikRef?.current?.validateForm();
     }, 0);
   }, [initData]);
+
+  // console.log('provinceList ',provinceList);
+
 
   return (
     <>
@@ -102,7 +126,7 @@ const NationalityComponent = ({
                 <TouchableOpacity
                   onPress={() => {
                     // auto fill sample data
-                    setFieldValue("placeOfBirth", "Singapore");
+                    setFieldValue("countryOfBirth", "Philippines");
                     setFieldValue("nationality", "Filipino");
                     setFieldValue("isCitizen", "no");
                     setTimeout(() => {
@@ -113,31 +137,12 @@ const NationalityComponent = ({
                   <HeaderComponent {...header} />
                 </TouchableOpacity>
                 <Text style={styles.labelTextStyle}>
-                  {i18n?.t("nationality-component.lbl_birth_place") ??
-                    "Place of birth"}
-                </Text>
-                <InputField
-                  name="placeOfBirth"
-                  placeholder={
-                    i18n?.t("nationality-component.plh_birth_place") ??
-                    "Enter place of birth"
-                  }
-                  maxLength={100}
-                  style={{
-                    contentContainerStyle: {
-                      borderWidth: 1,
-                      borderRadius: 5,
-                      borderBottomWidth: 1,
-                      backgroundColor: "#fff"
-                    }
-                  }}
-                />
-                <Text style={styles.labelTextStyle}>
                   {i18n?.t("nationality-component.lbl_nationality") ??
                     "Nationality"}
                 </Text>
                 <TouchableOpacity
                   activeOpacity={0.8}
+                  disabled={true}
                   onPress={() => {
                     setOpenNationalityModal(true);
                   }}
@@ -160,12 +165,100 @@ const NationalityComponent = ({
                         borderWidth: 1,
                         borderRadius: 5,
                         borderBottomWidth: 1,
-                        backgroundColor: "#fff"
+                        backgroundColor: "#EAEAEB"
                       }
                     }}
                   />
                 </TouchableOpacity>
                 <Text style={styles.citizenHeaderTextStyle}>
+                  {i18n?.t("nationality-component.lbl_birth_place") ??
+                    "Place of birth"}
+                </Text>
+                <Text style={styles.labelTextStyle}>
+                  {i18n?.t("nationality-component.lbl_country") ??
+                    "Country"}
+                </Text>
+              {/*  <InputField
+                  name="countryOfBirth"
+                  placeholder={
+                    i18n?.t("nationality-component.plh_birth_place") ??
+                    "Enter place of birth"
+                  }
+                  maxLength={100}
+                  style={{
+                    contentContainerStyle: {
+                      borderWidth: 1,
+                      borderRadius: 5,
+                      borderBottomWidth: 1,
+                      backgroundColor: "#fff"
+                    }
+                  }}
+                />*/}
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={() => {
+                    setOpenCountryModal(true);
+                  }}
+                >
+                  <InputField
+                    name="countryOfBirth"
+                    placeholder={
+                      i18n?.t("nationality-component.plh_birth_place") ??
+                      "Select Country"
+                    }
+                    pointerEvents="none"
+                    editable={false}
+                    suffixIcon={
+                      <View style={styles.suffixContainerStyle}>
+                        <ArrowDownIcon width={24} height={24} />
+                      </View>
+                    }
+                    style={{
+                      contentContainerStyle: {
+                        borderWidth: 1,
+                        borderRadius: 5,
+                        borderBottomWidth: 1,
+                        backgroundColor: "#EAEAEB"
+                      }
+                    }}
+                  />
+                </TouchableOpacity>
+
+                <Text style={styles.labelTextStyle}>
+                  {i18n?.t("nationality-component.lbl_province") ??
+                    "Province"}
+                </Text>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={() => {
+                    setOpenProvinceModal(true);
+                  }}
+                >
+                  <InputField
+                    name="placeOfBirth"
+                    placeholder={
+                      i18n?.t("nationality-component.plh_province") ??
+                      "Select Province"
+                    }
+                    pointerEvents="none"
+                    editable={false}
+                    suffixIcon={
+                      <View style={styles.suffixContainerStyle}>
+                        <ArrowDownIcon width={24} height={24} />
+                      </View>
+                    }
+                    style={{
+                      contentContainerStyle: {
+                        borderWidth: 1,
+                        borderRadius: 5,
+                        borderBottomWidth: 1,
+                        backgroundColor: "#fff"
+                      }
+                    }}
+                  />
+                </TouchableOpacity>
+
+                <Text style={styles.citizenHeader2TextStyle}>
                   {i18n?.t("nationality-component.lbl_citizen") ??
                     "Are you a U.S citizen?"}
                 </Text>
@@ -217,6 +310,26 @@ const NationalityComponent = ({
           formikRef?.current?.setFieldValue("nationality", value.name);
         }}
         style={styles.nationalityModalStyles}
+      />
+      {countryList && <SelectCountryModal
+        initValue={formikRef?.current?.values.countryOfBirth}
+        isVisible={openCountryModal}
+        onClose={() => setOpenCountryModal(false)}
+        onSelected={value => {
+          setOpenCountryModal(false);
+          formikRef?.current?.setFieldValue("countryOfBirth", value.name);
+        }}
+        style={styles.countryModalStyles}
+      />}
+      <SelectProvinceModal
+        initValue={formikRef?.current?.values.province}
+        isVisible={openProvinceModal}
+        onClose={() => setOpenProvinceModal(false)}
+        onSelected={value => {
+          setOpenProvinceModal(false);
+          formikRef?.current?.setFieldValue("placeOfBirth", value.locationName);
+        }}
+        style={styles.provinceModalStyles}
       />
       <AlertModal
         isVisible={isShowLimitModal}

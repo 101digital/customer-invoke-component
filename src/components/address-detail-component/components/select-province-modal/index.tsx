@@ -14,14 +14,17 @@ import { BackIcon } from '../../../../assets/icons';
 import HeaderComponent from '../../../header-component';
 import KeyboardSpace from '../../../sub-components/keyboard-space';
 import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
-import { GroupProvince, Province } from '../../../../types';
+import { GroupProvinceList, ProvinceListData } from '../../../../types';
 import { filter, isEmpty, values } from 'lodash';
 import RadioGroupComponent from '../../../sub-components/radio-group';
 import SearchField from '../../../sub-components/search-field';
-const provinceData = require('../../../../assets/data/province.json');
+const nationalityData = require('../../../../assets/data/nationality.json');
+import { CustomerInvokeContext } from "../../../../context/onboarding-context";
+
 
 export type SelectProvinceModalProps = {
   initValue?: string | number;
+  parentLocationId?: string | number;
   isVisible: boolean;
   backIcon?: ReactNode;
   onClose: () => void;
@@ -33,15 +36,16 @@ export type SelectProvinceModalStyles = {
   containerStyle?: StyleProp<ViewStyle>;
   backButtonContainerStyle?: StyleProp<ViewStyle>;
   contentContainerStyle?: StyleProp<ViewStyle>;
-  provinceListStyle?: StyleProp<ViewStyle>;
+  nationalityListStyle?: StyleProp<ViewStyle>;
   sectionTextStyle?: StyleProp<TextStyle>;
-  provinceTextStyle?: StyleProp<TextStyle>;
+  nationalityTextStyle?: StyleProp<TextStyle>;
   footerContainerStyle?: StyleProp<ViewStyle>;
   emptyResultTextStyle?: StyleProp<TextStyle>;
 };
 
 const SelectProvinceModal = ({
   initValue,
+  parentLocationId,
   style,
   isVisible,
   onClose,
@@ -49,34 +53,54 @@ const SelectProvinceModal = ({
   onSelected,
 }: SelectProvinceModalProps) => {
   const styles: SelectProvinceModalStyles = useMergeStyles(style);
-  const provinces: Province[] = JSON.parse(JSON.stringify(provinceData));
-  const [groupProvinces, setGroupProvinces] = useState<GroupProvince[]>([]);
-  const [selectedProvince, setSelectedProvince] = useState<Province | undefined>(undefined);
+
+  const [groupNationalities, setGroupNationalities] = useState<GroupProvinceList[]>([]);
+  const [selectedProvince, setSelectedProvince] = useState<Province | undefined>();
+  const [searchText, setSearchText] = useState<string>('');
   const { colors } = useContext(ThemeContext);
+  const {
+    provinceList,
+    getProvinceList,
+    provincePaging
+  } = useContext(CustomerInvokeContext);
+  // const nationalities: Province[] = provinceList;
+  // const groupedTransactions = groupTransactions(wallet.walletId);
 
   useEffect(() => {
-    setSelectedProvince(provinces.find((p) => p.id === initValue || p.name === initValue));
+    if (parentLocationId) {
+      getProvinceList(179,1,null,parentLocationId)
+
+    }
+  }, [isVisible]);
+
+  useEffect(() => {
+    if (provinceList) {
+      setSelectedProvince(provinceList.find((n) => n.id === initValue || n.locationName === initValue));
+    }
   }, [initValue, isVisible]);
 
   useEffect(() => {
-    setGroupProvinces(_handleSearch());
-    return () => {
-      setGroupProvinces(_handleSearch());
-    };
-  }, [isVisible]);
+    if (provinceList) {
+      setGroupNationalities(_handleSearch());
+      return () => {
+        setGroupNationalities(_handleSearch());
+      };
+    }
+
+  }, [isVisible,provinceList]);
 
   const _handleSearch = (key?: string) => {
-    let _provinces = isEmpty(key)
-      ? provinces
-      : filter(provinces, (n) => n.name.toLowerCase().includes(key!.toLowerCase()));
-    const _groups: GroupProvince[] = values(
-      _provinces
-        .map((n) => ({ ...n, section: n.isFeatured ? 'Featured' : n.name }))
+    let _nationalities = isEmpty(key)
+      ? provinceList
+      : filter(provinceList, (n) => n.locationName.toLowerCase().includes(key!.toLowerCase()));
+    const _groups: GroupProvinceList[] = values(
+      _nationalities
+        .map((n) => ({ ...n, section: n.isFeatured ? 'Featured' : n.locationName }))
         .sort((a: Province, b: Province) => {
-          return a.name.localeCompare(b.name, 'es', { sensitivity: 'base' });
+          return a.locationName.localeCompare(b.locationName, 'es', { sensitivity: 'base' });
         })
         .reduce((r: any, n: Province) => {
-          let section = n.isFeatured ? 'Featured' : n.name[0].toUpperCase();
+          let section = n.isFeatured ? 'Featured' : n.locationName[0].toUpperCase();
           if (!r[section]) {
             r[section] = { section, items: [n] };
           } else {
@@ -95,6 +119,7 @@ const SelectProvinceModal = ({
     }
     return _groups;
   };
+
 
   return (
     <BottomSheet
@@ -122,32 +147,39 @@ const SelectProvinceModal = ({
       <View style={styles.contentContainerStyle}>
         <HeaderComponent
           data={{
-            id: 'selection-province',
+            id: 'selection-nationality',
             title: 'Province',
-            subTitle: 'Select your province.',
+            subTitle: 'Select your Province.',
             progress: 0,
           }}
         />
         <SearchField
           onSearch={(key: string) => {
-            setGroupProvinces(_handleSearch(key));
+            if (parentLocationId) {
+              getProvinceList(179,1,key,parentLocationId)
+            }else{
+              getProvinceList(179,1,key)
+            }
+
+            setSearchText(key)
+            // setGroupNationalities(_handleSearch(key));
           }}
-          placeholder={'Search province'}
+          placeholder={'Search nationality'}
         />
-        {isEmpty(groupProvinces) ? (
+        {isEmpty(groupNationalities) ? (
           <Text style={styles.emptyResultTextStyle}>{'No results found.'}</Text>
         ) : (
           <KeyboardAwareFlatList
             keyExtractor={(item) => item.section}
-            data={groupProvinces}
+            data={groupNationalities}
             keyboardShouldPersistTaps="handled"
-            style={styles.provinceListStyle}
+            style={styles.nationalityListStyle}
             showsVerticalScrollIndicator={false}
             keyboardOpeningTime={Number.MAX_SAFE_INTEGER}
             renderItem={({ item }) => {
               const radioValue =
                 selectedProvince !== undefined
-                  ? { id: selectedProvince.id, label: selectedProvince.name }
+                  ? { id: selectedProvince.id, label: selectedProvince.locationName }
                   : undefined;
               return (
                 <View>
@@ -155,20 +187,37 @@ const SelectProvinceModal = ({
                   <RadioGroupComponent
                     value={radioValue}
                     variant="inner"
-                    data={item.items.map((n: Province) => ({ id: n.id, label: n.name }))}
+                    data={item.items.map((n: Province) => ({
+                      id: n.id,
+                      label: n.locationName,
+                    }))}
                     onChangeValue={(value) => {
-                      setSelectedProvince(provinces.find((n) => n.id === value.id));
+                      setSelectedProvince(provinceList.find((n) => n.id === value.id));
                     }}
                     style={{
                       containerStyle: {
                         marginVertical: 0,
                       },
-                      titleTextStyle: styles.provinceTextStyle,
+                      titleTextStyle: styles.nationalityTextStyle,
                     }}
                   />
                 </View>
               );
             }}
+            onEndReached={()=>{
+
+              let number = 1
+              if (provincePaging  && provincePaging.pageNumber) {
+                number = provincePaging.pageNumber+1
+              }
+              if (parentLocationId) {
+                getProvinceList(179,number,searchText,parentLocationId)
+              }else{
+                getProvinceList(179,number,searchText)
+              }
+
+            }}
+            onEndReachedThreshold={0.5}
           />
         )}
         <KeyboardSpace style={styles.footerContainerStyle}>

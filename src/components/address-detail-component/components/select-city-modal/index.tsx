@@ -22,16 +22,17 @@ const nationalityData = require('../../../../assets/data/nationality.json');
 import { CustomerInvokeContext } from "../../../../context/onboarding-context";
 
 
-export type SelectRegionModalProps = {
+export type SelectCityModalProps = {
   initValue?: string | number;
+  parentLocationId?: string | number;
   isVisible: boolean;
   backIcon?: ReactNode;
   onClose: () => void;
   onSelected: (value: LocationListData) => void;
-  style?: SelectRegionModalStyles;
+  style?: SelectCityModalStyles;
 };
 
-export type SelectRegionModalStyles = {
+export type SelectCityModalStyles = {
   containerStyle?: StyleProp<ViewStyle>;
   backButtonContainerStyle?: StyleProp<ViewStyle>;
   contentContainerStyle?: StyleProp<ViewStyle>;
@@ -42,61 +43,63 @@ export type SelectRegionModalStyles = {
   emptyResultTextStyle?: StyleProp<TextStyle>;
 };
 
-const SelectRegionModal = ({
+const SelectCityModal = ({
   initValue,
+  parentLocationId,
   style,
   isVisible,
   onClose,
   backIcon,
   onSelected,
-}: SelectRegionModalProps) => {
-  const styles: SelectRegionModalStyles = useMergeStyles(style);
+}: SelectCityModalProps) => {
+  const styles: SelectCityModalStyles = useMergeStyles(style);
 
   const [groupNationalities, setGroupNationalities] = useState<GroupLocationList[]>([]);
-  const [selectedRegion, setSelectedRegion] = useState<Region | undefined>();
+  const [selectedCity, setSelectedCity] = useState<LocationListData | undefined>();
   const [searchText, setSearchText] = useState<string>('');
   const { colors } = useContext(ThemeContext);
   const {
-    regionList,
-    getRegionList,
-    regionPaging
+    municipalityList,
+    getMunicipalityList,
+    municipalityPaging
   } = useContext(CustomerInvokeContext);
-  // const nationalities: Region[] = regionList;
+  // const nationalities: City[] = municipalityList;
   // const groupedTransactions = groupTransactions(wallet.walletId);
 
   useEffect(() => {
-    if (!regionList) {
-      getRegionList(179,1)
+    if (parentLocationId) {
+      getMunicipalityList(179,1,null,parentLocationId)
+
     }
   }, [isVisible]);
 
   useEffect(() => {
-    if (regionList) {
-      setSelectedRegion(regionList.find((n) => n.id === initValue || n.locationName === initValue));
+    if (municipalityList) {
+      setSelectedCity(municipalityList.find((n) => n.id === initValue || n.locationName === initValue));
     }
   }, [initValue, isVisible]);
 
   useEffect(() => {
-    if (regionList) {
+    if (municipalityList) {
       setGroupNationalities(_handleSearch());
       return () => {
         setGroupNationalities(_handleSearch());
       };
     }
 
-  }, [isVisible,regionList]);
+  }, [isVisible,municipalityList]);
 
   const _handleSearch = (key?: string) => {
     let _nationalities = isEmpty(key)
-      ? regionList
-      : filter(regionList, (n) => n.locationName.toLowerCase().includes(key!.toLowerCase()));
-    const _groups: GroupRegionList[] = values(
+      ? municipalityList
+      : filter(municipalityList, (n) => n.locationName.toLowerCase().includes(key!.toLowerCase()));
+    const _groups: GroupLocationList[] = values(
       _nationalities
         .map((n) => ({ ...n, section: n.isFeatured ? 'Featured' : n.locationName }))
-        .sort((a: Region, b: Region) => {
+        .sort((a: City, b: City) => {
           return a.locationName.localeCompare(b.locationName, 'es', { sensitivity: 'base' });
         })
-        .reduce((r: any, n: Region) => {
+        .reduce((r: any, n: City) => {
           let section = n.isFeatured ? 'Featured' : n.locationName[0].toUpperCase();
           if (!r[section]) {
             r[section] = { section, items: [n] };
@@ -144,15 +147,20 @@ const SelectRegionModal = ({
       <View style={styles.contentContainerStyle}>
         <HeaderComponent
           data={{
-            id: 'selection-region',
-            title: 'Region',
-            subTitle: 'Select your region.',
+            id: 'selection-city',
+            title: 'City / Municipality',
+            subTitle: 'Select your city / municipality.',
             progress: 0,
           }}
         />
         <SearchField
           onSearch={(key: string) => {
-            getRegionList(179,1,key)
+            if (parentLocationId) {
+              getMunicipalityList(179,1,key,parentLocationId)
+            }else{
+              getMunicipalityList(179,1,key)
+            }
+
             setSearchText(key)
             // setGroupNationalities(_handleSearch(key));
           }}
@@ -170,8 +178,8 @@ const SelectRegionModal = ({
             keyboardOpeningTime={Number.MAX_SAFE_INTEGER}
             renderItem={({ item }) => {
               const radioValue =
-                selectedRegion !== undefined
-                  ? { id: selectedRegion.id, label: selectedRegion.locationName }
+                selectedCity !== undefined
+                  ? { id: selectedCity.id, label: selectedCity.locationName }
                   : undefined;
               return (
                 <View>
@@ -184,7 +192,7 @@ const SelectRegionModal = ({
                       label: n.locationName,
                     }))}
                     onChangeValue={(value) => {
-                      setSelectedRegion(regionList.find((n) => n.id === value.id));
+                      setSelectedCity(municipalityList.find((n) => n.id === value.id));
                     }}
                     style={{
                       containerStyle: {
@@ -199,21 +207,25 @@ const SelectRegionModal = ({
             onEndReached={()=>{
 
               let number = 1
-              if (regionPaging  && regionPaging.pageNumber) {
-                number = regionPaging.pageNumber+1
+              if (municipalityPaging  && municipalityPaging.pageNumber) {
+                number = municipalityPaging.pageNumber+1
+              }
+              if (parentLocationId) {
+                getMunicipalityList(179,number,searchText,parentLocationId)
+              }else{
+                getMunicipalityList(179,number,searchText)
               }
 
-              getRegionList(179,number,searchText)
             }}
             onEndReachedThreshold={0.5}
           />
         )}
         <KeyboardSpace style={styles.footerContainerStyle}>
           <Button
-            disabled={selectedRegion === undefined}
+            disabled={selectedCity === undefined}
             onPress={() => {
-              if (selectedRegion) {
-                onSelected(selectedRegion);
+              if (selectedCity) {
+                onSelected(selectedCity);
               }
             }}
             label="Select"
@@ -225,4 +237,4 @@ const SelectRegionModal = ({
   );
 };
 
-export default SelectRegionModal;
+export default SelectCityModal;
