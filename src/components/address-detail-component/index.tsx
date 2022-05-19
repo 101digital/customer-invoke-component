@@ -246,7 +246,7 @@ const AddressDetailsComponent = ({
                             </Text>
                             <TouchableOpacity
                               activeOpacity={0.8}
-                              disabled={values.addresses[0].region !=='' ? false :true}
+                              disabled={values.addresses[index].region !=='' ? false :true}
                               onPress={() => {
                                 setOpenProvinceModal(index);
                               }}
@@ -269,7 +269,7 @@ const AddressDetailsComponent = ({
                                     borderWidth: 1,
                                     borderRadius: 5,
                                     borderBottomWidth: 1,
-                                    backgroundColor: values.addresses[0].region !=='' ? "#fff" : "#EAEAEB"
+                                    backgroundColor: values.addresses[index].region !=='' ? "#fff" : "#EAEAEB"
                                   }
                                 }}
                               />
@@ -282,7 +282,7 @@ const AddressDetailsComponent = ({
                                 </Text>
                                 <TouchableOpacity
                                   activeOpacity={0.8}
-                                  disabled={values.addresses[0].province !=='' ? false :true}
+                                  disabled={values.addresses[index].province !=='' ? false :true}
                                   onPress={() => {
                                     setOpenCityModal(index);
                                   }}
@@ -305,7 +305,7 @@ const AddressDetailsComponent = ({
                                         borderWidth: 1,
                                         borderRadius: 5,
                                         borderBottomWidth: 1,
-                                        backgroundColor: values.addresses[0].province !=='' ? "#fff" :  "#EAEAEB"
+                                        backgroundColor: values.addresses[index].province !=='' ? "#fff" :  "#EAEAEB"
                                       }
                                     }}
                                   />
@@ -343,7 +343,7 @@ const AddressDetailsComponent = ({
                               onPress={() => {
                                 setOpenBarangayModal(index);
                               }}
-                              disabled={values.addresses[0].city !=='' ? false :true}
+                              disabled={values.addresses[index].city !=='' ? false :true}
                             >
                               <InputField
                                 name={_valueName(index, "line3")}
@@ -363,7 +363,7 @@ const AddressDetailsComponent = ({
                                     borderWidth: 1,
                                     borderRadius: 5,
                                     borderBottomWidth: 1,
-                                    backgroundColor: values.addresses[0].city !=='' ? "#fff" :  "#EAEAEB"
+                                    backgroundColor: values.addresses[index].city !=='' ? "#fff" :  "#EAEAEB"
                                   }
                                 }}
                               />
@@ -446,6 +446,7 @@ const AddressDetailsComponent = ({
                                 onPress={() => {
                                   if (isPresentAsPermanent) {
                                     push(AddressDetailsData.empty(2));
+                                    _setFieldValue(1, "country", 'Philippines');
                                   } else {
                                     remove(1);
                                   }

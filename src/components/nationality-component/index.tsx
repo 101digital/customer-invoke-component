@@ -73,8 +73,6 @@ const NationalityComponent = ({
     isUpdatingNationality,
     // getCountryList,
     countryList,
-    getProvinceList,
-    provinceList
   } = useContext(CustomerInvokeContext);
 
   useEffect(() => {
@@ -94,10 +92,7 @@ const NationalityComponent = ({
       formikRef?.current?.validateForm();
     }, 0);
   }, [initData]);
-
-  // console.log('provinceList ',provinceList);
-
-
+  
   return (
     <>
       <Formik

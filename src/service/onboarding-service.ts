@@ -228,7 +228,7 @@ export class CustomerInvokeService {
       if (parentLocationId) {
         param.parentLocationId = parentLocationId
       }else{
-        param.locations = 2
+        param.level = 2
       }
 
       const response = await this._countryInformationClient.get("locations", {
@@ -255,7 +255,7 @@ export class CustomerInvokeService {
       if (parentLocationId) {
         param.parentLocationId = parentLocationId
       }else{
-        param.locations = 3
+        param.level = 3
       }
 
       const response = await this._countryInformationClient.get("locations", {
@@ -282,7 +282,7 @@ export class CustomerInvokeService {
       if (parentLocationId) {
         param.parentLocationId = parentLocationId
       }else{
-        param.locations = 4
+        param.level = 4
       }
 
       const response = await this._countryInformationClient.get("locations", {

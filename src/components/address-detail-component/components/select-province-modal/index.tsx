@@ -69,7 +69,8 @@ const SelectProvinceModal = ({
   useEffect(() => {
     if (parentLocationId) {
       getProvinceList(179,1,null,parentLocationId)
-
+    }else{
+      getProvinceList(179,1,null)
     }
   }, [isVisible]);
 

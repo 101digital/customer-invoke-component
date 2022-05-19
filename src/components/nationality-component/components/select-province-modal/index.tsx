@@ -57,39 +57,39 @@ const SelectProvinceModal = ({
   const [searchText, setSearchText] = useState<string>('');
   const { colors } = useContext(ThemeContext);
   const {
-    provinceList,
-    getProvinceList,
-    provincePaging
+    provinceListWithLocationId,
+    getProvinceListWithLocationId,
+    provinceWithLocationIdPaging
   } = useContext(CustomerInvokeContext);
   // const nationalities: Province[] = provinceList;
   // const groupedTransactions = groupTransactions(wallet.walletId);
 
   useEffect(() => {
-    if (!provinceList) {
-      getProvinceList(179,1)
+    if (!provinceListWithLocationId) {
+      getProvinceListWithLocationId(179,1)
     }
   }, [isVisible]);
 
   useEffect(() => {
-    if (provinceList) {
-      setSelectedProvince(provinceList.find((n) => n.id === initValue || n.locationName === initValue));
+    if (provinceListWithLocationId) {
+      setSelectedProvince(provinceListWithLocationId.find((n) => n.id === initValue || n.locationName === initValue));
     }
   }, [initValue, isVisible]);
 
   useEffect(() => {
-    if (provinceList) {
+    if (provinceListWithLocationId) {
       setGroupNationalities(_handleSearch());
       return () => {
         setGroupNationalities(_handleSearch());
       };
     }
 
-  }, [isVisible,provinceList]);
+  }, [isVisible,provinceListWithLocationId]);
 
   const _handleSearch = (key?: string) => {
     let _nationalities = isEmpty(key)
-      ? provinceList
-      : filter(provinceList, (n) => n.locationName.toLowerCase().includes(key!.toLowerCase()));
+      ? provinceListWithLocationId
+      : filter(provinceListWithLocationId, (n) => n.locationName.toLowerCase().includes(key!.toLowerCase()));
     const _groups: GroupProvinceList[] = values(
       _nationalities
         .map((n) => ({ ...n, section: n.isFeatured ? 'Featured' : n.locationName }))
@@ -152,7 +152,7 @@ const SelectProvinceModal = ({
         />
         <SearchField
           onSearch={(key: string) => {
-            getProvinceList(179,1,key)
+            getProvinceListWithLocationId(179,1,key)
             setSearchText(key)
             // setGroupNationalities(_handleSearch(key));
           }}
@@ -184,7 +184,7 @@ const SelectProvinceModal = ({
                       label: n.locationName,
                     }))}
                     onChangeValue={(value) => {
-                      setSelectedProvince(provinceList.find((n) => n.id === value.id));
+                      setSelectedProvince(provinceListWithLocationId.find((n) => n.id === value.id));
                     }}
                     style={{
                       containerStyle: {
@@ -199,11 +199,11 @@ const SelectProvinceModal = ({
             onEndReached={()=>{
 
               let number = 1
-              if (provincePaging  && provincePaging.pageNumber) {
-                number = provincePaging.pageNumber+1
+              if (provinceWithLocationIdPaging  && provinceWithLocationIdPaging.pageNumber) {
+                number = provinceWithLocationIdPaging.pageNumber+1
               }
 
-              getProvinceList(179,number,searchText)
+              getProvinceListWithLocationId(179,number,searchText)
             }}
             onEndReachedThreshold={0.5}
           />

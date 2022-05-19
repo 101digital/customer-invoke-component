@@ -74,6 +74,9 @@ export interface CustomerInvokeContextData {
   getBarangayList:(contryId:number,pageNumber:number,searchText?:string,parentLocationId?:string) => void;
   barangayList?:LocationListData;
   barangayPaging?:LocationPagingData;
+  getProvinceListWithLocationId:(contryId:number,pageNumber:number,searchText?:string) => void;
+  provinceListWithLocationId?:ProvinceListData;
+  provinceWithLocationIdPaging?:ProvincePagingData;
 }
 
 export const onboardingDefaultValue: CustomerInvokeContextData = {
@@ -109,6 +112,7 @@ export const onboardingDefaultValue: CustomerInvokeContextData = {
   getRegionList: () => null,
   getMunicipalityList: () => null,
   getBarangayList: () => null,
+  getProvinceListWithLocationId: () => null,
 };
 
 export const CustomerInvokeContext = React.createContext<
@@ -181,6 +185,18 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     ProvincePagingData | undefined
   >(undefined);
   const [_errorGetProvinceList, setErrorGetProvinceList] = useState<
+    Error | undefined
+  >(undefined);
+
+
+  const [_isGetProvinceListWithLocationId, setGetProvinceListWithLocationId] = useState(false);
+  const [_ProvinceListWithLocationIdData, setProvinceListWithLocationIdData] = useState<
+    ProvinceListData[] | undefined
+  >(undefined);
+  const [_ProvinceListWithLocationIdPagingData, setProvinceListWithLocationIdPagingData] = useState<
+    ProvincePagingData | undefined
+  >(undefined);
+  const [_errorGetProvinceListWithLocationId, setErrorGetProvinceListWithLocationId] = useState<
     Error | undefined
   >(undefined);
 
@@ -266,6 +282,9 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     if (_errorGetBarangayList) {
       setErrorGetBarangayList(undefined);
     }
+    if (_errorGetProvinceListWithLocationId) {
+      setErrorGetProvinceListWithLocationId(undefined);
+    }
   }, [
     _errorLoadProfile,
     _errorAddMainDetails,
@@ -278,7 +297,8 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     _errorGetProvinceList,
     _errorGetRegionList,
     _errorGetMunicipalityList,
-    _errorGetBarangayList
+    _errorGetBarangayList,
+    _errorGetProvinceListWithLocationId
   ]);
 
   const addMainDetails = useCallback(
@@ -779,6 +799,30 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     }
   }, [setProvinceListData,_ProvinceListData]);
 
+
+  const getProvinceListWithLocationId = useCallback(async (contryId:number,pageNumber:number,searchText?:string) => {
+    try {
+      setGetProvinceList(true);
+
+      const { data, paging } = await onboardingService.getProvinceList(contryId,pageNumber,searchText,null);
+      if (pageNumber === 1) {
+        setProvinceListWithLocationIdData(data);
+        setProvinceListWithLocationIdPagingData(paging)
+      }else{
+        setProvinceListWithLocationIdData([..._ProvinceListLocationIdData,...data]);
+        setProvinceListWithLocationIdPagingData(paging)
+      }
+
+      setTimeout(() => {
+        setGetProvinceListWithLocationId(false);
+      }, 50);
+    } catch (error) {
+      setGetProvinceListWithLocationId(false);
+      setErrorGetProvinceListWithLocationId(error as Error);
+    }
+  }, [setProvinceListWithLocationIdData,_ProvinceListWithLocationIdData]);
+
+
   const getRegionList = useCallback(async (contryId:number,pageNumber:number,searchText?:string) => {
     try {
       setGetRegionList(true);
@@ -892,6 +936,11 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
       provinceList: _ProvinceListData,
       provincePaging: _ProvinceListPagingData,
       errorGetProvinceList: _errorGetProvinceList,
+      getProvinceListWithLocationId,
+      isGetProvinceListWithLocationId:_isGetProvinceListWithLocationId,
+      provinceListWithLocationId: _ProvinceListWithLocationIdData,
+      provinceWithLocationIdPaging: _ProvinceListWithLocationIdPagingData,
+      errorGetProvinceListWithLocationId: _errorGetProvinceListWithLocationId,
       getRegionList,
       isGetRegionList:_isGetRegionList,
       regionList: _RegionListData,
@@ -951,7 +1000,11 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
       _isGetBarangayList,
       _BarangayListData,
       _errorGetBarangayList,
-      _BarangayListPagingData
+      _BarangayListPagingData,
+      _isGetProvinceListWithLocationId,
+      _ProvinceListWithLocationIdData,
+      _errorGetProvinceListWithLocationId,
+      _ProvinceListWithLocationIdPagingData,
     ]
   );
 }
