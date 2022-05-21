@@ -37,7 +37,6 @@ export class CustomerInvokeService {
     this._membershipClient = clients.membershipClient;
     this._accountOriginationClient = clients.accountOriginationClient;
     this._countryInformationClient = clients.countryInformationClient;
-
   };
 
   getProfile = async () => {
@@ -183,8 +182,8 @@ export class CustomerInvokeService {
     if (this._countryInformationClient) {
       const response = await this._countryInformationClient.get("countries", {
         params: {
-          pageSize: 300,
-        },
+          pageSize: 300
+        }
       });
       return response.data;
     } else {
@@ -192,20 +191,23 @@ export class CustomerInvokeService {
     }
   };
 
-  getRegionList = async (contryId:number,pageNumber:number,searchText?:string) => {
+  getRegionList = async (
+    contryId: number,
+    pageNumber: number,
+    searchText?: string
+  ) => {
     if (this._countryInformationClient) {
-
       let param = {
         pageSize: 100,
-        locations:1,
-        contryId:contryId,
-        listOrders:'locationName-ASC',
-        pageNumber:pageNumber,
-        searchText:searchText
-      }
+        level: 1,
+        contryId: contryId,
+        listOrders: "locationName-ASC",
+        pageNumber: pageNumber,
+        searchText: searchText
+      };
 
       const response = await this._countryInformationClient.get("locations", {
-        params: param,
+        params: param
       });
       return response.data;
     } else {
@@ -213,26 +215,30 @@ export class CustomerInvokeService {
     }
   };
 
-  getProvinceList = async (contryId:number,pageNumber:number,searchText?:string,parentLocationId?:string) => {
+  getProvinceList = async (
+    contryId: number,
+    pageNumber: number,
+    searchText?: string,
+    parentLocationId?: string
+  ) => {
     if (this._countryInformationClient) {
-
       let param = {
         pageSize: 100,
-        contryId:contryId,
-        parentLocationId:parentLocationId,
-        listOrders:'locationName-ASC',
-        pageNumber:pageNumber,
-        searchText:searchText
-      }
+        contryId: contryId,
+        parentLocationId: parentLocationId,
+        listOrders: "locationName-ASC",
+        pageNumber: pageNumber,
+        searchText: searchText
+      };
 
       if (parentLocationId) {
-        param.parentLocationId = parentLocationId
-      }else{
-        param.level = 2
+        param.parentLocationId = parentLocationId;
+      } else {
+        param.level = 2;
       }
 
       const response = await this._countryInformationClient.get("locations", {
-        params: param,
+        params: param
       });
       return response.data;
     } else {
@@ -240,26 +246,30 @@ export class CustomerInvokeService {
     }
   };
 
-  getMunicipalityList = async (contryId:number,pageNumber:number,searchText?:string,parentLocationId?:string) => {
+  getMunicipalityList = async (
+    contryId: number,
+    pageNumber: number,
+    searchText?: string,
+    parentLocationId?: string
+  ) => {
     if (this._countryInformationClient) {
-
       let param = {
         pageSize: 100,
-        contryId:contryId,
-        parentLocationId:parentLocationId,
-        listOrders:'locationName-ASC',
-        pageNumber:pageNumber,
-        searchText:searchText
-      }
+        contryId: contryId,
+        parentLocationId: parentLocationId,
+        listOrders: "locationName-ASC",
+        pageNumber: pageNumber,
+        searchText: searchText
+      };
 
       if (parentLocationId) {
-        param.parentLocationId = parentLocationId
-      }else{
-        param.level = 3
+        param.parentLocationId = parentLocationId;
+      } else {
+        param.level = 3;
       }
 
       const response = await this._countryInformationClient.get("locations", {
-        params: param,
+        params: param
       });
       return response.data;
     } else {
@@ -267,26 +277,30 @@ export class CustomerInvokeService {
     }
   };
 
-  getBarangayList = async (contryId:number,pageNumber:number,searchText?:string,parentLocationId?:string) => {
+  getBarangayList = async (
+    contryId: number,
+    pageNumber: number,
+    searchText?: string,
+    parentLocationId?: string
+  ) => {
     if (this._countryInformationClient) {
-
       let param = {
         pageSize: 100,
-        contryId:contryId,
-        parentLocationId:parentLocationId,
-        listOrders:'locationName-ASC',
-        pageNumber:pageNumber,
-        searchText:searchText
-      }
+        contryId: contryId,
+        parentLocationId: parentLocationId,
+        listOrders: "locationName-ASC",
+        pageNumber: pageNumber,
+        searchText: searchText
+      };
 
       if (parentLocationId) {
-        param.parentLocationId = parentLocationId
-      }else{
-        param.level = 4
+        param.parentLocationId = parentLocationId;
+      } else {
+        param.level = 4;
       }
 
       const response = await this._countryInformationClient.get("locations", {
-        params: param,
+        params: param
       });
       return response.data;
     } else {
