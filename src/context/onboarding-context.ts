@@ -16,8 +16,14 @@ import {
   ProvincePagingData
 } from "../types";
 
-const onboardingService = CustomerInvokeService.instance();
+import {Occupation } from '../types';
+const occupationData = require('../assets/data/occupation.json');
 
+
+
+
+const onboardingService = CustomerInvokeService.instance();
+const occupationsList: Occupation[] = JSON.parse(JSON.stringify(occupationData));
 export interface CustomerInvokeContextData {
   data: CustomerInvokeData;
   setCustomerInvokeData: (data: CustomerInvokeData) => void;
@@ -519,6 +525,10 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     }
 
     if (profile?.employmentDetails && profile?.employmentDetails.length > 0) {
+      let formatedData =  occupationsList.find((o) => o.name === profile?.employmentDetails[profile?.employmentDetails.length - 1]
+        .designation || o.label === profile?.employmentDetails[profile?.employmentDetails.length - 1]
+          .designation)
+
       setData({
         ..._data,
         mainDetails: {
@@ -559,9 +569,7 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
           status:
             profile?.employmentDetails[profile?.employmentDetails.length - 1]
               .status,
-          occupation:
-            profile?.employmentDetails[profile?.employmentDetails.length - 1]
-              .designation,
+          occupation:formatedData.label,
           companyType:
             profile?.employmentDetails[profile?.employmentDetails.length - 1]
               .companyType,
@@ -602,10 +610,12 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
       try {
         setUpdatedOtherDetails(true);
 
+        let formatedData =  occupationsList.find((o) => o.label === params.occupation)
+ 
         let employmentDetails = [
           {
             status: params?.status,
-            designation: params?.occupation,
+            designation: formatedData.name,
             companyType: params?.companyType,
             companyName: params?.companyName,
             addresses: [

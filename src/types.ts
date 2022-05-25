@@ -71,6 +71,7 @@ export type GroupRegion = {
 
 export type Occupation = {
   name: string;
+  label:string;
   isFeatured: boolean;
   id: number;
 };

@@ -55,7 +55,7 @@ const SelectOccupationModal = ({
   const { colors } = useContext(ThemeContext);
 
   useEffect(() => {
-    setSelectedOccupation(occupations.find((o) => o.id === initValue || o.name === initValue));
+    setSelectedOccupation(occupations.find((o) => o.id === initValue || o.label === initValue));
   }, [initValue, isVisible]);
 
   useEffect(() => {
@@ -68,18 +68,18 @@ const SelectOccupationModal = ({
   const _handleSearch = (key?: string) => {
     let _occupations = isEmpty(key)
       ? occupations
-      : filter(occupations, (n) => n.name.toLowerCase().includes(key!.toLowerCase()));
+      : filter(occupations, (n) => n.label.toLowerCase().includes(key!.toLowerCase()));
     const _groups: GroupOccupation[] = values(
       _occupations
         .map((n) => ({
           ...n,
-          section: !isNaN(parseInt(n.name[0], 10)) ? 'Numbers' : n.name,
+          section: !isNaN(parseInt(n.label[0], 10)) ? 'Numbers' : n.label,
         }))
         .sort((a: Occupation, b: Occupation) => {
-          return a.name.localeCompare(b.name, 'es', { sensitivity: 'base' });
+          return a.label.localeCompare(b.label, 'es', { sensitivity: 'base' });
         })
         .reduce((r: any, n: Occupation) => {
-          let section = !isNaN(parseInt(n.name[0], 10)) ? 'Numbers' : n.name[0].toUpperCase();
+          let section = !isNaN(parseInt(n.label[0], 10)) ? 'Numbers' : n.label[0].toUpperCase();
           if (!r[section]) {
             r[section] = { section, items: [n] };
           } else {
@@ -150,7 +150,7 @@ const SelectOccupationModal = ({
             renderItem={({ item }) => {
               const radioValue =
                 selectedOccupation !== undefined
-                  ? { id: selectedOccupation.id, label: selectedOccupation.name }
+                  ? { id: selectedOccupation.id, label: selectedOccupation.label }
                   : undefined;
               return (
                 <View>
@@ -158,7 +158,7 @@ const SelectOccupationModal = ({
                   <RadioGroupComponent
                     value={radioValue}
                     variant="inner"
-                    data={item.items.map((n: Occupation) => ({ id: n.id, label: n.name }))}
+                    data={item.items.map((n: Occupation) => ({ id: n.id, label: n.label }))}
                     onChangeValue={(value) => {
                       setSelectedOccupation(occupations.find((n) => n.id === value.id));
                     }}

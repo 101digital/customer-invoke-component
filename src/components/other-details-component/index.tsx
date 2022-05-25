@@ -331,7 +331,7 @@ const OtherDetailsComponent = ({
         onClose={() => setOpenOccupationModal(false)}
         onSelected={value => {
           setOpenOccupationModal(false);
-          formikRef?.current?.setFieldValue("occupation", value.name);
+          formikRef?.current?.setFieldValue("occupation", value.label);
         }}
         style={styles.occupationModalStyles}
       />

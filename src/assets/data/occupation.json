@@ -1,87 +1,86 @@
 [
   {
     "id": 1,
-    "name": "2nd Assistant Engineer",
+    "name":"0134",
+    "label": "FISHING & EXPORTER OF SEAFOOD",
     "isFeatured": false
   },
   {
     "id": 2,
-    "name": "2nd Engineer",
+    "name":"0100",
+    "label": "GAMING (e.g. MAGNUM, TOTO etc.)",
     "isFeatured": false
   },
   {
     "id": 3,
-    "name": "2nd Steward",
+    "name":"0063",
+    "label": "GENERAL WORKER",
     "isFeatured": false
   },
   {
     "id": 4,
-    "name": "3rd Engineer",
+    "name":"0025",
+    "label": "GOVERNMENT SERVANT",
     "isFeatured": false
   },
   {
     "id": 5,
-    "name": "3rd Officer",
+    "name":"0117",
+    "label": "GUEST RELATION OFFICERS",
     "isFeatured": false
   },
   {
     "id": 6,
-    "name": "Able Seaman",
+    "name":"0166",
+    "label": "HAWKERS",
     "isFeatured": false
   },
   {
     "id": 7,
-    "name": "Account Executive",
+    "name":"0169",
+    "label": "HIRE PURCHASE AND CREDIT SERVICES",
     "isFeatured": false
   },
   {
     "id": 8,
-    "name": "Account Manager",
+    "name":"0090",
+    "label": "HOTEL, RESTAURANT SERVICES",
     "isFeatured": false
   },
   {
     "id": 9,
-    "name": "Financial Managers",
+    "name":"0026",
+    "label": "HOUSEWIFE",
     "isFeatured": false
   },
   {
     "id": 10,
-    "name": "Industrial Production Managers",
+    "name":"0153",
+    "label": "HOUSING DEVELOPER",
     "isFeatured": false
   },
   {
     "id": 11,
-    "name": "Purchasing Managers",
+    "name":"0165",
+    "label": "INVESTMENT",
     "isFeatured": false
   },
   {
     "id": 12,
-    "name": "Transportation, Storage, and Distribution Managers",
+    "name":"0138",
+    "label": "IRON / STEEL MILLS AND FOUNDARIES",
     "isFeatured": false
   },
   {
     "id": 13,
-    "name": "Compensation and Benefits Managers",
+    "name":"0171",
+    "label": "JUNIOR OFFICER",
     "isFeatured": false
   },
   {
     "id": 14,
-    "name": "Human Resources Managers",
+    "name":"0028",
+    "label": "LAWYER",
     "isFeatured": false
   },
-  {
-    "id": 15,
-    "name": "Training and Development Managers",
-    "isFeatured": false
-  },
-  {
-    "id": 16,
-    "name": "Farmers, Ranchers, and Other Agricultural Managers",
-    "isFeatured": false
-  },
-  {
-    "id": 17,
-    "name": "Construction Managers",
-    "isFeatured": false
-  }
 ]
