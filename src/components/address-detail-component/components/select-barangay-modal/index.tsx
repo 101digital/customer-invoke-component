@@ -67,7 +67,7 @@ const SelectBarangayModal = ({
   // const groupedTransactions = groupTransactions(wallet.walletId);
 
   useEffect(() => {
-    if (parentLocationId) {
+    if (isVisible && parentLocationId) {
       getBarangayList(179,1,null,parentLocationId)
 
     }

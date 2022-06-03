@@ -7,6 +7,7 @@ import {
   Text,
   TextStyle,
   SafeAreaView,
+  ActivityIndicator
 } from 'react-native';
 import { BottomSheet, Button, ThemeContext } from 'react-native-theme-component';
 import useMergeStyles from './styles';
@@ -59,19 +60,18 @@ const SelectProvinceModal = ({
   const {
     provinceListWithLocationId,
     getProvinceListWithLocationId,
-    provinceWithLocationIdPaging
+    provinceWithLocationIdPaging,
+    isGetProvinceList
   } = useContext(CustomerInvokeContext);
-  // const nationalities: Province[] = provinceList;
-  // const groupedTransactions = groupTransactions(wallet.walletId);
 
   useEffect(() => {
-    if (!provinceListWithLocationId) {
+    if (isVisible && !provinceListWithLocationId) {
       getProvinceListWithLocationId(179,1)
     }
   }, [isVisible]);
 
   useEffect(() => {
-    if (provinceListWithLocationId) {
+    if (isVisible && provinceListWithLocationId) {
       setSelectedProvince(provinceListWithLocationId.find((n) => n.id === initValue || n.locationName === initValue));
     }
   }, [initValue, isVisible]);
@@ -116,8 +116,7 @@ const SelectProvinceModal = ({
     }
     return _groups;
   };
-
-
+ 
   return (
     <BottomSheet
       useSafeArea={false}
@@ -158,6 +157,11 @@ const SelectProvinceModal = ({
           }}
           placeholder={'Search nationality'}
         />
+        {isGetProvinceList ? <ActivityIndicator
+          size={"large"}
+          style={styles.loadingIndicatorStyle}
+          color={colors.primary}
+        />:<>
         {isEmpty(groupNationalities) ? (
           <Text style={styles.emptyResultTextStyle}>{'No results found.'}</Text>
         ) : (
@@ -208,6 +212,8 @@ const SelectProvinceModal = ({
             onEndReachedThreshold={0.5}
           />
         )}
+        </>}
+
         <KeyboardSpace style={styles.footerContainerStyle}>
           <Button
             disabled={selectedProvince === undefined}

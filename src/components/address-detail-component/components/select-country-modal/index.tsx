@@ -53,9 +53,11 @@ const SelectCountryModal = ({
   const [selectedCountry, setSelectedCountry] = useState<CountryInformation | undefined>(undefined);
 
   useEffect(() => {
-    setSelectedCountry(
-      countries.find((c) => c.id === initValue || c.attributes.name === initValue)
-    );
+    if (isVisible) {
+      setSelectedCountry(
+        countries.find((c) => c.id === initValue || c.attributes.name === initValue)
+      );
+    } 
   }, [initValue, isVisible]);
 
   useEffect(() => {

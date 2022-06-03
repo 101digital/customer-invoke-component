@@ -67,15 +67,18 @@ const SelectProvinceModal = ({
   // const groupedTransactions = groupTransactions(wallet.walletId);
 
   useEffect(() => {
-    if (parentLocationId) {
-      getProvinceList(179,1,null,parentLocationId)
-    }else{
-      getProvinceList(179,1,null)
+    if (isVisible && !provinceList) {
+      if (parentLocationId) {
+        getProvinceList(179,1,null,parentLocationId)
+      }else{
+        getProvinceList(179,1,null)
+      }
     }
+
   }, [isVisible]);
 
   useEffect(() => {
-    if (provinceList) {
+    if (provinceList && isVisible) {
       setSelectedProvince(provinceList.find((n) => n.id === initValue || n.locationName === initValue));
     }
   }, [initValue, isVisible]);
@@ -218,7 +221,7 @@ const SelectProvinceModal = ({
               }
 
             }}
-            onEndReachedThreshold={0.5}
+            onEndReachedThreshold={0.001}
           />
         )}
         <KeyboardSpace style={styles.footerContainerStyle}>

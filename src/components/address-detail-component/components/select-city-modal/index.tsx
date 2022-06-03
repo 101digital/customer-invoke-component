@@ -67,7 +67,7 @@ const SelectCityModal = ({
   // const groupedTransactions = groupTransactions(wallet.walletId);
 
   useEffect(() => {
-    if (parentLocationId) {
+    if (isVisible && parentLocationId) {
       getMunicipalityList(179,1,null,parentLocationId)
 
     }

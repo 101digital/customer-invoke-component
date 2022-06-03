@@ -65,13 +65,13 @@ const SelectRegionModal = ({
   // const groupedTransactions = groupTransactions(wallet.walletId);
 
   useEffect(() => {
-    if (!regionList) {
+    if (isVisible && !regionList) {
       getRegionList(179,1)
     }
   }, [isVisible]);
 
   useEffect(() => {
-    if (regionList) {
+    if (isVisible && regionList) {
       setSelectedRegion(regionList.find((n) => n.id === initValue || n.locationName === initValue));
     }
   }, [initValue, isVisible]);
@@ -116,7 +116,6 @@ const SelectRegionModal = ({
     }
     return _groups;
   };
-
 
   return (
     <BottomSheet
@@ -198,14 +197,19 @@ const SelectRegionModal = ({
             }}
             onEndReached={()=>{
 
-              let number = 1
-              if (regionPaging  && regionPaging.pageNumber) {
-                number = regionPaging.pageNumber+1
+
+
+              if (isVisible) {
+                let number = 1
+                if (regionPaging  && regionPaging.pageNumber) {
+                  number = regionPaging.pageNumber+1
+                }
+
+                getRegionList(179,number,searchText)
               }
 
-              getRegionList(179,number,searchText)
             }}
-            onEndReachedThreshold={0.5}
+            onEndReachedThreshold={0.001}
           />
         )}
         <KeyboardSpace style={styles.footerContainerStyle}>

@@ -182,9 +182,6 @@ const CustomerInvokeComponent = (props: CustomerInvokeComponentProps) => {
     };
   }, []);
 
-  console.log('data ',data);
-
-
   if (showErrorModel) {
     return (
       <SafeAreaView style={styles.container}>

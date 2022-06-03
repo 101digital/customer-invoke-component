@@ -92,7 +92,7 @@ const NationalityComponent = ({
       formikRef?.current?.validateForm();
     }, 0);
   }, [initData]);
-  
+
   return (
     <>
       <Formik
@@ -173,22 +173,7 @@ const NationalityComponent = ({
                   {i18n?.t("nationality-component.lbl_country") ??
                     "Country"}
                 </Text>
-              {/*  <InputField
-                  name="countryOfBirth"
-                  placeholder={
-                    i18n?.t("nationality-component.plh_birth_place") ??
-                    "Enter place of birth"
-                  }
-                  maxLength={100}
-                  style={{
-                    contentContainerStyle: {
-                      borderWidth: 1,
-                      borderRadius: 5,
-                      borderBottomWidth: 1,
-                      backgroundColor: "#fff"
-                    }
-                  }}
-                />*/}
+
                 <TouchableOpacity
                   activeOpacity={0.8}
                   onPress={() => {
@@ -317,7 +302,7 @@ const NationalityComponent = ({
         style={styles.countryModalStyles}
       />}
       <SelectProvinceModal
-        initValue={formikRef?.current?.values.province}
+        initValue={formikRef?.current?.values.placeOfBirth}
         isVisible={openProvinceModal}
         onClose={() => setOpenProvinceModal(false)}
         onSelected={value => {

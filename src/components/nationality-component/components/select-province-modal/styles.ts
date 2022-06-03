@@ -64,6 +64,9 @@ const useMergeStyles = (style?: SelectNationalityModalStyles): SelectNationality
       textAlign: 'center',
       marginTop: 79,
     },
+    loadingIndicatorStyle: {
+      marginTop: 180,
+    }
   });
 
   return defaultsDeep(style, defaultStyles);

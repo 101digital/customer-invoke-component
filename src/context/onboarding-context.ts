@@ -6,6 +6,9 @@ import { AddressDetailsData } from "../components/address-detail-component/model
 import { MainDetailsData } from "../components/main-detail-component/model";
 import { NationalityData } from "../components/nationality-component/model";
 import { CustomerInvokeService } from "../service/onboarding-service";
+import { authComponentStore } from 'react-native-auth-component';
+
+
 import {
   CustomerInvokeData,
   Profile,
@@ -83,6 +86,7 @@ export interface CustomerInvokeContextData {
   getProvinceListWithLocationId:(contryId:number,pageNumber:number,searchText?:string) => void;
   provinceListWithLocationId?:ProvinceListData;
   provinceWithLocationIdPaging?:ProvincePagingData;
+  isGetProvinceList: boolean;
 }
 
 export const onboardingDefaultValue: CustomerInvokeContextData = {
@@ -119,6 +123,7 @@ export const onboardingDefaultValue: CustomerInvokeContextData = {
   getMunicipalityList: () => null,
   getBarangayList: () => null,
   getProvinceListWithLocationId: () => null,
+  isGetProvinceList:false,
 };
 
 export const CustomerInvokeContext = React.createContext<
@@ -329,7 +334,7 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
         if (validateUserResponse.exist === true) {
           setValidateUser(true);
         } else {
-          await onboardingService.updateMainDetails(_profile?.userId!, {
+          const response = await onboardingService.updateMainDetails(_profile?.userId!, {
             ...params,
             dateOfBirth: moment(params.dateOfBirth, "DD / MM / YYYY").format(
               "YYYY-MM-DD"
@@ -350,6 +355,8 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
                 ]
               : []
           });
+
+          await authComponentStore.storeProfile(response.data);
 
           setValidateUser(false);
           setData({
@@ -374,7 +381,7 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     async (params: NationalityData) => {
       try {
         setUpdatingNationality(true);
-        await onboardingService.updateNationalityDetails(_profile?.userId!, {
+        const response = await onboardingService.updateNationalityDetails(_profile?.userId!, {
           ...params,
           isCitizen: params.isCitizen === "yes",
           listCustomFields: [
@@ -384,6 +391,8 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
             }
           ]
         });
+
+        await authComponentStore.storeProfile(response.data);
 
         setData({
           ..._data,
@@ -409,7 +418,7 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     ) => {
       try {
         setUpdatingAddressDetails(true);
-        await onboardingService.updateAddressDetails(
+        const response = await onboardingService.updateAddressDetails(
           _profile?.userId!,
           isPresentAsPermAddress,
           addresses.map(address => ({
@@ -421,6 +430,8 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
             county: "-"
           }))
         );
+
+        await authComponentStore.storeProfile(response.data);
         setData({
           ..._data,
           addresses
@@ -611,7 +622,7 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
         setUpdatedOtherDetails(true);
 
         let formatedData =  occupationsList.find((o) => o.label === params.occupation)
- 
+
         let employmentDetails = [
           {
             status: params?.status,
@@ -627,10 +638,12 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
             ]
           }
         ];
-        await onboardingService.updateEmploymentDetails(
+        const  response =await onboardingService.updateEmploymentDetails(
           _profile?.userId!,
           employmentDetails
         );
+
+        await authComponentStore.storeProfile(response.data);
 
         setData({
           ..._data,
@@ -812,7 +825,7 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
 
   const getProvinceListWithLocationId = useCallback(async (contryId:number,pageNumber:number,searchText?:string) => {
     try {
-      setGetProvinceList(true);
+      setGetProvinceListWithLocationId(true);
 
       const { data, paging } = await onboardingService.getProvinceList(contryId,pageNumber,searchText,null);
       if (pageNumber === 1) {
