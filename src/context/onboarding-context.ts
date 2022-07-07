@@ -23,8 +23,6 @@ import {Occupation } from '../types';
 const occupationData = require('../assets/data/occupation.json');
 
 
-
-
 const onboardingService = CustomerInvokeService.instance();
 const occupationsList: Occupation[] = JSON.parse(JSON.stringify(occupationData));
 export interface CustomerInvokeContextData {
@@ -87,6 +85,11 @@ export interface CustomerInvokeContextData {
   provinceListWithLocationId?:ProvinceListData;
   provinceWithLocationIdPaging?:ProvincePagingData;
   isGetProvinceList: boolean;
+  createCryptoApplication: (contentTemplateId:string) => void;
+  cryptoApplicationDetails?: ApplicationDetails;
+  cryptoErrorCreateApplication?: Error;
+  isCryptoCreatingApplication: boolean;
+  isCryptoCreatedApplication: boolean;
 }
 
 export const onboardingDefaultValue: CustomerInvokeContextData = {
@@ -124,6 +127,9 @@ export const onboardingDefaultValue: CustomerInvokeContextData = {
   getBarangayList: () => null,
   getProvinceListWithLocationId: () => null,
   isGetProvinceList:false,
+  createCryptoApplication: () => null,
+  isCryptoCreatingApplication: false,
+  isCryptoCreatedApplication: false,
 };
 
 export const CustomerInvokeContext = React.createContext<
@@ -247,6 +253,17 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     Error | undefined
   >(undefined);
 
+  const [_cryptoApplicationDetails, setCryptoApplicationDetails] = useState<
+    ApplicationDetails | undefined
+  >(undefined);
+
+  const [_isCryptoCreatingApplication, setCryptoCreatingApplication] = useState(false);
+  const [_isCryptoCreatedApplication, setCryptoCreatedApplication] = useState(false);
+  const [_cryptoErrorCreateApplication, setCryptoErrorCreateApplication] = useState<
+    Error | undefined
+  >(undefined);
+
+
   const getUserProfile = useCallback(async () => {
     try {
       setLoadingProfile(true);
@@ -296,6 +313,9 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     if (_errorGetProvinceListWithLocationId) {
       setErrorGetProvinceListWithLocationId(undefined);
     }
+    if (_cryptoErrorCreateApplication) {
+      setCryptoErrorCreateApplication(undefined);
+    }
   }, [
     _errorLoadProfile,
     _errorAddMainDetails,
@@ -309,7 +329,8 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     _errorGetRegionList,
     _errorGetMunicipalityList,
     _errorGetBarangayList,
-    _errorGetProvinceListWithLocationId
+    _errorGetProvinceListWithLocationId,
+    _cryptoErrorCreateApplication
   ]);
 
   const addMainDetails = useCallback(
@@ -676,6 +697,7 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     setMunicipalityListPagingData(undefined);
     setBarangayListData(undefined);
     setBarangayListPagingData(undefined);
+    setCryptoApplicationDetails(undefined);
   }, []);
 
   const createApplication = useCallback(
@@ -822,7 +844,6 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     }
   }, [setProvinceListData,_ProvinceListData]);
 
-
   const getProvinceListWithLocationId = useCallback(async (contryId:number,pageNumber:number,searchText?:string) => {
     try {
       setGetProvinceListWithLocationId(true);
@@ -844,7 +865,6 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
       setErrorGetProvinceListWithLocationId(error as Error);
     }
   }, [setProvinceListWithLocationIdData,_ProvinceListWithLocationIdData]);
-
 
   const getRegionList = useCallback(async (contryId:number,pageNumber:number,searchText?:string) => {
     try {
@@ -911,6 +931,77 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
       setErrorGetBarangayList(error as Error);
     }
   }, [setBarangayListData,_BarangayListData]);
+
+  const createCryptoApplication = useCallback( async (contentTemplateId:string) => {
+
+      try {
+        if (
+          !_data.mainDetails ||
+          !_data.nationalityDetails
+        ) {
+          setCryptoErrorCreateApplication(new Error("Missing parameters"));
+          return;
+        }
+        setCryptoCreatingApplication(true);
+        const { data } = await onboardingService.createApplication({
+          submitType: "Submit",
+          applicantDetails: {
+            firstName: _data.mainDetails.firstName ?? "",
+            lastName: _data.mainDetails.lastName ?? "",
+            middleName: _data.mainDetails.middleName ?? "",
+            dateOfBirth:
+              moment(_data.mainDetails?.dateOfBirth, "DD / MM / YYYY").format(
+                "YYYY-MM-DD"
+              ) ?? "",
+            maritalStatus: _data.mainDetails.maritalStatus ?? "",
+            gender: _data.mainDetails.gender ?? "",
+            placeOfBirth: _data.nationalityDetails.placeOfBirth,
+            countryOfBirth: _data.nationalityDetails.nationality,
+            nationality: _data.nationalityDetails.nationality,
+            citizenFlag: _data.nationalityDetails?.isCitizen === "yes",
+          },
+          productDetails: {
+              bankId: "PDAX",
+              productId: "CryptoAccountPdax",
+              productType: "CRYPTO"
+          }
+        });
+
+        await _linkCryptoAccount(contentTemplateId,data.applicationId);
+
+        setCryptoApplicationDetails({
+          applicationId: data.applicationId,
+          firstName: data.applicantDetails.firstName,
+          lastName: data.applicantDetails.lastName,
+          middleName: data.applicantDetails.middleName
+        });
+        setCryptoCreatedApplication(true);
+        setTimeout(() => {
+          setCryptoCreatedApplication(false);
+        }, 50);
+        setCryptoCreatingApplication(false);
+      } catch (error) {
+        setCryptoCreatingApplication(false);
+        setCryptoErrorCreateApplication(error as Error);
+      }
+    },
+    [_data]
+  );
+
+  const _linkCryptoAccount = async (contentTemplateId:string,applicationId:string) => {
+
+    try {
+      await onboardingService.updateApplicationTc(contentTemplateId,applicationId);
+      await onboardingService.validateCryptoAccount(applicationId);
+      // console.log('resp2 ',resp2);
+      return true;
+    } catch (error) {
+      setCryptoErrorCreateApplication(error as Error);
+      return 'error';
+    }
+
+  };
+
 
   return useMemo(
     () => ({
@@ -979,7 +1070,11 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
       barangayList: _BarangayListData,
       barangayPaging: _BarangayListPagingData,
       errorGetBarangayList: _errorGetBarangayList,
-
+      createCryptoApplication,
+      cryptoApplicationDetails: _cryptoApplicationDetails,
+      cryptoErrorCreateApplication: _cryptoErrorCreateApplication,
+      isCryptoCreatingApplication: _isCryptoCreatingApplication,
+      isCryptoCreatedApplication: _isCryptoCreatedApplication,
     }),
     [
       _applicationDetails,
@@ -1028,6 +1123,10 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
       _ProvinceListWithLocationIdData,
       _errorGetProvinceListWithLocationId,
       _ProvinceListWithLocationIdPagingData,
+      _cryptoApplicationDetails,
+      _cryptoErrorCreateApplication,
+      _isCryptoCreatingApplication,
+      _isCryptoCreatedApplication
     ]
   );
 }

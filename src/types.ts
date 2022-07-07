@@ -185,10 +185,11 @@ export interface ApplicationDetailsParams {
   placeOfBirth: string;
   nationality: string;
   citizenFlag: boolean;
+  countryOfBirth?: string;
   presentAsPermAddressFlag: boolean;
-  contactDetails: { contactType: string; contactValue: string }[];
-  addresses: AddressParams[];
-  listCustomFields: {
+  contactDetails?: { contactType: string; contactValue: string }[];
+  addresses?: AddressParams[];
+  listCustomFields?: {
     customKey: string;
     customValue: string;
   }[];
@@ -221,12 +222,19 @@ export interface CreditIndividual {
 export interface CreateApplicationParams {
   submitType: string;
   applicantDetails: ApplicationDetailsParams;
-  employmentDetails: EmploymentDetails[];
-  credit: Credit;
-  customFields: {
+  employmentDetails?: EmploymentDetails[];
+  credit?: Credit;
+  customFields?: {
     customKey: string;
     customValue: string;
   }[];
+  productDetails?:ProductDetails;
+}
+
+export interface ProductDetails {
+  bankId: string;
+  productId: string;
+  productType: string;
 }
 
 export interface ValidateMainDetailParam {

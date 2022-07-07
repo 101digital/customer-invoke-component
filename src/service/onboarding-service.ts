@@ -307,4 +307,49 @@ export class CustomerInvokeService {
       throw new Error("Province Information Client is not registered");
     }
   };
+
+  updateApplicationTc = async (
+    contentTemplateId: string,
+    applicationId:string
+  ) => {
+    if (this._accountOriginationClient) {
+      const response = await this._accountOriginationClient.patch(
+        `applications/${applicationId}`,
+        {
+        	customFields: [
+        		{
+        			customKey: "TermsConditionsAgreement-ProductId",
+          		customValue: "CryptoAccountPdax"
+        		},
+        		{
+        			customKey: "TermsConditionsAgreement-ContentId",
+          		customValue: contentTemplateId
+        		},
+        		{
+        			customKey: "TermsConditionsAgreement-Timestamp",
+          		customValue: new Date().toUTCString()
+        		}
+        	]
+        }
+      );
+      return response.data;
+    } else {
+      throw new Error("Onboaring Client is not registered");
+    }
+  };
+
+  validateCryptoAccount = async (applicationId: string) => {
+    if (this._accountOriginationClient) {
+      const response = await this._accountOriginationClient.put(
+        `/applications/${applicationId}/status`,
+        {
+          statusName: "TERMS_CONDITIONS_AGREEMENT",
+          statusValue: "Success"
+        }
+      );
+      return response.data;
+    } else {
+      throw new Error("Onboaring Client is not registered");
+    }
+  };
 }
