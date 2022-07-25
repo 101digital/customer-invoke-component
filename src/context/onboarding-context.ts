@@ -6,8 +6,7 @@ import { AddressDetailsData } from "../components/address-detail-component/model
 import { MainDetailsData } from "../components/main-detail-component/model";
 import { NationalityData } from "../components/nationality-component/model";
 import { CustomerInvokeService } from "../service/onboarding-service";
-import { authComponentStore } from 'react-native-auth-component';
-
+import { authComponentStore } from "react-native-auth-component";
 
 import {
   CustomerInvokeData,
@@ -19,12 +18,13 @@ import {
   ProvincePagingData
 } from "../types";
 
-import {Occupation } from '../types';
-const occupationData = require('../assets/data/occupation.json');
-
+import { Occupation } from "../types";
+const occupationData = require("../assets/data/occupation.json");
 
 const onboardingService = CustomerInvokeService.instance();
-const occupationsList: Occupation[] = JSON.parse(JSON.stringify(occupationData));
+const occupationsList: Occupation[] = JSON.parse(
+  JSON.stringify(occupationData)
+);
 export interface CustomerInvokeContextData {
   data: CustomerInvokeData;
   setCustomerInvokeData: (data: CustomerInvokeData) => void;
@@ -68,24 +68,47 @@ export interface CustomerInvokeContextData {
   isUpdatedAccountDetails: boolean;
   applicationDetails?: ApplicationDetails;
   applicationList?: ApplicationListData;
-  countryList?:CountryListData;
-  getProvinceList:(contryId:number,pageNumber:number,searchText?:string,parentLocationId?:string) => void;
-  provinceList?:ProvinceListData;
-  provincePaging?:ProvincePagingData;
-  getRegionList:(contryId:number,pageNumber:number,searchText?:string) => void;
-  regionList?:LocationListData;
-  regionPaging?:LocationPagingData;
-  getMunicipalityList:(contryId:number,pageNumber:number,searchText?:string,parentLocationId?:string) => void;
-  municipalityList?:LocationListData;
-  municipalityPaging?:LocationPagingData;
-  getBarangayList:(contryId:number,pageNumber:number,searchText?:string,parentLocationId?:string) => void;
-  barangayList?:LocationListData;
-  barangayPaging?:LocationPagingData;
-  getProvinceListWithLocationId:(contryId:number,pageNumber:number,searchText?:string) => void;
-  provinceListWithLocationId?:ProvinceListData;
-  provinceWithLocationIdPaging?:ProvincePagingData;
+  countryList?: CountryListData;
+  getProvinceList: (
+    contryId: number,
+    pageNumber: number,
+    searchText?: string,
+    parentLocationId?: string
+  ) => void;
+  provinceList?: ProvinceListData;
+  provincePaging?: ProvincePagingData;
+  getRegionList: (
+    contryId: number,
+    pageNumber: number,
+    searchText?: string
+  ) => void;
+  regionList?: LocationListData;
+  regionPaging?: LocationPagingData;
+  getMunicipalityList: (
+    contryId: number,
+    pageNumber: number,
+    searchText?: string,
+    parentLocationId?: string
+  ) => void;
+  municipalityList?: LocationListData;
+  municipalityPaging?: LocationPagingData;
+  getBarangayList: (
+    contryId: number,
+    pageNumber: number,
+    searchText?: string,
+    parentLocationId?: string
+  ) => void;
+  barangayList?: LocationListData;
+  barangayPaging?: LocationPagingData;
+  getProvinceListWithLocationId: (
+    contryId: number,
+    pageNumber: number,
+    searchText?: string
+  ) => void;
+  provinceListWithLocationId?: ProvinceListData;
+  provinceWithLocationIdPaging?: ProvincePagingData;
   isGetProvinceList: boolean;
-  createCryptoApplication: (contentTemplateId:string) => void;
+  createCryptoApplication: (contentTemplateId: string) => void;
   cryptoApplicationDetails?: ApplicationDetails;
   cryptoErrorCreateApplication?: Error;
   isCryptoCreatingApplication: boolean;
@@ -126,10 +149,10 @@ export const onboardingDefaultValue: CustomerInvokeContextData = {
   getMunicipalityList: () => null,
   getBarangayList: () => null,
   getProvinceListWithLocationId: () => null,
-  isGetProvinceList:false,
+  isGetProvinceList: false,
   createCryptoApplication: () => null,
   isCryptoCreatingApplication: false,
-  isCryptoCreatedApplication: false,
+  isCryptoCreatedApplication: false
 };
 
 export const CustomerInvokeContext = React.createContext<
@@ -193,7 +216,6 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     Error | undefined
   >(undefined);
 
-
   const [_isGetProvinceList, setGetProvinceList] = useState(false);
   const [_ProvinceListData, setProvinceListData] = useState<
     ProvinceListData[] | undefined
@@ -205,19 +227,22 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     Error | undefined
   >(undefined);
 
-
-  const [_isGetProvinceListWithLocationId, setGetProvinceListWithLocationId] = useState(false);
-  const [_ProvinceListWithLocationIdData, setProvinceListWithLocationIdData] = useState<
-    ProvinceListData[] | undefined
-  >(undefined);
-  const [_ProvinceListWithLocationIdPagingData, setProvinceListWithLocationIdPagingData] = useState<
-    ProvincePagingData | undefined
-  >(undefined);
-  const [_errorGetProvinceListWithLocationId, setErrorGetProvinceListWithLocationId] = useState<
-    Error | undefined
-  >(undefined);
-
-
+  const [
+    _isGetProvinceListWithLocationId,
+    setGetProvinceListWithLocationId
+  ] = useState(false);
+  const [
+    _ProvinceListWithLocationIdData,
+    setProvinceListWithLocationIdData
+  ] = useState<ProvinceListData[] | undefined>(undefined);
+  const [
+    _ProvinceListWithLocationIdPagingData,
+    setProvinceListWithLocationIdPagingData
+  ] = useState<ProvincePagingData | undefined>(undefined);
+  const [
+    _errorGetProvinceListWithLocationId,
+    setErrorGetProvinceListWithLocationId
+  ] = useState<Error | undefined>(undefined);
 
   const [_isGetRegionList, setGetRegionList] = useState(false);
   const [_RegionListData, setRegionListData] = useState<
@@ -229,7 +254,6 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
   const [_errorGetRegionList, setErrorGetRegionList] = useState<
     Error | undefined
   >(undefined);
-
 
   const [_isGetMunicipalityList, setGetMunicipalityList] = useState(false);
   const [_MunicipalityListData, setMunicipalityListData] = useState<
@@ -257,12 +281,16 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     ApplicationDetails | undefined
   >(undefined);
 
-  const [_isCryptoCreatingApplication, setCryptoCreatingApplication] = useState(false);
-  const [_isCryptoCreatedApplication, setCryptoCreatedApplication] = useState(false);
-  const [_cryptoErrorCreateApplication, setCryptoErrorCreateApplication] = useState<
-    Error | undefined
-  >(undefined);
-
+  const [_isCryptoCreatingApplication, setCryptoCreatingApplication] = useState(
+    false
+  );
+  const [_isCryptoCreatedApplication, setCryptoCreatedApplication] = useState(
+    false
+  );
+  const [
+    _cryptoErrorCreateApplication,
+    setCryptoErrorCreateApplication
+  ] = useState<Error | undefined>(undefined);
 
   const getUserProfile = useCallback(async () => {
     try {
@@ -355,27 +383,30 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
         if (validateUserResponse.exist === true) {
           setValidateUser(true);
         } else {
-          const response = await onboardingService.updateMainDetails(_profile?.userId!, {
-            ...params,
-            dateOfBirth: moment(params.dateOfBirth, "DD / MM / YYYY").format(
-              "YYYY-MM-DD"
-            ),
-            listCustomFields: [
-              {
-                customKey: "SubProcessStep",
-                customValue: "Step1"
-              }
-            ],
-            contacts: params.email
-              ? [
-                  {
-                    contactType: "EMAIL",
-                    contactValue: params.email,
-                    isPrimary: true
-                  }
-                ]
-              : []
-          });
+          const response = await onboardingService.updateMainDetails(
+            _profile?.userId!,
+            {
+              ...params,
+              dateOfBirth: moment(params.dateOfBirth, "DD / MM / YYYY").format(
+                "YYYY-MM-DD"
+              ),
+              listCustomFields: [
+                {
+                  customKey: "SubProcessStep",
+                  customValue: "Step1"
+                }
+              ],
+              contacts: params.email
+                ? [
+                    {
+                      contactType: "EMAIL",
+                      contactValue: params.email,
+                      isPrimary: true
+                    }
+                  ]
+                : []
+            }
+          );
 
           await authComponentStore.storeProfile(response.data);
 
@@ -402,16 +433,19 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     async (params: NationalityData) => {
       try {
         setUpdatingNationality(true);
-        const response = await onboardingService.updateNationalityDetails(_profile?.userId!, {
-          ...params,
-          isCitizen: params.isCitizen === "yes",
-          listCustomFields: [
-            {
-              customKey: "SubProcessStep",
-              customValue: "Step2"
-            }
-          ]
-        });
+        const response = await onboardingService.updateNationalityDetails(
+          _profile?.userId!,
+          {
+            ...params,
+            isCitizen: params.isCitizen === "yes",
+            listCustomFields: [
+              {
+                customKey: "SubProcessStep",
+                customValue: "Step2"
+              }
+            ]
+          }
+        );
 
         await authComponentStore.storeProfile(response.data);
 
@@ -557,9 +591,15 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     }
 
     if (profile?.employmentDetails && profile?.employmentDetails.length > 0) {
-      let formatedData =  occupationsList.find((o) => o.name === profile?.employmentDetails[profile?.employmentDetails.length - 1]
-        .designation || o.label === profile?.employmentDetails[profile?.employmentDetails.length - 1]
-          .designation)
+      let formatedData = occupationsList.find(
+        o =>
+          o.name ===
+            profile?.employmentDetails[profile?.employmentDetails.length - 1]
+              .designation ||
+          o.label ===
+            profile?.employmentDetails[profile?.employmentDetails.length - 1]
+              .designation
+      );
 
       setData({
         ..._data,
@@ -583,25 +623,25 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
         addresses: [
           {
             addressType: 1, //profile?.addresses[profile?.addresses.length -1].addressType,
-            line1: profile?.addresses[profile?.addresses.length - 1].line1,
-            line2: profile?.addresses[profile?.addresses.length - 1].line2,
-            line3: profile?.addresses[profile?.addresses.length - 1].line3,
-            country: profile?.addresses[profile?.addresses.length - 1].country,
+            line1: profile?.addresses[profile?.addresses.length - 1]?.line1,
+            line2: profile?.addresses[profile?.addresses.length - 1]?.line2,
+            line3: profile?.addresses[profile?.addresses.length - 1]?.line3,
+            country: profile?.addresses[profile?.addresses.length - 1]?.country,
             postcode:
-              profile?.addresses[profile?.addresses.length - 1].postcode,
+              profile?.addresses[profile?.addresses.length - 1]?.postcode,
             province:
-              profile?.addresses[profile?.addresses.length - 1].province,
-            region: profile?.addresses[profile?.addresses.length - 1].region,
+              profile?.addresses[profile?.addresses.length - 1]?.province,
+            region: profile?.addresses[profile?.addresses.length - 1]?.region,
             buildingName:
-              profile?.addresses[profile?.addresses.length - 1].buildingName,
-            city: profile?.addresses[profile?.addresses.length - 1].city
+              profile?.addresses[profile?.addresses.length - 1]?.buildingName,
+            city: profile?.addresses[profile?.addresses.length - 1]?.city
           }
         ],
         otherDetails: {
           status:
             profile?.employmentDetails[profile?.employmentDetails.length - 1]
               .status,
-          occupation:formatedData.label,
+          occupation: formatedData.label,
           companyType:
             profile?.employmentDetails[profile?.employmentDetails.length - 1]
               .companyType,
@@ -642,7 +682,9 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
       try {
         setUpdatedOtherDetails(true);
 
-        let formatedData =  occupationsList.find((o) => o.label === params.occupation)
+        let formatedData = occupationsList.find(
+          o => o.label === params.occupation
+        );
 
         let employmentDetails = [
           {
@@ -659,7 +701,7 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
             ]
           }
         ];
-        const  response =await onboardingService.updateEmploymentDetails(
+        const response = await onboardingService.updateEmploymentDetails(
           _profile?.userId!,
           employmentDetails
         );
@@ -690,7 +732,7 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     setApplicationListData(undefined);
     setCountryListData(undefined);
     setProvinceListData(undefined);
-    setProvinceListPagingData(undefined)
+    setProvinceListPagingData(undefined);
     setRegionListData(undefined);
     setRegionListPagingData(undefined);
     setMunicipalityListData(undefined);
@@ -822,123 +864,177 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     }
   }, []);
 
-  const getProvinceList = useCallback(async (contryId:number,pageNumber:number,searchText?:string,parentLocationId?:string) => {
-    try {
-      setGetProvinceList(true);
-
-      const { data, paging } = await onboardingService.getProvinceList(contryId,pageNumber,searchText,parentLocationId?parentLocationId:null);
-      if (pageNumber === 1) {
-        setProvinceListData(data);
-        setProvinceListPagingData(paging)
-      }else{
-        setProvinceListData([..._ProvinceListData,...data]);
-        setProvinceListPagingData(paging)
-      }
-
-      setTimeout(() => {
-        setGetProvinceList(false);
-      }, 50);
-    } catch (error) {
-      setGetProvinceList(false);
-      setErrorGetProvinceList(error as Error);
-    }
-  }, [setProvinceListData,_ProvinceListData]);
-
-  const getProvinceListWithLocationId = useCallback(async (contryId:number,pageNumber:number,searchText?:string) => {
-    try {
-      setGetProvinceListWithLocationId(true);
-
-      const { data, paging } = await onboardingService.getProvinceList(contryId,pageNumber,searchText,null);
-      if (pageNumber === 1) {
-        setProvinceListWithLocationIdData(data);
-        setProvinceListWithLocationIdPagingData(paging)
-      }else{
-        setProvinceListWithLocationIdData([..._ProvinceListLocationIdData,...data]);
-        setProvinceListWithLocationIdPagingData(paging)
-      }
-
-      setTimeout(() => {
-        setGetProvinceListWithLocationId(false);
-      }, 50);
-    } catch (error) {
-      setGetProvinceListWithLocationId(false);
-      setErrorGetProvinceListWithLocationId(error as Error);
-    }
-  }, [setProvinceListWithLocationIdData,_ProvinceListWithLocationIdData]);
-
-  const getRegionList = useCallback(async (contryId:number,pageNumber:number,searchText?:string) => {
-    try {
-      setGetRegionList(true);
-
-      const { data, paging } = await onboardingService.getRegionList(contryId,pageNumber,searchText);
-      if (pageNumber === 1) {
-        setRegionListData(data);
-        setRegionListPagingData(paging)
-      }else{
-        setRegionListData([..._RegionListData,...data]);
-        setRegionListPagingData(paging)
-      }
-
-      setTimeout(() => {
-        setGetRegionList(false);
-      }, 50);
-    } catch (error) {
-      setGetRegionList(false);
-      setErrorGetRegionList(error as Error);
-    }
-  }, [setRegionListData,_RegionListData]);
-
-  const getMunicipalityList = useCallback(async (contryId:number,pageNumber:number,searchText?:string,parentLocationId?:string) => {
-    try {
-      setGetMunicipalityList(true);
-
-      const { data, paging } = await onboardingService.getMunicipalityList(contryId,pageNumber,searchText,parentLocationId?parentLocationId:null);
-      if (pageNumber === 1) {
-        setMunicipalityListData(data);
-        setMunicipalityListPagingData(paging)
-      }else{
-        setMunicipalityListData([..._MunicipalityListData,...data]);
-        setMunicipalityListPagingData(paging)
-      }
-
-      setTimeout(() => {
-        setGetMunicipalityList(false);
-      }, 50);
-    } catch (error) {
-      setGetMunicipalityList(false);
-      setErrorGetMunicipalityList(error as Error);
-    }
-  }, [setMunicipalityListData,_MunicipalityListData]);
-
-  const getBarangayList = useCallback(async (contryId:number,pageNumber:number,searchText?:string,parentLocationId?:string) => {
-    try {
-      setGetBarangayList(true);
-
-      const { data, paging } = await onboardingService.getBarangayList(contryId,pageNumber,searchText,parentLocationId?parentLocationId:null);
-      if (pageNumber === 1) {
-        setBarangayListData(data);
-        setBarangayListPagingData(paging)
-      }else{
-        setBarangayListData([..._BarangayListData,...data]);
-        setBarangayListPagingData(paging)
-      }
-
-      setTimeout(() => {
-        setGetBarangayList(false);
-      }, 50);
-    } catch (error) {
-      setGetBarangayList(false);
-      setErrorGetBarangayList(error as Error);
-    }
-  }, [setBarangayListData,_BarangayListData]);
-
-  const createCryptoApplication = useCallback( async (contentTemplateId:string) => {
-
+  const getProvinceList = useCallback(
+    async (
+      contryId: number,
+      pageNumber: number,
+      searchText?: string,
+      parentLocationId?: string
+    ) => {
       try {
-        if (
-          !_data.mainDetails ||
-          !_data.nationalityDetails
-        ) {
+        setGetProvinceList(true);
+
+        const { data, paging } = await onboardingService.getProvinceList(
+          contryId,
+          pageNumber,
+          searchText,
+          parentLocationId ? parentLocationId : null
+        );
+        if (pageNumber === 1) {
+          setProvinceListData(data);
+          setProvinceListPagingData(paging);
+        } else {
+          setProvinceListData([..._ProvinceListData, ...data]);
+          setProvinceListPagingData(paging);
+        }
+
+        setTimeout(() => {
+          setGetProvinceList(false);
+        }, 50);
+      } catch (error) {
+        setGetProvinceList(false);
+        setErrorGetProvinceList(error as Error);
+      }
+    },
+    [setProvinceListData, _ProvinceListData]
+  );
+
+  const getProvinceListWithLocationId = useCallback(
+    async (contryId: number, pageNumber: number, searchText?: string) => {
+      try {
+        setGetProvinceListWithLocationId(true);
+
+        const { data, paging } = await onboardingService.getProvinceList(
+          contryId,
+          pageNumber,
+          searchText,
+          null
+        );
+        if (pageNumber === 1) {
+          setProvinceListWithLocationIdData(data);
+          setProvinceListWithLocationIdPagingData(paging);
+        } else {
+          setProvinceListWithLocationIdData([
+            ..._ProvinceListLocationIdData,
+            ...data
+          ]);
+          setProvinceListWithLocationIdPagingData(paging);
+        }
+
+        setTimeout(() => {
+          setGetProvinceListWithLocationId(false);
+        }, 50);
+      } catch (error) {
+        setGetProvinceListWithLocationId(false);
+        setErrorGetProvinceListWithLocationId(error as Error);
+      }
+    },
+    [setProvinceListWithLocationIdData, _ProvinceListWithLocationIdData]
+  );
+
+  const getRegionList = useCallback(
+    async (contryId: number, pageNumber: number, searchText?: string) => {
+      try {
+        setGetRegionList(true);
+
+        const { data, paging } = await onboardingService.getRegionList(
+          contryId,
+          pageNumber,
+          searchText
+        );
+        if (pageNumber === 1) {
+          setRegionListData(data);
+          setRegionListPagingData(paging);
+        } else {
+          setRegionListData([..._RegionListData, ...data]);
+          setRegionListPagingData(paging);
+        }
+
+        setTimeout(() => {
+          setGetRegionList(false);
+        }, 50);
+      } catch (error) {
+        setGetRegionList(false);
+        setErrorGetRegionList(error as Error);
+      }
+    },
+    [setRegionListData, _RegionListData]
+  );
+
+  const getMunicipalityList = useCallback(
+    async (
+      contryId: number,
+      pageNumber: number,
+      searchText?: string,
+      parentLocationId?: string
+    ) => {
+      try {
+        setGetMunicipalityList(true);
+
+        const { data, paging } = await onboardingService.getMunicipalityList(
+          contryId,
+          pageNumber,
+          searchText,
+          parentLocationId ? parentLocationId : null
+        );
+        if (pageNumber === 1) {
+          setMunicipalityListData(data);
+          setMunicipalityListPagingData(paging);
+        } else {
+          setMunicipalityListData([..._MunicipalityListData, ...data]);
+          setMunicipalityListPagingData(paging);
+        }
+
+        setTimeout(() => {
+          setGetMunicipalityList(false);
+        }, 50);
+      } catch (error) {
+        setGetMunicipalityList(false);
+        setErrorGetMunicipalityList(error as Error);
+      }
+    },
+    [setMunicipalityListData, _MunicipalityListData]
+  );
+
+  const getBarangayList = useCallback(
+    async (
+      contryId: number,
+      pageNumber: number,
+      searchText?: string,
+      parentLocationId?: string
+    ) => {
+      try {
+        setGetBarangayList(true);
+
+        const { data, paging } = await onboardingService.getBarangayList(
+          contryId,
+          pageNumber,
+          searchText,
+          parentLocationId ? parentLocationId : null
+        );
+        if (pageNumber === 1) {
+          setBarangayListData(data);
+          setBarangayListPagingData(paging);
+        } else {
+          setBarangayListData([..._BarangayListData, ...data]);
+          setBarangayListPagingData(paging);
+        }
+
+        setTimeout(() => {
+          setGetBarangayList(false);
+        }, 50);
+      } catch (error) {
+        setGetBarangayList(false);
+        setErrorGetBarangayList(error as Error);
+      }
+    },
+    [setBarangayListData, _BarangayListData]
+  );
+
+  const createCryptoApplication = useCallback(
+    async (contentTemplateId: string) => {
+      try {
+        if (!_data.mainDetails || !_data.nationalityDetails) {
           setCryptoErrorCreateApplication(new Error("Missing parameters"));
           return;
         }
@@ -958,16 +1054,16 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
             placeOfBirth: _data.nationalityDetails.placeOfBirth,
             countryOfBirth: _data.nationalityDetails.nationality,
             nationality: _data.nationalityDetails.nationality,
-            citizenFlag: _data.nationalityDetails?.isCitizen === "yes",
+            citizenFlag: _data.nationalityDetails?.isCitizen === "yes"
           },
           productDetails: {
-              bankId: "PDAX",
-              productId: "CryptoAccountPdax",
-              productType: "CRYPTO"
+            bankId: "PDAX",
+            productId: "CryptoAccountPdax",
+            productType: "CRYPTO"
           }
         });
 
-        await _linkCryptoAccount(contentTemplateId,data.applicationId);
+        await _linkCryptoAccount(contentTemplateId, data.applicationId);
 
         setCryptoApplicationDetails({
           applicationId: data.applicationId,
@@ -988,20 +1084,23 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
     [_data]
   );
 
-  const _linkCryptoAccount = async (contentTemplateId:string,applicationId:string) => {
-
+  const _linkCryptoAccount = async (
+    contentTemplateId: string,
+    applicationId: string
+  ) => {
     try {
-      await onboardingService.updateApplicationTc(contentTemplateId,applicationId);
+      await onboardingService.updateApplicationTc(
+        contentTemplateId,
+        applicationId
+      );
       await onboardingService.validateCryptoAccount(applicationId);
       // console.log('resp2 ',resp2);
       return true;
     } catch (error) {
       setCryptoErrorCreateApplication(error as Error);
-      return 'error';
+      return "error";
     }
-
   };
-
 
   return useMemo(
     () => ({
@@ -1046,27 +1145,27 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
       applicationList: _applicationListData,
       countryList: _CountryListData,
       getProvinceList,
-      isGetProvinceList:_isGetProvinceList,
+      isGetProvinceList: _isGetProvinceList,
       provinceList: _ProvinceListData,
       provincePaging: _ProvinceListPagingData,
       errorGetProvinceList: _errorGetProvinceList,
       getProvinceListWithLocationId,
-      isGetProvinceListWithLocationId:_isGetProvinceListWithLocationId,
+      isGetProvinceListWithLocationId: _isGetProvinceListWithLocationId,
       provinceListWithLocationId: _ProvinceListWithLocationIdData,
       provinceWithLocationIdPaging: _ProvinceListWithLocationIdPagingData,
       errorGetProvinceListWithLocationId: _errorGetProvinceListWithLocationId,
       getRegionList,
-      isGetRegionList:_isGetRegionList,
+      isGetRegionList: _isGetRegionList,
       regionList: _RegionListData,
       regionPaging: _RegionListPagingData,
       errorGetRegionList: _errorGetRegionList,
       getMunicipalityList,
-      isGetMunicipalityList:_isGetMunicipalityList,
+      isGetMunicipalityList: _isGetMunicipalityList,
       municipalityList: _MunicipalityListData,
       municipalityPaging: _MunicipalityListPagingData,
       errorGetMunicipalityList: _errorGetMunicipalityList,
       getBarangayList,
-      isGetBarangayList:_isGetBarangayList,
+      isGetBarangayList: _isGetBarangayList,
       barangayList: _BarangayListData,
       barangayPaging: _BarangayListPagingData,
       errorGetBarangayList: _errorGetBarangayList,
@@ -1074,7 +1173,7 @@ export function useCustomerInvokeContextValue(): CustomerInvokeContextData {
       cryptoApplicationDetails: _cryptoApplicationDetails,
       cryptoErrorCreateApplication: _cryptoErrorCreateApplication,
       isCryptoCreatingApplication: _isCryptoCreatingApplication,
-      isCryptoCreatedApplication: _isCryptoCreatedApplication,
+      isCryptoCreatedApplication: _isCryptoCreatedApplication
     }),
     [
       _applicationDetails,
